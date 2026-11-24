@@ -127,10 +127,10 @@ const HomeHero: FC = () => {
                       component="span"
                       sx={{
                         position: 'absolute',
-                        top: 74,
-                        left: 2,
+                        top: { xs: 48, md: 74 },
+                        left: { xs: 0, md: 2 },
                         transform: 'rotate(3deg)',
-                        '& img': { width: { xs: 146, md: 210 }, height: 'auto' },
+                        '& img': { width: { xs: 138, md: 210 }, height: 'auto' },
                       }}
                     >
                       {/* eslint-disable-next-line */}
@@ -182,7 +182,7 @@ const HomeHero: FC = () => {
                   }
                 </Typography>
               </Box>
-              <Box sx={{ '& button': { mr: 2 } }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'center', sm: 'flex-start' }, gap: { xs: 1.5, sm: 2 }, '& button': { mr: 0 } }}>
                 <ScrollLink to="popular-course" spy={true} smooth={true} offset={0} duration={350}>
                   <StyledButton animated color="primary" size="large" variant="contained">
                     Get Started
