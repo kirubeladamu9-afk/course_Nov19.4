@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Monitor, Pencil, ShieldCheck, Sparkles, Video } from 'lucide-react'
+import { BadgeCheck, BookOpen, BriefcaseBusiness, Clock3, Globe2, LaptopMinimalCheck, Monitor, Pencil, Settings2, ShieldCheck, Sparkles, Video } from 'lucide-react'
 import { useTheme } from '@mui/material/styles'
 
 const categories = [
@@ -40,13 +40,28 @@ const categories = [
   },
 ]
 
-const DotNetPillars = () => {
+const offers = [
+  { name: 'Expert-Led Courses', description: 'Learn from experienced instructors who bring real-world knowledge into every lesson.', icon: BookOpen },
+  { name: 'Flexible Learning', description: 'Study anytime, anywhere — pause, resume, and learn at your own pace.', icon: Clock3 },
+  { name: 'Hands-On Projects', description: 'Apply what you learn through real projects, quizzes, and exercises.', icon: LaptopMinimalCheck },
+  { name: 'Verified Certificates', description: 'Earn recognized certificates to showcase your new skills and boost your career.', icon: BadgeCheck },
+  { name: 'Global Learning Community', description: 'Connect, collaborate, and grow with learners and mentors from around the world.', icon: Globe2 },
+  { name: 'Personalized Progress Tracking', description: 'Monitor your learning journey, track progress, and celebrate milestones in your profile.', icon: Settings2 },
+]
+
+type DotNetPillarsProps = {
+  variant?: 'categories' | 'offers'
+}
+
+const DotNetPillars = ({ variant = 'categories' }: DotNetPillarsProps) => {
   const darkMode = useTheme().palette.mode === 'dark'
+  const isOffers = variant === 'offers'
+  const cards = isOffers ? offers : categories
 
   return (
-  <section aria-labelledby="dotnet-pillars-title" className={`${darkMode ? 'bg-[#171717]' : 'bg-[#f5f7fa]'} px-4 py-16 sm:px-6 sm:py-20 md:px-8 lg:py-28`}>
+  <section aria-label={isOffers ? 'What We Offer' : undefined} aria-labelledby={isOffers ? undefined : 'dotnet-pillars-title'} className={`${darkMode ? 'bg-[#171717]' : 'bg-[#f5f7fa]'} px-4 ${isOffers ? 'pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-14 lg:pb-28' : 'py-16 sm:px-6 sm:py-20 md:px-8 lg:py-28'}`}>
     <div className="mx-auto max-w-7xl">
-      <div>
+      {!isOffers && <div>
         <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] shadow-sm ${darkMode ? 'border-[#31413e] bg-[#192321] text-[#b3c0bd]' : 'border-slate-200 bg-white text-slate-600'}`}>
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#127C71]" />
           Categories
@@ -54,23 +69,26 @@ const DotNetPillars = () => {
         <h2 id="dotnet-pillars-title" className={`mt-4 text-[clamp(2rem,calc(1.6087rem+1.7391vw),3rem)] font-semibold leading-[1.25] tracking-[-0.06em] ${darkMode ? 'text-[#f2f7f6]' : 'text-slate-950'}`}>
           Explore Category
         </h2>
-      </div>
+      </div>}
 
-      <div className="mt-11 grid grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-        {categories.map(({ name, count, description, icon: Icon }) => (
+      <div className={`${isOffers ? 'mt-0' : 'mt-11 sm:mt-14 lg:mt-16'} grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3`}>
+        {cards.map((card) => {
+          const { name, description, icon: Icon } = card
+          return (
           <article key={name} className={`group rounded-3xl border-2 px-5 pb-6 pt-5 transition-all duration-500 hover:border-[#127C71] sm:px-7 sm:pb-8 sm:pt-7 ${darkMode ? 'border-[#31413e] bg-[#192321]' : 'border-transparent bg-white'}`}>
             <div className="mb-9 flex items-start justify-between sm:mb-11 lg:mb-[60px]">
               <span className={`flex h-[54px] w-[54px] items-center justify-center rounded-full border text-[#127C71] shadow-lg ${darkMode ? 'border-[#31413e] bg-[#171717]' : 'border-slate-100 bg-white'}`}>
                 <Icon aria-hidden="true" size={28} strokeWidth={1.8} />
               </span>
-              <span className={`rounded-full px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] ${darkMode ? 'bg-[#24332f] text-[#b3c0bd]' : 'bg-[#f5f7fa] text-slate-600'}`}>
-                {count} {count === 1 ? 'Course' : 'Courses'}
-              </span>
+              {'count' in card && <span className={`rounded-full px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] ${darkMode ? 'bg-[#24332f] text-[#b3c0bd]' : 'bg-[#f5f7fa] text-slate-600'}`}>
+                {card.count} {card.count === 1 ? 'Course' : 'Courses'}
+              </span>}
             </div>
             <h3 className={`text-lg font-medium leading-7 sm:text-xl lg:text-2xl ${darkMode ? 'text-[#f2f7f6]' : 'text-slate-950'}`}>{name}</h3>
             <p className={`mt-3 line-clamp-2 text-base leading-6 tracking-[0.03em] ${darkMode ? 'text-[#b3c0bd]' : 'text-slate-600'}`}>{description}</p>
           </article>
-        ))}
+          )
+        })}
       </div>
     </div>
   </section>

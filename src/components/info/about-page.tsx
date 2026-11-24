@@ -198,7 +198,7 @@ const AboutPage: FC = () => {
       <Typography component="h2" sx={{ fontSize: { xs: '2rem', md: '3rem' }, fontWeight: 600, lineHeight: 1.15, letterSpacing: '-.04em' }}>What We Offer</Typography>
       <Typography color="text.secondary" sx={{ mt: 2, lineHeight: 1.5 }}>Discover a platform built to make learning simple, interactive, and effective — with real-world projects, flexible schedules, and expert-led lessons designed to help you master new skills faster.</Typography>
     </Container>
-    <DotNetPillars />
+    <DotNetPillars variant="offers" />
   </Box>
 
   <HomeOurMentors autoplay />
