@@ -30,6 +30,7 @@ const BookstorePage = lazy(() => import('@/components/bookstore/bookstore-page')
 
 const HomeHero = loadSection(() => import('@/components/home/hero'))
 const HomeDotNetPillars = loadSection(() => import('@/components/home/dotnet-pillars'))
+const HomeWhySkillsaint = loadSection(() => import('@/components/home/why-skillsaint'))
 const HomeFeature = loadSection(() => import('@/components/home/feature'))
 const HomePopularCourse = loadSection<{ courses: Course[] }>(() => import('@/components/home/popular-courses'))
 const HomeTrainingPrograms = loadSection<{ courses: Course[] }>(() => import('@/components/home/training-programs'))
@@ -222,6 +223,7 @@ const App: React.FC<AppProps> = ({ darkMode, onToggleDarkMode }) => {
           <>
             <HomeHero />
             <Reveal><HomeDotNetPillars /></Reveal>
+            <Reveal><HomeWhySkillsaint /></Reveal>
             <Reveal><HomePopularCourse courses={homeCourses ?? []} /></Reveal>
             <Reveal><HomeTrainingPrograms courses={homeCourses ?? []} /></Reveal>
             <Reveal><HomeFeature /></Reveal>

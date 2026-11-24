@@ -40,31 +40,31 @@ const categories = [
 ]
 
 const DotNetPillars = () => (
-  <section aria-labelledby="dotnet-pillars-title" className="bg-[#f5f7fb] px-4 py-8 sm:px-6 md:px-8 md:py-10">
-    <div className="mx-auto max-w-5xl">
-      <div className="mb-6">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-[10px] font-medium leading-none text-slate-600 shadow-sm">
+  <section aria-labelledby="dotnet-pillars-title" className="bg-[#f5f7fa] px-4 py-16 sm:px-6 sm:py-20 md:px-8 lg:py-28">
+    <div className="mx-auto max-w-7xl">
+      <div>
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] text-slate-600 shadow-sm">
           <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-violet-500" />
           Categories
         </span>
-        <h2 id="dotnet-pillars-title" className="mt-2 text-2xl font-bold leading-tight tracking-tight text-slate-950 sm:text-[1.75rem]">
+        <h2 id="dotnet-pillars-title" className="mt-4 text-[clamp(2rem,calc(1.6087rem+1.7391vw),3rem)] font-semibold leading-[1.25] tracking-[-0.06em] text-slate-950">
           Explore Category
         </h2>
       </div>
 
-      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-11 grid grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
         {categories.map(({ name, count, description, icon: Icon }) => (
-          <article key={name} className="group min-h-[144px] rounded-2xl border border-white/80 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
-            <div className="flex items-start justify-between">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-violet-100 bg-white text-violet-500 shadow-sm">
-                <Icon aria-hidden="true" size={14} strokeWidth={2} />
+          <article key={name} className="group rounded-3xl border-2 border-transparent bg-white px-5 pb-6 pt-5 transition-all duration-500 hover:border-violet-600 sm:px-7 sm:pb-8 sm:pt-7">
+            <div className="mb-9 flex items-start justify-between sm:mb-11 lg:mb-[60px]">
+              <span className="flex h-[54px] w-[54px] items-center justify-center rounded-full border border-slate-100 bg-white text-violet-600 shadow-lg">
+                <Icon aria-hidden="true" size={28} strokeWidth={1.8} />
               </span>
-              <span className="rounded-full bg-slate-50 px-2 py-1 text-[9px] font-medium leading-none text-slate-600">
+              <span className="rounded-full bg-[#f5f7fa] px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] text-slate-600">
                 {count} {count === 1 ? 'Course' : 'Courses'}
               </span>
             </div>
-            <h3 className="mb-1 mt-6 text-sm font-medium leading-snug text-slate-950">{name}</h3>
-            <p className="line-clamp-2 text-[11px] leading-[1.45] text-slate-600">{description}</p>
+            <h3 className="text-lg font-medium leading-7 text-slate-950 sm:text-xl lg:text-2xl">{name}</h3>
+            <p className="mt-3 line-clamp-2 text-base leading-6 tracking-[0.03em] text-slate-600">{description}</p>
           </article>
         ))}
       </div>
