@@ -136,35 +136,6 @@ const AboutPage: FC = () => {
       </Box>)}
     </Paper>
 
-    <Grid container spacing={{ xs: 4, md: 7 }} alignItems="center" sx={{ mt: { xs: 6, md: 9 }, pb: { xs: 4, md: 6 }, borderBottom: 1, borderColor: 'divider' }}>
-      <Grid item xs={12} md={6}>
-        <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 800, letterSpacing: .8 }}>A CLEAR PATH FORWARD</Typography>
-        <Typography component="h3" variant="h4" sx={{ mt: .5, fontWeight: 800 }}>Learning designed for real progress</Typography>
-        <Typography color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.75 }}>Build confidence through practical lessons that break big ideas into manageable steps. Learn at your own pace and keep your progress moving forward.</Typography>
-        <Stack spacing={1.25} sx={{ mt: 2.5 }}>
-          <Typography variant="body2" sx={{ fontWeight: 700 }}>Flexible courses that fit your schedule</Typography>
-          <Typography variant="body2" sx={{ fontWeight: 700 }}>Practice that turns knowledge into confidence</Typography>
-        </Stack>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Box component="img" src="/images/about-ai-classroom.webp" alt="Students using computers in a classroom" sx={{ display: 'block', width: '100%', height: { xs: 240, md: 330 }, borderRadius: 3, objectFit: 'cover' }} />
-      </Grid>
-    </Grid>
-
-    <Grid container spacing={{ xs: 4, md: 7 }} alignItems="center" sx={{ mt: { xs: 4, md: 6 } }}>
-      <Grid item xs={12} md={6}>
-        <Box component="img" src="/images/about-young-learners.webp" alt="Young students learning together" sx={{ display: 'block', width: '100%', height: { xs: 240, md: 330 }, borderRadius: 3, objectFit: 'cover' }} />
-      </Grid>
-      <Grid item xs={12} md={6}>
-        <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 800, letterSpacing: .8 }}>SUPPORT THAT GROWS WITH YOU</Typography>
-        <Typography component="h3" variant="h4" sx={{ mt: .5, fontWeight: 800 }}>Guidance at every step</Typography>
-        <Typography color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.75 }}>Learning feels easier when you have the right support. Our tutors make space for questions, explain challenging topics, and help learners stay motivated.</Typography>
-        <Stack spacing={1.25} sx={{ mt: 2.5 }}>
-          <Typography variant="body2" sx={{ fontWeight: 700 }}>Experienced tutors who meet you where you are</Typography>
-          <Typography variant="body2" sx={{ fontWeight: 700 }}>A welcoming place to ask, explore, and improve</Typography>
-        </Stack>
-      </Grid>
-    </Grid>
   </Container>
 
   <Box sx={{ backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : '#f5f7fa', pt: { xs: 7, md: 10 } }}>
