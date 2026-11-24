@@ -88,7 +88,7 @@ const ExpItem: FC<ExpItemProps> = ({ item }) => {
 
 const HomeHero: FC = () => {
   return (
-    <Box id="hero" sx={{ backgroundColor: 'background.paper', position: 'relative', pt: { xs: 6, md: 8 }, pb: { xs: 8, md: 10 } }}>
+    <Box id="hero" sx={{ backgroundColor: 'background.paper', backgroundImage: 'radial-gradient(ellipse 65% 48% at 50% 36%, rgba(18, 124, 113, 0.055) 0%, transparent 100%), radial-gradient(ellipse 90% 65% at 50% 70%, rgba(18, 124, 113, 0.10) 0%, rgba(18, 124, 113, 0.035) 55%, transparent 100%)', position: 'relative', pt: { xs: 6, md: 8 }, pb: { xs: 8, md: 10 } }}>
       <Container maxWidth="lg">
         <Grid container spacing={0} sx={{ flexDirection: { xs: 'column', md: 'unset' } }}>
           <Grid item xs={12} md={12} lg={7}>
