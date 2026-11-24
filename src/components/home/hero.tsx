@@ -182,7 +182,7 @@ const HomeHero: FC = () => {
                   }
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'center', sm: 'flex-start' }, gap: { xs: 1.5, sm: 2 }, '& button': { mr: 0 } }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { xs: 'center', lg: 'flex-start' }, justifyContent: { xs: 'center', lg: 'flex-start' }, gap: { xs: 1.5, sm: 2 }, '& button': { mr: 0 } }}>
                 <ScrollLink to="popular-course" spy={true} smooth={true} offset={0} duration={350}>
                   <StyledButton animated color="primary" size="large" variant="contained">
                     Get Started
