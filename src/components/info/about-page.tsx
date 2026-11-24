@@ -1,14 +1,10 @@
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
-import MailOutlineIcon from '@mui/icons-material/MailOutline'
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 import Box from '@mui/material/Box'
 import Accordion from '@mui/material/Accordion'
 import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -21,12 +17,6 @@ import HomeOurMentors from '@/components/home/mentors'
 import DotNetPillars from '@/components/home/dotnet-pillars'
 import { navigateTo } from '@/lib/navigation'
 
-const valueCards = [
-  { title: 'Built for steady progress', description: 'Learn at a pace that works for you with practical content, live support, and explanations that make difficult ideas easier to understand.', icon: <SchoolOutlinedIcon fontSize="small" />, color: '#168c7d', background: '#e4f6f1' },
-  { title: 'Learners come first', description: 'Whether you are exploring a new subject or preparing for your next milestone, CourseSpace keeps learning welcoming and useful.', icon: <MailOutlineIcon fontSize="small" />, color: '#2782b4', background: '#e8f3fb' },
-]
-
-const cardSx = { border: 1, borderColor: 'divider', borderRadius: 3, boxShadow: '0 8px 26px rgba(15, 60, 70, .055)', transition: 'transform .2s, box-shadow .2s', '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 14px 32px rgba(15, 60, 70, .1)' } }
 const aboutPillars = {
   'Our Story': [
     'CourseSharp began with a simple idea: make learning easier, more engaging, and results-driven for every student.',
@@ -90,20 +80,6 @@ const AboutPage: FC = () => {
     </Container>
   </Box>
 
-  <Container maxWidth="lg" sx={{ py: { xs: 6, md: 7 } }}>
-    <Grid container spacing={3}>
-      {valueCards.map(({ title, description, icon, color, background }) => <Grid key={title} item xs={12} md={6}>
-        <Card elevation={0} sx={cardSx}>
-          <CardContent sx={{ p: { xs: 2.5, sm: 3, md: 3.25 } }}>
-            <Box sx={{ display: 'grid', placeItems: 'center', width: 42, height: 42, mb: 2.5, borderRadius: 2, color, backgroundColor: background }}>{icon}</Box>
-            <Typography variant="h6" sx={{ fontWeight: 750 }}>{title}</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: .75, lineHeight: 1.7 }}>{description}</Typography>
-          </CardContent>
-        </Card>
-      </Grid>)}
-    </Grid>
-  </Container>
-
   <Container id="about-story" maxWidth="lg" sx={{ px: 1.5, py: { xs: 8, sm: 10, md: 14 } }}>
     <Grid container spacing={{ xs: 5, sm: 4, md: 4 }} alignItems="center">
       <Grid item xs={12} sm={6}>
@@ -134,8 +110,6 @@ const AboutPage: FC = () => {
 
   <Container maxWidth="lg" sx={{ py: { xs: 7, md: 10 } }}>
     <Box sx={{ maxWidth: 700, mx: 'auto', mb: { xs: 4, md: 6 }, textAlign: 'center' }}>
-      <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 800, letterSpacing: 1 }}>LEARNING THAT MOVES YOU FORWARD</Typography>
-      <Typography component="h2" variant="h3" sx={{ mt: .75, fontWeight: 800, letterSpacing: '-.035em', fontSize: { xs: '2rem', md: '2.75rem' } }}>Built for modern learning</Typography>
       <Typography color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.7 }}>We bring clear courses, experienced tutors, and flexible practice together to help every learner make steady progress.</Typography>
     </Box>
 
