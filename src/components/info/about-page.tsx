@@ -1,4 +1,3 @@
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded'
 import MailOutlineIcon from '@mui/icons-material/MailOutline'
@@ -17,6 +16,7 @@ import Paper from '@mui/material/Paper'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { useState, type FC } from 'react'
+import { StyledButton } from '@/components/styled-button'
 import HomeOurMentors from '@/components/home/mentors'
 import { navigateTo } from '@/lib/navigation'
 
@@ -55,6 +55,7 @@ const faqCategories = {
 
 const AboutPage: FC = () => {
   const [selectedFaqCategory, setSelectedFaqCategory] = useState<keyof typeof faqCategories>('General')
+  const [expandedFaq, setExpandedFaq] = useState<string | null>('General-0')
 
   return <Box component="main" sx={{ backgroundColor: 'background.default', color: 'text.primary' }}>
   <Box sx={{ position: 'relative', overflow: 'hidden', color: 'common.white', background: (theme) => theme.palette.mode === 'dark' ? 'linear-gradient(120deg, #102b3f 0%, #0b514b 100%)' : 'linear-gradient(120deg, #102b3f 0%, #12685d 68%, #168276 100%)' }}>
@@ -157,18 +158,23 @@ const AboutPage: FC = () => {
     </Box>
 
     <Stack direction="row" justifyContent="center" flexWrap="wrap" useFlexGap spacing={.75} sx={{ mb: 3.5 }} role="group" aria-label="FAQ categories">
-      {(Object.keys(faqCategories) as Array<keyof typeof faqCategories>).map((category) => <Button key={category} aria-pressed={selectedFaqCategory === category} size="small" onClick={() => setSelectedFaqCategory(category)} sx={{ minWidth: 0, px: 1.75, borderRadius: 6, color: selectedFaqCategory === category ? 'text.primary' : 'text.secondary', backgroundColor: selectedFaqCategory === category ? 'background.paper' : 'transparent', boxShadow: selectedFaqCategory === category ? 1 : 'none', textTransform: 'none' }}>{category}</Button>)}
+      {(Object.keys(faqCategories) as Array<keyof typeof faqCategories>).map((category) => <Button key={category} aria-pressed={selectedFaqCategory === category} size="small" onClick={() => { setSelectedFaqCategory(category); setExpandedFaq(null) }} sx={{ minWidth: 0, px: 1.75, borderRadius: 6, color: selectedFaqCategory === category ? 'text.primary' : 'text.secondary', backgroundColor: selectedFaqCategory === category ? 'background.paper' : 'transparent', boxShadow: selectedFaqCategory === category ? 1 : 'none', textTransform: 'none' }}>{category}</Button>)}
     </Stack>
 
     <Stack spacing={1.5}>
-      {faqCategories[selectedFaqCategory].map((faq, index) => <Accordion key={faq.question} defaultExpanded={selectedFaqCategory === 'General' && index === 0} disableGutters elevation={0} sx={{ border: 1, borderColor: 'transparent', borderRadius: '10px !important', backgroundColor: '#fff', color: '#173a38', '&:before': { display: 'none' }, '&.Mui-expanded': { borderColor: 'primary.main', backgroundColor: '#fff' } }}>
-        <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />} aria-controls={`about-faq-${selectedFaqCategory}-${index}-content`} id={`about-faq-${selectedFaqCategory}-${index}-header`} sx={{ px: { xs: 2, sm: 2.5 }, '& .MuiAccordionSummary-content': { my: 1.75 } }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{faq.question}</Typography>
-        </AccordionSummary>
-        <AccordionDetails id={`about-faq-${selectedFaqCategory}-${index}-content`} sx={{ pt: 0, px: { xs: 2, sm: 2.5 }, pb: 2.5 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{faq.answer}</Typography>
-        </AccordionDetails>
-      </Accordion>)}
+      {faqCategories[selectedFaqCategory].map((faq, index) => {
+        const faqId = `${selectedFaqCategory}-${index}`
+        return (
+          <Accordion key={faq.question} expanded={expandedFaq === faqId} onChange={(_, isExpanded) => setExpandedFaq(isExpanded ? faqId : null)} disableGutters elevation={0} sx={{ border: 1, borderColor: 'transparent', borderRadius: '10px !important', backgroundColor: '#fff', color: '#173a38', '&:before': { display: 'none' }, '&.Mui-expanded': { borderColor: 'primary.main', backgroundColor: '#fff' } }}>
+            <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />} aria-controls={`about-faq-${selectedFaqCategory}-${index}-content`} id={`about-faq-${selectedFaqCategory}-${index}-header`} sx={{ px: { xs: 2, sm: 2.5 }, '& .MuiAccordionSummary-content': { my: 1.75 } }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{faq.question}</Typography>
+            </AccordionSummary>
+            <AccordionDetails id={`about-faq-${selectedFaqCategory}-${index}-content`} sx={{ pt: 0, px: { xs: 2, sm: 2.5 }, pb: 2.5 }}>
+              <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>{faq.answer}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        )
+      })}
     </Stack>
   </Container>
 
@@ -177,8 +183,8 @@ const AboutPage: FC = () => {
       <Typography component="h2" variant="h4" sx={{ fontWeight: 800, letterSpacing: '-.025em', fontSize: { xs: '1.75rem', md: '2.5rem' } }}>Let’s make your next step count</Typography>
       <Typography sx={{ mt: 1, color: 'rgba(255,255,255,.9)' }}>Find a course, meet a tutor, and build skills with confidence.</Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="center" spacing={1.5} sx={{ mt: 3 }}>
-        <Button variant="contained" onClick={() => navigateTo('/courses')} endIcon={<ArrowForwardRoundedIcon />} sx={{ borderRadius: 1.5, px: 2.5, backgroundColor: '#0c2022', color: 'common.white', '&:hover': { backgroundColor: '#16383a' } }}>Explore courses</Button>
-        <Button variant="contained" href="/contact-us" sx={{ borderRadius: 1.5, px: 2.5, backgroundColor: 'common.white', color: '#182d32', '&:hover': { backgroundColor: '#eef8f7' } }}>Contact support</Button>
+        <StyledButton animated onClick={() => navigateTo('/courses')}>Explore courses</StyledButton>
+        <StyledButton animated onClick={() => navigateTo('/contact-us')}>Contact support</StyledButton>
       </Stack>
     </Paper>
   </Container>
