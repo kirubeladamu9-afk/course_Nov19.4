@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import { Theme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ButtonProps } from '@mui/material/Button'
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import { fontFamily } from '@/config/theme/typography'
 
 interface BaseButtonProps extends Pick<ButtonProps, 'onClick' | 'type' | 'startIcon' | 'endIcon' | 'disabled'> {
@@ -10,6 +11,7 @@ interface BaseButtonProps extends Pick<ButtonProps, 'onClick' | 'type' | 'startI
   color?: 'default' | 'primary' | 'secondary' | 'dark' | 'light'
   size?: 'small' | 'medium' | 'large'
   disableHoverEffect?: boolean
+  animated?: boolean
 }
 interface StyledButtonRootProps extends BaseButtonProps {
   theme?: Theme
@@ -17,8 +19,8 @@ interface StyledButtonRootProps extends BaseButtonProps {
 
 const StyledButtonRoot = styled('button', {
   shouldForwardProp: (prop) =>
-    prop !== 'variant' && prop !== 'color' && prop !== 'size' && prop !== 'disableHoverEffect',
-})<StyledButtonRootProps>(({ theme, color, variant, size, disableHoverEffect }) => ({
+    prop !== 'variant' && prop !== 'color' && prop !== 'size' && prop !== 'disableHoverEffect' && prop !== 'animated',
+})<StyledButtonRootProps>(({ theme, color, variant, size, disableHoverEffect, animated }) => ({
   fontFamily,
   cursor: 'pointer',
   minWidth: 40,
@@ -157,24 +159,82 @@ const StyledButtonRoot = styled('button', {
     variant === 'text' && {
       color: theme.palette.primary.contrastText,
     }),
+
+  ...(animated && {
+    height: 44,
+    padding: '4px 6px 4px 24px',
+    gap: 10,
+    borderRadius: 999,
+    fontSize: 16,
+    lineHeight: '24px',
+    letterSpacing: 0.48,
+    transition: 'background-color 500ms ease',
+    ...(variant === 'contained' && {
+      backgroundColor: '#7D52F4',
+      color: '#fff',
+      boxShadow: 'none',
+      [theme.breakpoints.up('sm')]: { height: 48 },
+    }),
+    '&:hover': {
+      ...(!disableHoverEffect && { transform: 'none' }),
+      ...(variant === 'contained' && { backgroundColor: '#693EE0' }),
+    },
+    '& .styled-button-end-icon': {
+      position: 'relative',
+      width: 36,
+      height: 36,
+      margin: 0,
+      borderRadius: '50%',
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#fff',
+      color: '#7D52F4',
+      flexShrink: 0,
+      overflow: 'hidden',
+    },
+    '& .styled-button-arrow': {
+      position: 'absolute',
+      width: 20,
+      height: 20,
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'transform 300ms ease-in-out',
+    },
+    '& .styled-button-arrow-primary': { transform: 'translateX(0)' },
+    '& .styled-button-arrow-secondary': { transform: 'translateX(-40px)' },
+    '&:hover .styled-button-arrow-primary': { transform: 'translateX(40px)' },
+    '&:hover .styled-button-arrow-secondary': { transform: 'translateX(0)' },
+    '@media (prefers-reduced-motion: reduce)': {
+      '& .styled-button-arrow': { transition: 'none' },
+    },
+  }),
 }))
 
 interface Props extends BaseButtonProps {
   children: ReactNode
 }
 
-const StyledButton: FC<Props> = ({ children, onClick, disableHoverEffect = false, startIcon, endIcon, color = 'primary', variant = 'contained', size = 'medium', ...rest }) => {
+const StyledButton: FC<Props> = ({ children, onClick, disableHoverEffect = false, animated = false, startIcon, endIcon, color = 'primary', variant = 'contained', size = 'medium', ...rest }) => {
+  const resolvedEndIcon = endIcon ?? (animated ? <ArrowForwardRoundedIcon aria-hidden="true" /> : undefined)
+
   return (
-    <StyledButtonRoot onClick={onClick} disableHoverEffect={disableHoverEffect} color={color} variant={variant} size={size} {...rest}>
+    <StyledButtonRoot onClick={onClick} disableHoverEffect={disableHoverEffect} animated={animated} color={color} variant={variant} size={size} {...rest}>
       {startIcon && (
         <Box component="span" sx={{ display: 'inherit', mr: 1, ml: -0.5 }}>
           {startIcon}
         </Box>
       )}
       <Box component="span">{children}</Box>
-      {endIcon && (
-        <Box component="span" sx={{ display: 'inherit', ml: 1, mr: -0.5 }}>
-          {endIcon}
+      {resolvedEndIcon && (
+        <Box component="span" className={animated ? 'styled-button-end-icon' : undefined} sx={{ display: 'inherit', ...(animated ? {} : { ml: 1, mr: -0.5 }) }}>
+          {animated ? (
+            <>
+              <Box component="span" className="styled-button-arrow styled-button-arrow-primary">{resolvedEndIcon}</Box>
+              <Box component="span" className="styled-button-arrow styled-button-arrow-secondary">{resolvedEndIcon}</Box>
+            </>
+          ) : resolvedEndIcon}
         </Box>
       )}
     </StyledButtonRoot>
