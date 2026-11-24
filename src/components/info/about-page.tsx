@@ -27,9 +27,18 @@ const valueCards = [
 
 const cardSx = { border: 1, borderColor: 'divider', borderRadius: 3, boxShadow: '0 8px 26px rgba(15, 60, 70, .055)', transition: 'transform .2s, box-shadow .2s', '&:hover': { transform: 'translateY(-3px)', boxShadow: '0 14px 32px rgba(15, 60, 70, .1)' } }
 const aboutPillars = {
-  'Our Story': 'CourseSharp began with a simple idea: make learning easier, more engaging, and results-driven for every student.',
-  Mission: 'Our mission is to make practical, high-quality learning accessible to every learner, wherever they are.',
-  Vision: 'We envision a future where every learner can build the skills and confidence to pursue their goals.',
+  'Our Story': [
+    'CourseSharp began with a simple idea: make learning easier, more engaging, and results-driven for every student.',
+    'Today, we bring clear courses, supportive tutors, and flexible practice together to help learners build skills and confidence.',
+  ],
+  Mission: [
+    'Our mission is to make practical, high-quality learning accessible to every learner, wherever they are.',
+    'We create a supportive place to explore new subjects, practice skills, and make steady progress.',
+  ],
+  Vision: [
+    'We envision a future where every learner can build the skills and confidence to pursue their goals.',
+    'Learning should open doors, inspire curiosity, and help people shape the opportunities ahead of them.',
+  ],
 }
 const faqCategories = {
   General: [
@@ -94,29 +103,29 @@ const AboutPage: FC = () => {
     </Grid>
   </Container>
 
-  <Container id="about-story" maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
-    <Grid container spacing={{ xs: 5, sm: 3, md: 7 }} alignItems="center">
+  <Container id="about-story" maxWidth="lg" sx={{ px: 1.5, py: { xs: 8, sm: 10, md: 14 } }}>
+    <Grid container spacing={{ xs: 5, sm: 4, md: 4 }} alignItems="center">
       <Grid item xs={12} sm={6}>
-        <Typography component="h2" sx={{ maxWidth: 480, fontSize: { xs: '2.25rem', sm: '2rem', md: '3rem' }, fontWeight: 800, lineHeight: 1.12, letterSpacing: '-.045em' }}>
+        <Typography component="h2" sx={{ maxWidth: { xs: 480, sm: 320, md: 480 }, fontSize: 'clamp(2rem, calc(1.6087rem + 1.7391vw), 3rem)', fontWeight: 600, lineHeight: 1.25, letterSpacing: '-.02em' }}>
           Empowering Learners to Build Skills for the Future
         </Typography>
-        <Stack direction="row" spacing={1} role="group" aria-label="About CourseSharp" sx={{ mt: 3, mb: 2.5 }}>
-          {(Object.keys(aboutPillars) as Array<keyof typeof aboutPillars>).map((pillar) => <Button key={pillar} aria-pressed={selectedAboutPillar === pillar} onClick={() => setSelectedAboutPillar(pillar)} sx={{ minWidth: 0, px: { xs: 1.5, sm: 2 }, py: 1, border: 1, borderColor: selectedAboutPillar === pillar ? 'primary.main' : 'divider', borderRadius: 99, color: selectedAboutPillar === pillar ? 'common.white' : 'text.secondary', backgroundColor: selectedAboutPillar === pillar ? 'primary.main' : 'background.paper', boxShadow: selectedAboutPillar === pillar ? '0 5px 14px rgba(18,124,113,.2)' : 'none', fontSize: { xs: '.75rem', sm: '.85rem' }, textTransform: 'none', whiteSpace: 'nowrap', '&:hover': { borderColor: 'primary.main', backgroundColor: selectedAboutPillar === pillar ? 'primary.dark' : 'action.hover' } }}>{pillar}</Button>)}
+        <Stack direction="row" spacing={{ xs: 1, sm: 2, md: 3 }} role="group" aria-label="About CourseSharp" sx={{ mt: 3, mb: 3 }}>
+          {(Object.keys(aboutPillars) as Array<keyof typeof aboutPillars>).map((pillar) => <Button key={pillar} aria-pressed={selectedAboutPillar === pillar} onClick={() => setSelectedAboutPillar(pillar)} sx={{ minWidth: 0, minHeight: 44, px: 2.5, py: 1.5, border: 1, borderColor: selectedAboutPillar === pillar ? 'primary.main' : 'divider', borderRadius: 99, color: selectedAboutPillar === pillar ? 'common.white' : 'text.secondary', backgroundColor: selectedAboutPillar === pillar ? 'primary.main' : 'transparent', fontSize: 14, fontWeight: 500, letterSpacing: '.04em', textTransform: 'none', whiteSpace: 'nowrap', '&:hover': { borderColor: 'primary.main', color: 'common.white', backgroundColor: 'primary.main' } }}>{pillar}</Button>)}
         </Stack>
-        <Typography aria-live="polite" color="text.secondary" sx={{ maxWidth: 440, fontSize: '.95rem', lineHeight: 1.75 }}>
-          {aboutPillars[selectedAboutPillar]}
-        </Typography>
+        <Stack aria-live="polite" spacing={2} sx={{ maxWidth: 480, color: 'text.secondary', fontSize: 14, lineHeight: '24px', letterSpacing: '.03em' }}>
+          {aboutPillars[selectedAboutPillar].map((paragraph) => <Typography key={paragraph} component="p" sx={{ color: 'inherit', fontSize: 'inherit', lineHeight: 'inherit', letterSpacing: 'inherit' }}>{paragraph}</Typography>)}
+        </Stack>
       </Grid>
       <Grid item xs={12} sm={6}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.25, height: { xs: 370, sm: 360, md: 500 } }}>
-          <Stack spacing={1.25} sx={{ minWidth: 0, minHeight: 0 }}>
-            <Box component="img" src="/images/about-students-collaborating.webp" alt="Students collaborating around a laptop" sx={{ width: '100%', height: '58%', minHeight: 0, borderRadius: 3, objectFit: 'cover' }} />
-            <Box component="img" src="/images/about-ai-classroom.webp" alt="Students learning together in a classroom" sx={{ width: '100%', height: '42%', minHeight: 0, borderRadius: 3, objectFit: 'cover' }} />
-          </Stack>
-          <Stack spacing={1.25} sx={{ minWidth: 0, minHeight: 0 }}>
-            <Box component="img" src="/images/about-young-learners.webp" alt="Young learners exploring a laptop together" sx={{ width: '100%', height: '42%', minHeight: 0, borderRadius: 3, objectFit: 'cover' }} />
-            <Box component="img" src="/images/about-study-group-banner.webp" alt="Students studying together" sx={{ width: '100%', height: '58%', minHeight: 0, borderRadius: 3, backgroundColor: '#e8f3ef', objectFit: 'contain' }} />
-          </Stack>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1.5, height: { xs: 370, sm: 360, md: 540 } }}>
+          <Box sx={{ display: 'grid', gridTemplateRows: '1.5fr 1fr', gap: 1.5, minWidth: 0, minHeight: 0 }}>
+            <Box component="img" src="/images/about-students-collaborating.webp" alt="Students collaborating around a laptop" sx={{ width: '100%', height: '100%', minHeight: 0, borderRadius: 2, objectFit: 'cover' }} />
+            <Box component="img" src="/images/about-ai-classroom.webp" alt="Students learning together in a classroom" sx={{ width: '100%', height: '100%', minHeight: 0, borderRadius: 2, objectFit: 'cover' }} />
+          </Box>
+          <Box sx={{ display: 'grid', gridTemplateRows: '1fr 1.5fr', gap: 1.5, minWidth: 0, minHeight: 0 }}>
+            <Box component="img" src="/images/about-young-learners.webp" alt="Young learners exploring a laptop together" sx={{ width: '100%', height: '100%', minHeight: 0, borderRadius: 2, objectFit: 'cover' }} />
+            <Box component="img" src="/images/about-study-group-banner.webp" alt="Students studying together" sx={{ width: '100%', height: '100%', minHeight: 0, borderRadius: 2, objectFit: 'cover' }} />
+          </Box>
         </Box>
       </Grid>
     </Grid>
