@@ -261,6 +261,7 @@ const HomeHero: FC = () => {
             px: { xs: 3, md: 5 },
             borderRadius: 3,
             backgroundColor: 'background.paper',
+            backgroundImage: 'radial-gradient(ellipse 90% 120% at 50% 50%, rgba(18, 124, 113, 0.08) 0%, transparent 100%)',
             '&::after': {
               content: '""',
               position: 'absolute',
