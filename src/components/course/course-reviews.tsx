@@ -55,26 +55,24 @@ const CourseReviews: FC<CourseReviewsProps> = ({ courseId, rating, ratingCount }
   })
 
   return <Box id="course-reviews" sx={{ pt: 1 }}>
-    <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2.5 }}>
-      <Typography component="span" aria-hidden="true" sx={{ color: '#c18120', fontSize: 20, lineHeight: 1 }}>★</Typography>
-      <Typography variant="h6" sx={{ fontWeight: 700 }}>{averageRating.toFixed(1)} course rating</Typography>
-      <Typography color="text.secondary" aria-hidden="true">·</Typography>
-      <Typography variant="h6" sx={{ fontWeight: 700 }}>{totalRatings.toLocaleString()} ratings</Typography>
+    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2.5, bgcolor: '#fff', borderRadius: '12px', px: 2.5, py: 2 }}>
+      <Typography component="h2" sx={{ fontSize: 22, fontWeight: 700 }}>Review</Typography>
+      <Typography sx={{ fontSize: 14, fontWeight: 700 }}><Box component="span" sx={{ color: '#f6c64f', mr: 0.75 }}>★</Box>{averageRating.toFixed(1)} Rating <Box component="span" sx={{ color: '#9297a2', fontWeight: 400, fontSize: 12 }}>({totalRatings.toLocaleString()})</Box></Typography>
     </Stack>
 
     {loading ? <Typography color="text.secondary" sx={{ py: 3 }}>Loading reviews...</Typography> : reviews.length ? <>
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }, columnGap: 3.5, rowGap: 3 }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', columnGap: 3.5, rowGap: 3 }}>
         {visibleReviews.map((review) => {
           const expanded = expandedReviews.includes(review.id)
           const longReview = review.comment.length > 210
           const reviewerInitials = review.studentName.trim().split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase()
-          return <Box key={review.id} sx={{ minWidth: 0, borderTop: 1, borderColor: 'divider', pt: 2.5 }}>
+          return <Box key={review.id} sx={{ minWidth: 0, pt: 1 }}>
             <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1.25 }}>
-              <Avatar sx={{ width: 38, height: 38, bgcolor: '#191a1c', color: '#fff' }}><PersonOutlineIcon fontSize="small" /></Avatar>
+              <Avatar sx={{ width: 38, height: 38, bgcolor: '#eae8f1', color: '#555d6a' }}><PersonOutlineIcon fontSize="small" /></Avatar>
               <Box sx={{ minWidth: 0, flex: 1 }}>
                 <Typography variant="body2" noWrap sx={{ fontWeight: 700, color: 'text.primary' }}>{review.studentName || reviewerInitials}</Typography>
                 <Stack direction="row" spacing={0.75} alignItems="center">
-                  <Rating value={review.rating} readOnly size="small" sx={{ color: '#c18120', fontSize: 14 }} />
+                  <Rating value={review.rating} readOnly size="small" sx={{ color: '#f6c64f', fontSize: 14 }} />
                   <Typography variant="caption" color="text.secondary">{formatReviewAge(review.createdAt)}</Typography>
                 </Stack>
               </Box>
