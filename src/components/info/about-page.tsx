@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography'
 import { useState, type FC } from 'react'
 import { StyledButton } from '@/components/styled-button'
 import HomeOurMentors from '@/components/home/mentors'
+import DotNetPillars from '@/components/home/dotnet-pillars'
 import { navigateTo } from '@/lib/navigation'
 
 const valueCards = [
@@ -191,6 +192,14 @@ const AboutPage: FC = () => {
       </Grid>
     </Grid>
   </Container>
+
+  <Box sx={{ backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : '#f5f7fa', pt: { xs: 7, md: 10 } }}>
+    <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
+      <Typography component="h2" sx={{ fontSize: { xs: '2rem', md: '3rem' }, fontWeight: 600, lineHeight: 1.15, letterSpacing: '-.04em' }}>What We Offer</Typography>
+      <Typography color="text.secondary" sx={{ mt: 2, lineHeight: 1.5 }}>Discover a platform built to make learning simple, interactive, and effective — with real-world projects, flexible schedules, and expert-led lessons designed to help you master new skills faster.</Typography>
+    </Container>
+    <DotNetPillars />
+  </Box>
 
   <HomeOurMentors autoplay />
 
