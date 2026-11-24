@@ -24,11 +24,15 @@ import EnrollmentModal from '@/components/course/enrollment-modal'
 import { type Course } from '@/interfaces/course'
 import { getPublicClasses, type PublicClass } from '@/services/api'
 import { AvailabilityBadge, formatSchedule, programs, type ProgramDefinition } from './training-programs'
+import TrainingProgramDetailPage from './training-program-detail-page'
+import { navigateTo } from '@/lib/navigation'
+import { toast } from '@/components/toast'
 
 interface TrainingProgramsPageProps {
   courses: Course[]
   darkMode: boolean
   onToggleDarkMode: () => void
+  programId?: string
 }
 
 type SortOrder = 'recommended' | 'price-low' | 'price-high' | 'title'
@@ -72,7 +76,7 @@ const ProgramClassCard: FC<ProgramClassCardProps> = ({ listing: { classRecord, d
   </Box>
 }
 
-const TrainingProgramsPage: FC<TrainingProgramsPageProps> = ({ courses, darkMode, onToggleDarkMode }) => {
+const TrainingProgramsPage: FC<TrainingProgramsPageProps> = ({ courses, darkMode, onToggleDarkMode, programId }) => {
   const [search, setSearch] = useState('')
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null)
   const [sortOrder, setSortOrder] = useState<SortOrder>('recommended')
@@ -120,14 +124,28 @@ const TrainingProgramsPage: FC<TrainingProgramsPageProps> = ({ courses, darkMode
     setPriceRange(null)
   }
 
-  const handleEnroll = (classRecord: PublicClass) => {
-    setEnrollmentCourse({ id: classRecord.courseId ?? classRecord.id, title: classRecord.title, price: classRecord.price })
-    setEnrollmentClassId(classRecord.id)
+  const handleEnroll = (classRecord?: PublicClass, preferInternational = false) => {
+    if (classRecord) {
+      setEnrollmentCourse({ id: classRecord.courseId ?? classRecord.id, title: classRecord.title, price: classRecord.price })
+      setEnrollmentClassId(classRecord.id)
+      return
+    }
+    const course = courses.find((candidate) => candidate.category.toLowerCase().includes('international') || candidate.title.toLowerCase().includes('interactive'))
+    if (!preferInternational) return
+    if (!course || typeof course.id !== 'number') {
+      toast.add({ title: 'Enrollment is not ready', description: 'Create a published International Online Interactive course before checkout can begin.', type: 'error' })
+      return
+    }
+    setEnrollmentCourse({ id: course.id, title: course.title, price: course.price })
+    setEnrollmentClassId(null)
   }
+
+  const selectedProgram = programs.find((program) => program.id === programId)
+  const selectedProgramClasses = selectedProgram ? liveClasses.filter((classRecord) => classRecord.programId === selectedProgram.id && classRecord.published && classRecord.status !== 'closed') : []
 
   return <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
     <Header darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
-    <Box component="main">
+    <Box component="main">{programId ? <TrainingProgramDetailPage program={selectedProgram} classes={selectedProgramClasses} onBack={() => navigateTo('/training-programs')} onEnrollClass={handleEnroll} onEnrollProgram={() => handleEnroll(undefined, true)} /> : <>
       <Box sx={{ position: 'relative', overflow: 'hidden', color: 'common.white', background: (theme) => theme.palette.mode === 'dark' ? 'linear-gradient(120deg, #102b3f 0%, #0b514b 100%)' : 'linear-gradient(120deg, #102b3f 0%, #12685d 68%, #168276 100%)' }}>
         <Box aria-hidden="true" sx={{ position: 'absolute', width: 440, height: 440, borderRadius: '50%', right: { xs: -240, md: -90 }, top: -225, border: '1px solid rgba(255,255,255,.12)', boxShadow: '0 0 0 48px rgba(255,255,255,.035), 0 0 0 96px rgba(255,255,255,.025)' }} />
         <Container maxWidth="lg" sx={{ position: 'relative', py: { xs: 6, md: 9 } }}>
@@ -192,7 +210,7 @@ const TrainingProgramsPage: FC<TrainingProgramsPageProps> = ({ courses, darkMode
           </Grid>
         </Grid>
       </Container>
-    </Box>
+    </>}</Box>
     {enrollmentCourse && <EnrollmentModal course={enrollmentCourse} classId={enrollmentClassId} open={Boolean(enrollmentCourse)} onClose={() => { setEnrollmentCourse(null); setEnrollmentClassId(null) }} />}
     <Footer />
   </Box>

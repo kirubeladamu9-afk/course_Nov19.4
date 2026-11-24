@@ -59,9 +59,7 @@ const CourseDetailPage: FC<{ courseId: string }> = ({ courseId }) => {
 
   useEffect(() => {
     let isCurrent = true
-    setCourse(null)
     setIsLoading(true)
-    setExpandedModules([])
     const loadCourse = isAdmin ? getAdminCourse(Number(courseId)) : getCourseFromApi(courseId)
     loadCourse.then((nextCourse) => {
       if (!isCurrent) return

@@ -84,6 +84,27 @@ html.home-section-snap main > *:not(header) {
   background-color: var(--app-canvas);
 }
 
+.route-transition {
+  animation: route-enter 220ms ease-out both;
+}
+
+@keyframes route-enter {
+  from {
+    opacity: 0.82;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-transition {
+    animation: none;
+  }
+}
+
 .site-load-spinner-group {
   display: flex;
   align-items: center;
