@@ -127,7 +127,7 @@ const HomeHero: FC = () => {
                       component="span"
                       sx={{
                         position: 'absolute',
-                        top: { xs: 42, md: 62 },
+                        top: { xs: 32, md: 56 },
                         left: 2,
                         transform: 'rotate(3deg)',
                         '& img': { width: { xs: 146, md: 210 }, height: 'auto' },
