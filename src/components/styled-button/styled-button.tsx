@@ -12,6 +12,7 @@ interface BaseButtonProps extends Pick<ButtonProps, 'onClick' | 'type' | 'startI
   size?: 'small' | 'medium' | 'large'
   disableHoverEffect?: boolean
   animated?: boolean
+  borderRadius?: number
 }
 interface StyledButtonRootProps extends BaseButtonProps {
   theme?: Theme
@@ -19,8 +20,8 @@ interface StyledButtonRootProps extends BaseButtonProps {
 
 const StyledButtonRoot = styled('button', {
   shouldForwardProp: (prop) =>
-    prop !== 'variant' && prop !== 'color' && prop !== 'size' && prop !== 'disableHoverEffect' && prop !== 'animated',
-})<StyledButtonRootProps>(({ theme, color, variant, size, disableHoverEffect, animated }) => ({
+    prop !== 'variant' && prop !== 'color' && prop !== 'size' && prop !== 'disableHoverEffect' && prop !== 'animated' && prop !== 'borderRadius',
+})<StyledButtonRootProps>(({ theme, color, variant, size, disableHoverEffect, animated, borderRadius }) => ({
   fontFamily,
   cursor: 'pointer',
   minWidth: 40,
@@ -28,7 +29,7 @@ const StyledButtonRoot = styled('button', {
   fontWeight: 500,
   lineHeight: 1.5,
   letterSpacing: 1,
-  borderRadius: Number(theme.shape.borderRadius) * 3,
+  borderRadius: borderRadius ?? Number(theme.shape.borderRadius) * 3,
 
   display: 'inline-flex',
   alignItems: 'center',
@@ -216,11 +217,11 @@ interface Props extends BaseButtonProps {
   children: ReactNode
 }
 
-const StyledButton: FC<Props> = ({ children, onClick, disableHoverEffect = false, animated = false, startIcon, endIcon, color = 'primary', variant = 'contained', size = 'medium', ...rest }) => {
+const StyledButton: FC<Props> = ({ children, onClick, disableHoverEffect = false, animated = false, borderRadius, startIcon, endIcon, color = 'primary', variant = 'contained', size = 'medium', ...rest }) => {
   const resolvedEndIcon = endIcon ?? (animated ? <ArrowForwardRoundedIcon aria-hidden="true" /> : undefined)
 
   return (
-    <StyledButtonRoot onClick={onClick} disableHoverEffect={disableHoverEffect} animated={animated} color={color} variant={variant} size={size} {...rest}>
+    <StyledButtonRoot onClick={onClick} disableHoverEffect={disableHoverEffect} animated={animated} borderRadius={borderRadius} color={color} variant={variant} size={size} {...rest}>
       {startIcon && (
         <Box component="span" sx={{ display: 'inherit', mr: 1, ml: -0.5 }}>
           {startIcon}

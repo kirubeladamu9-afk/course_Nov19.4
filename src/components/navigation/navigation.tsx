@@ -113,7 +113,8 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
           anchorEl={programsAnchor}
           open={programsOpen}
           onClose={() => setProgramsAnchor(null)}
-          MenuListProps={{ 'aria-label': 'Programs' }}
+          PaperProps={{ className: '!mt-2 !min-w-64 !overflow-hidden !rounded-2xl !shadow-lg' }}
+          MenuListProps={{ 'aria-label': 'Programs', className: '!flex !flex-col !gap-1 !p-2' }}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
@@ -124,6 +125,7 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
               key={destination}
               component="a"
               href={destinationHref}
+              className="min-h-11 rounded-xl px-4 py-3 text-sm transition-colors"
               onClick={(event) => {
                 if (isRoute) handleDestinationClick(destination, event)
                 else {

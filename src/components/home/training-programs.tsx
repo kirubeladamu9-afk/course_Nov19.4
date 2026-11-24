@@ -226,7 +226,7 @@ export const ProgramCard: FC<ProgramCardProps> = ({ program, classes, onEnroll }
   const isBatchProgram = program.id !== 'international-online-interactive'
 
   return (
-    <Card elevation={0} sx={{ position: 'relative', height: '100%', overflow: 'hidden', p: 2, borderRadius: 4, backgroundColor: 'background.paper', transition: (theme) => theme.transitions.create(['box-shadow']), '&:hover': { boxShadow: 2 } }}>
+    <Card elevation={0} sx={{ position: 'relative', height: '100%', overflow: 'hidden', p: 2, border: '2px solid transparent', borderRadius: 6, backgroundColor: 'background.paper', transition: (theme) => theme.transitions.create(['border-color', 'box-shadow']), '&:hover': { borderColor: 'primary.main', boxShadow: 2 } }}>
       <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', p: 0, '&:last-child': { pb: 0 } }}>
         <Box sx={{ position: 'relative', height: 200, mb: 2, borderRadius: 3, overflow: 'hidden', backgroundColor: 'background.default' }}>
           <Box component="img" src={program.image} alt="" sx={{ display: 'block', width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -244,7 +244,7 @@ export const ProgramCard: FC<ProgramCardProps> = ({ program, classes, onEnroll }
         {isBatchProgram && <Box component="button" type="button" onClick={() => setIsDrawerOpen((current) => !current)} aria-expanded={isDrawerOpen} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', p: 0, mb: 1.5, border: 0, background: 'none', color: 'text.primary', cursor: 'pointer', font: 'inherit', textAlign: 'left' }}><Typography variant="body2" sx={{ fontWeight: 700 }}>{program.id === 'summer-camp' ? 'View open batches' : 'View exam prep batches'}</Typography>{isDrawerOpen ? <CloseIcon aria-hidden="true" sx={{ color: 'primary.main', fontSize: 20 }} /> : <ChevronRightIcon aria-hidden="true" sx={{ color: 'primary.main', fontSize: 22 }} />}</Box>}
         {isBatchProgram && <Divider sx={{ mb: 2 }} />}
         <Box sx={{ mt: 'auto' }}>
-          <Button fullWidth variant="contained" onClick={() => isBatchProgram ? setIsDrawerOpen(true) : onEnroll(undefined, true)}>{program.id === 'international-online-interactive' ? 'Enroll Now' : 'Choose a batch'}</Button>
+          <Button fullWidth variant="contained" onClick={() => isBatchProgram ? setIsDrawerOpen(true) : onEnroll(undefined, true)} sx={{ borderRadius: 999, py: 1.25, fontWeight: 700, textTransform: 'none', boxShadow: 'none', '&:hover': { boxShadow: 'none' } }}>{program.id === 'international-online-interactive' ? 'Enroll Now' : 'Choose a batch'}</Button>
           {program.id === 'international-online-interactive' && <Typography color="text.secondary" variant="caption" sx={{ display: 'block', mt: 1, textAlign: 'center' }}>Pending — we&apos;ll contact you to schedule your class</Typography>}
         </Box>
       </CardContent>
@@ -313,7 +313,7 @@ const HomeTrainingPrograms: FC<HomeTrainingProgramsProps> = ({ courses }) => {
           <Typography color="text.secondary" variant="body2" sx={{ maxWidth: 180 }}>Small groups. Expert tutors. Real progress.</Typography>
         </Stack>
         <Grid container spacing={2} alignItems="stretch">
-          {programs.map((program) => <Grid key={program.id} item xs={12} md={4}><ProgramCard program={program} classes={classesByProgram[program.id]} onEnroll={handleEnroll} /></Grid>)}
+          {programs.map((program) => <Grid key={program.id} item xs={12} sm={6} lg={4}><ProgramCard program={program} classes={classesByProgram[program.id]} onEnroll={handleEnroll} /></Grid>)}
         </Grid>
       </Container>
       {enrollmentCourse && <EnrollmentModal course={enrollmentCourse} classId={enrollmentClassId} open={Boolean(enrollmentCourse)} onClose={closeEnrollment} />}
