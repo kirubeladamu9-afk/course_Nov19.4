@@ -29,8 +29,8 @@ const StyledDots = styled('ul')(({ theme }) => ({
 }))
 
 const HomePopularCourse: FC<{ courses: Course[] }> = ({ courses }) => {
-  const { breakpoints } = useTheme()
-  const matchMobileView = useMediaQuery(breakpoints.down('md'))
+  const theme = useTheme()
+  const matchMobileView = useMediaQuery(theme.breakpoints.down('md'))
 
   const sliderRef = useRef<Slider | null>(null)
 
@@ -59,7 +59,7 @@ const HomePopularCourse: FC<{ courses: Course[] }> = ({ courses }) => {
           md: 8,
         },
         pb: 14,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: (theme) => theme.palette.mode === 'dark' ? theme.palette.background.default : '#FFFFFF',
       }}
     >
       <Container maxWidth="lg">
