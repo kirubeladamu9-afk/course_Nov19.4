@@ -68,7 +68,7 @@ const CourseReviews: FC<CourseReviewsProps> = ({ courseId, rating, ratingCount }
           const reviewerInitials = review.studentName.trim().split(/\s+/).map((part) => part[0]).join('').slice(0, 2).toUpperCase()
           return <Box key={review.id} sx={{ minWidth: 0, pt: 1 }}>
             <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mb: 1.25 }}>
-              <Avatar sx={{ width: 38, height: 38, bgcolor: '#eae8f1', color: '#555d6a' }}><PersonOutlineIcon fontSize="small" /></Avatar>
+              <Avatar sx={{ width: 38, height: 38, bgcolor: 'action.selected', color: 'text.secondary' }}><PersonOutlineIcon fontSize="small" /></Avatar>
               <Box sx={{ minWidth: 0, flex: 1 }}>
                 <Typography variant="body2" noWrap sx={{ fontWeight: 700, color: 'text.primary' }}>{review.studentName || reviewerInitials}</Typography>
                 <Stack direction="row" spacing={0.75} alignItems="center">
@@ -89,7 +89,7 @@ const CourseReviews: FC<CourseReviewsProps> = ({ courseId, rating, ratingCount }
           </Box>
         })}
       </Box>
-      {reviews.length > 4 && <Button variant="outlined" onClick={() => setShowAll((current) => !current)} sx={{ mt: 4, borderColor: '#7351a1', color: '#62428f', textTransform: 'none', fontWeight: 700 }}>{showAll ? 'Show fewer reviews' : 'Show all reviews'}</Button>}
+      {reviews.length > 4 && <Button variant="outlined" onClick={() => setShowAll((current) => !current)} sx={{ mt: 4, borderColor: 'primary.main', color: 'primary.main', textTransform: 'none', fontWeight: 700 }}>{showAll ? 'Show fewer reviews' : 'Show all reviews'}</Button>}
     </> : <Typography color="text.secondary" sx={{ py: 2 }}>No learner reviews yet.</Typography>}
   </Box>
 }
