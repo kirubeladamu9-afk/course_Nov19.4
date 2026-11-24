@@ -22,6 +22,7 @@ import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { useState, type FC, type FormEvent } from 'react'
 import { navigateTo } from '@/lib/navigation'
+import AboutUsSection from './about-us-section'
 
 const emailAddress = 'support@coursesharp.com'
 const contactHeroImage = '/images/contact-support-banner.webp'
@@ -125,6 +126,8 @@ const ContactPage: FC = () => {
       <Box sx={{ mb: 3.5, textAlign: 'center' }}><Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 800, letterSpacing: .9 }}>FAQ</Typography><Typography component="h2" variant="h4" sx={{ mt: .25, fontWeight: 800 }}>Common questions</Typography></Box>
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' }, gap: 2 }}>{faqs.map((faq) => <Paper key={faq.question} elevation={0} sx={{ p: { xs: 3, sm: 3.5 }, border: 1, borderColor: 'divider', borderRadius: 2.5, backgroundColor: 'background.paper' }}><Typography variant="subtitle1" sx={{ fontWeight: 750 }}>{faq.question}</Typography><Typography variant="body2" color="text.secondary" sx={{ mt: .75, lineHeight: 1.65 }}>{faq.answer}</Typography><Link href={faq.href} onClick={faq.href === '/courses' ? (event) => { event.preventDefault(); navigateTo('/courses') } : undefined} underline="hover" sx={{ display: 'inline-flex', alignItems: 'center', gap: .5, mt: 1.25, fontSize: '.875rem', fontWeight: 700 }}>{faq.action}<ArrowForwardRoundedIcon sx={{ fontSize: 16 }} /></Link></Paper>)}</Box>
     </Container>
+
+    <AboutUsSection />
   </Box>
 }
 
