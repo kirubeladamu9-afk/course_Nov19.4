@@ -108,36 +108,6 @@ const AboutPage: FC = () => {
     </Grid>
   </Container>
 
-  <Container maxWidth="lg" sx={{ py: { xs: 7, md: 10 } }}>
-    <Box sx={{ maxWidth: 700, mx: 'auto', mb: { xs: 4, md: 6 }, textAlign: 'center' }}>
-      <Typography color="text.secondary" sx={{ mt: 1.5, lineHeight: 1.7 }}>We bring clear courses, experienced tutors, and flexible practice together to help every learner make steady progress.</Typography>
-    </Box>
-
-    <Grid container spacing={2} alignItems="center" sx={{ mb: { xs: 4, md: 5 } }}>
-      <Grid item xs={12} sm={4}>
-        <Box component="img" src="/images/about-students-collaborating.webp" alt="Students collaborating around a laptop" sx={{ display: 'block', width: '100%', height: { xs: 210, sm: 190, md: 220 }, borderRadius: 3, objectFit: 'cover' }} />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Box component="img" src="/images/about-ai-classroom.webp" alt="Students learning with computers in a classroom" sx={{ display: 'block', width: '100%', height: { xs: 230, sm: 230, md: 270 }, borderRadius: 3, objectFit: 'cover' }} />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <Box component="img" src="/images/about-young-learners.webp" alt="Young learners exploring a laptop together" sx={{ display: 'block', width: '100%', height: { xs: 210, sm: 190, md: 220 }, borderRadius: 3, objectFit: 'cover' }} />
-      </Grid>
-    </Grid>
-
-    <Typography component="p" sx={{ maxWidth: 790, mx: 'auto', mb: { xs: 4, md: 5 }, textAlign: 'center', fontSize: { xs: '1.1rem', md: '1.35rem' }, lineHeight: 1.6 }}>
-      Our mission is to make quality learning accessible, supportive, and practical for students wherever they are.
-    </Typography>
-
-    <Paper elevation={0} sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(3, 1fr)' }, p: { xs: 2.5, md: 3 }, border: 1, borderColor: 'divider', borderRadius: 3, backgroundColor: 'background.paper' }}>
-      {[{ value: '500+', label: 'Students' }, { value: '20+', label: 'Quality courses' }, { value: '10+', label: 'Experienced tutors' }].map((stat, index) => <Box key={stat.label} sx={{ py: { xs: 1.5, sm: 1 }, textAlign: 'center', borderRight: { sm: index < 2 ? 1 : 0 }, borderBottom: { xs: index < 2 ? 1 : 0, sm: 0 }, borderColor: 'divider' }}>
-        <Typography sx={{ fontSize: { xs: '1.6rem', md: '1.9rem' }, fontWeight: 800 }}>{stat.value}</Typography>
-        <Typography variant="body2" color="text.secondary">{stat.label}</Typography>
-      </Box>)}
-    </Paper>
-
-  </Container>
-
   <Box sx={{ backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : '#f5f7fa', pt: { xs: 7, md: 10 } }}>
     <Container maxWidth="sm" sx={{ textAlign: 'center' }}>
       <Typography component="h2" sx={{ fontSize: { xs: '2rem', md: '3rem' }, fontWeight: 600, lineHeight: 1.15, letterSpacing: '-.04em' }}>What We Offer</Typography>
