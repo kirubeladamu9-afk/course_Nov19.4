@@ -61,7 +61,7 @@ const HomeTestimonial: FC = () => {
                 <Box
                   sx={{
                     position: 'absolute',
-                    top: { xs: 20, md: 28 },
+                    top: { xs: 34, md: 46 },
                     left: 2,
                     '& img': { width: { xs: 130, md: 175 }, height: 'auto' },
                   }}

@@ -173,7 +173,7 @@ const HomeFeature: FC = () => {
                 <Box
                   sx={{
                     position: 'absolute',
-                    top: { xs: 20, md: 28 },
+                    top: { xs: 44, md: 54 },
                     transform: 'rotate(3deg)',
                     left: 2,
                     '& img': { width: { xs: 140, md: 175 }, height: 'auto' },

@@ -39,7 +39,7 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
     onNavigate?.()
   }
 
-  const headlineCurve = <Box sx={{ position: 'absolute', top: 12, transform: 'rotate(3deg)', '& img': { width: 44, height: 'auto' } }}><img src="/images/headline-curve.svg" alt="Headline curve" /></Box>
+  const headlineCurve = <Box aria-hidden="true" sx={{ position: 'absolute', top: 22, left: '50%', width: 44, transform: 'translateX(-50%) rotate(3deg)', '& img': { display: 'block', width: 44, height: 'auto' } }}><img src="/images/headline-curve.svg" alt="" /></Box>
   const linkSx = {
     position: 'relative',
     color: 'text.disabled',
