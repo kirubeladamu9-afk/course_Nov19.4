@@ -8,7 +8,7 @@ import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import { StyledButton } from '@/components/styled-button'
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
@@ -84,7 +84,6 @@ const CourseDetailPage: FC<{ courseId: string }> = ({ courseId }) => {
   const allExpanded = course.modules.length > 0 && expandedModules.length === course.modules.length
   const toggleExpandAll = () => setExpandedModules(allExpanded ? [] : course.modules.map((module) => module.id))
   const toggleModule = (moduleId: number) => setExpandedModules((current) => current.includes(moduleId) ? current.filter((id) => id !== moduleId) : [...current, moduleId])
-  const primaryButton = { bgcolor: 'primary.main', color: 'primary.contrastText', borderRadius: '999px', textTransform: 'none', fontWeight: 700, boxShadow: 'none', '&:hover': { bgcolor: 'primary.dark', boxShadow: 'none' } } as const
 
   return <Box sx={{ bgcolor: '#f5f6fa', color: '#10131c' }}>
     <Container maxWidth={false} sx={{ maxWidth: '1040px', pt: { xs: 4, md: 7 }, pb: { xs: 7, md: 11 } }}>
@@ -124,11 +123,11 @@ const CourseDetailPage: FC<{ courseId: string }> = ({ courseId }) => {
             <Stack direction="row" spacing={1} alignItems="center"><WorkspacePremiumOutlinedIcon /><Typography sx={{ fontSize: 13 }}>{course.certificate ? 'Certificate of completion' : 'No certificate included'}</Typography></Stack>
             <Stack direction="row" spacing={1} alignItems="center"><SchoolOutlinedIcon /><Typography sx={{ fontSize: 13 }}>Lifetime access</Typography></Stack>
           </Stack>
-          <Button fullWidth onClick={() => setIsEnrollmentOpen(true)} sx={{ ...primaryButton, mt: 3, py: 1.3, position: 'relative' }}>Enroll Now <Box sx={{ position: 'absolute', right: 6, top: 6, bottom: 6, aspectRatio: '1', borderRadius: '50%', bgcolor: '#fff', color: 'primary.main', display: 'grid', placeItems: 'center' }}><ArrowForwardIcon sx={{ fontSize: 16 }} /></Box></Button>
+          <Box sx={{ mt: 3, width: '100%', '& > button': { width: '100%', justifyContent: 'space-between' } }}><StyledButton animated size="large" onClick={() => setIsEnrollmentOpen(true)}>Enroll Now</StyledButton></Box>
         </Box>
       </Box>
     </Container>
-    <Box sx={{ bgcolor: '#fff', py: { xs: 6, md: 10 }, px: 3 }}><Box sx={{ maxWidth: 1140, mx: 'auto', px: 3, py: { xs: 6, md: 9 }, borderRadius: '26px', textAlign: 'center', background: (theme) => `radial-gradient(ellipse at bottom, ${theme.palette.primary.light} 0%, ${theme.palette.background.paper} 75%)` }}><Typography component="h2" sx={{ fontSize: { xs: 28, md: 38 }, fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.2 }}>Start Your Learning Journey Today</Typography><Typography sx={{ color: '#696d80', fontSize: 14, lineHeight: 1.6, mt: 1.5 }}>Gain new skills, explore creative fields, and achieve<br /> your career goals — all in one platform.</Typography><Stack direction="row" justifyContent="center" spacing={1.5} sx={{ mt: 3 }}><Button onClick={() => navigateTo('/')} sx={{ ...primaryButton, px: 3 }}>Browse Courses <ArrowForwardIcon sx={{ fontSize: 16, ml: 1 }} /></Button><Button onClick={() => setIsEnrollmentOpen(true)} sx={{ bgcolor: '#fff', color: '#373b48', borderRadius: '999px', textTransform: 'none', px: 3, '&:hover': { bgcolor: 'action.hover' } }}>Get Started</Button></Stack></Box></Box>
+    <Box sx={{ bgcolor: '#fff', py: { xs: 6, md: 10 }, px: 3 }}><Box sx={{ maxWidth: 1140, mx: 'auto', px: 3, py: { xs: 6, md: 9 }, borderRadius: '26px', textAlign: 'center', background: (theme) => `radial-gradient(ellipse at bottom, ${theme.palette.primary.light} 0%, ${theme.palette.background.paper} 75%)` }}><Typography component="h2" sx={{ fontSize: { xs: 28, md: 38 }, fontWeight: 700, letterSpacing: '-0.04em', lineHeight: 1.2 }}>Start Your Learning Journey Today</Typography><Typography sx={{ color: '#696d80', fontSize: 14, lineHeight: 1.6, mt: 1.5 }}>Gain new skills, explore creative fields, and achieve<br /> your career goals — all in one platform.</Typography><Stack direction="row" justifyContent="center" spacing={1.5} sx={{ mt: 3 }}><StyledButton animated onClick={() => navigateTo('/')}>Browse Courses</StyledButton><StyledButton animated onClick={() => setIsEnrollmentOpen(true)}>Get Started</StyledButton></Stack></Box></Box>
     <EnrollmentModal course={course} open={isEnrollmentOpen} onClose={() => setIsEnrollmentOpen(false)} />
     <Footer />
   </Box>
