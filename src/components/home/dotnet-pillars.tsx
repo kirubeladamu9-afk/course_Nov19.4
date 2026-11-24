@@ -1,104 +1,75 @@
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import type { FC } from 'react'
-
-const accentColors = ['#4f6fae', '#238b82', '#8256b5', '#39826f', '#526a9c', '#328b85']
-const introImage = '/images/about-students-collaborating.webp'
+import { BriefcaseBusiness, Monitor, Pencil, ShieldCheck, Sparkles, Video } from 'lucide-react'
 
 const categories = [
-  { name: 'Mathematics', label: 'Academic' },
-  { name: 'Programming & IT', label: 'Technology' },
-  { name: 'Business & Management', label: 'Business' },
-  { name: 'Languages', label: 'Communication' },
-  { name: 'Design & Creativity', label: 'Creative Arts' },
-  { name: 'Science', label: 'Academic' },
-  { name: 'Digital Marketing', label: 'Marketing' },
-  { name: 'Finance & Accounting', label: 'Finance' },
-  { name: 'History & Social Studies', label: 'Humanities' },
-  { name: 'Photography & Media', label: 'Media' },
-  { name: 'Education & Teaching', label: 'Education' },
-  { name: 'Personal Development', label: 'Life Skills' },
+  {
+    name: 'Web Development',
+    count: 3,
+    description: 'Learn how to build modern, responsive websites using HTML, CSS, JavaScript, and more.',
+    icon: Monitor,
+  },
+  {
+    name: 'UI/UX Design',
+    count: 2,
+    description: 'Master user-centered design principles, wireframing, and prototyping to create intuitive experiences.',
+    icon: Pencil,
+  },
+  {
+    name: 'Digital Marketing',
+    count: 1,
+    description: 'Discover strategies for growing brands online through SEO, social media, content, and more.',
+    icon: BriefcaseBusiness,
+  },
+  {
+    name: 'Cyber Security',
+    count: 0,
+    description: 'Understand the fundamentals of securing systems, networks, and data while learning the essentials.',
+    icon: ShieldCheck,
+  },
+  {
+    name: 'Artificial Intelligence',
+    count: 0,
+    description: 'Explore the basics of AI, machine learning, and data-driven decision making to build new skills.',
+    icon: Sparkles,
+  },
+  {
+    name: 'Video Editing',
+    count: 0,
+    description: 'Learn professional video editing techniques, storytelling, and post-production skills.',
+    icon: Video,
+  },
 ]
 
-const cardSx = {
-  position: 'relative',
-  minWidth: 0,
-  p: { xs: 2.5, md: 3 },
-  border: 1,
-  borderColor: 'divider',
-  borderRadius: 2,
-  backgroundColor: 'background.paper',
-  transition: 'background-color 160ms ease',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: 2,
-    backgroundColor: 'var(--accent)',
-    transform: 'scaleX(0)',
-    transformOrigin: 'left center',
-    transition: 'transform 220ms ease',
-  },
-  '&:hover': {
-    backgroundColor: 'rgb(244 244 245 / 1)',
-    '&::after': { transform: 'scaleX(1)' },
-  },
-}
+const DotNetPillars = () => (
+  <section aria-labelledby="dotnet-pillars-title" className="bg-[#f5f7fb] px-4 py-10 sm:px-6 md:px-8 md:py-14">
+    <div className="mx-auto max-w-6xl">
+      <div className="mb-8">
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-2 py-1 text-[10px] font-medium leading-none text-slate-600 shadow-sm">
+          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-violet-500" />
+          Categories
+        </span>
+        <h2 id="dotnet-pillars-title" className="mt-3 text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-[2rem]">
+          Explore Category
+        </h2>
+      </div>
 
-const DotPattern: FC<{ color: string; sx: object }> = ({ color, sx }) => (
-  <Box aria-hidden="true" sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', backgroundImage: `radial-gradient(${color} 1px, transparent 1px)`, backgroundSize: '14px 14px', ...sx }} />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {categories.map(({ name, count, description, icon: Icon }) => (
+          <article key={name} className="group min-h-[164px] rounded-2xl border border-white/80 bg-white p-[18px] shadow-sm transition-shadow hover:shadow-md">
+            <div className="flex items-start justify-between">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full border border-violet-100 bg-white text-violet-500 shadow-sm">
+                <Icon aria-hidden="true" size={16} strokeWidth={2} />
+              </span>
+              <span className="rounded-full bg-slate-50 px-2 py-1 text-[10px] font-medium leading-none text-slate-600">
+                {count} {count === 1 ? 'Course' : 'Courses'}
+              </span>
+            </div>
+            <h3 className="mb-1.5 mt-8 text-[15px] font-medium leading-snug text-slate-950">{name}</h3>
+            <p className="line-clamp-2 text-xs leading-[1.45] text-slate-600">{description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
 )
-
-const DotNetPillars: FC = () => {
-  return (
-    <Box component="section" aria-labelledby="dotnet-pillars-title" sx={{ position: 'relative', overflow: 'hidden', py: 10, backgroundColor: '#FAFAFA' }}>
-      <Container maxWidth={false} sx={{ position: 'relative', zIndex: 1, maxWidth: 1440, px: { xs: 2, sm: 4, md: 6, lg: 8 } }}>
-        <Box sx={{ mb: { xs: 3, md: 3.5 } }}>
-          <Typography variant="overline" sx={{ display: 'block', color: '#57b9ad', fontSize: 12, fontWeight: 400, letterSpacing: '3px', lineHeight: 1.4 }}>EXPLORE CATEGORIES</Typography>
-          <Typography id="dotnet-pillars-title" component="h2" sx={{ mt: 1.5, maxWidth: 640, fontSize: { xs: '1.875rem', sm: '2.25rem', md: '2.75rem' }, fontWeight: 700, lineHeight: 1.25, letterSpacing: '-0.025em' }}>Explore courses by category</Typography>
-          <Typography color="text.secondary" sx={{ mt: 1.5, maxWidth: 520, fontSize: '1rem', lineHeight: 1.625 }}>Discover learning opportunities across different subjects and fields.</Typography>
-        </Box>
-
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 5fr) minmax(0, 7fr)' }, gap: { xs: 2.5, md: 2.5 }, alignItems: 'stretch' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2.5, md: '24px' }, minWidth: 0 }}>
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))' }, gap: 2 }}>
-              <Box component="article" sx={{ ...cardSx, '--accent': '#57b9ad', p: 2.5 }}>
-                <Typography sx={{ mb: 1.5, color: '#57b9ad', fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Catalog</Typography>
-                <Typography component="h3" sx={{ mb: 0.75, fontSize: '1.1rem', fontWeight: 750, lineHeight: 1.3 }}>12 categories</Typography>
-                <Typography color="text.secondary" sx={{ fontSize: '0.9rem', lineHeight: 1.6 }}>Subjects spanning academic, technology, business and creative fields.</Typography>
-              </Box>
-              <Box component="article" sx={{ ...cardSx, '--accent': '#57b9ad', p: 2.5 }}>
-                <Typography sx={{ mb: 1.5, color: '#57b9ad', fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase' }}>Format</Typography>
-                <Typography component="h3" sx={{ mb: 0.75, fontSize: '1.1rem', fontWeight: 750, lineHeight: 1.3 }}>Live and self-paced</Typography>
-                <Typography color="text.secondary" sx={{ fontSize: '0.9rem', lineHeight: 1.6 }}>Join scheduled sessions or learn on your own schedule.</Typography>
-              </Box>
-            </Box>
-            <Box component="img" src={introImage} alt="Students collaborating around a table" sx={{ display: 'block', width: '100%', aspectRatio: { xs: '4 / 3', md: 'auto' }, flex: { md: '1 1 0' }, minHeight: { md: 200 }, height: { md: 0 }, objectFit: 'cover', borderRadius: 2 }} />
-          </Box>
-
-          <Box sx={{ position: 'relative', minWidth: 0 }}>
-            <DotPattern color="#57b9ad" sx={{ top: -24, right: -8, width: 140, height: 72, opacity: 0.8 }} />
-            <DotPattern color="#e7c95e" sx={{ bottom: -24, left: -8, width: 110, height: 72, opacity: 0.8 }} />
-            <Box sx={{ position: 'relative', display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(3, minmax(0, 1fr))' }, gap: { xs: 1.5, md: 1.5 } }}>
-              {categories.map((category, index) => {
-                const color = accentColors[index % accentColors.length]
-                return (
-                  <Box component="article" key={category.name} sx={{ ...cardSx, '--accent': color, minHeight: { xs: 110, md: 124 }, p: { xs: 2.25, md: 2.5 }, display: 'flex', flexDirection: 'column', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', borderRadius: 2 }}>
-                    <Box sx={{ width: 8, height: 8, mb: 2, borderRadius: '50%', backgroundColor: color }} />
-                    <Typography component="h3" sx={{ mb: 1, fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', fontSize: '0.95rem', fontWeight: 600, lineHeight: 1.4, color: '#24292f' }}>{category.name}</Typography>
-                    <Typography sx={{ mt: 'auto', fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace', color: '#57606a', fontSize: 12, fontWeight: 400, lineHeight: 1.5 }}>{category.label}</Typography>
-                  </Box>
-                )
-              })}
-            </Box>
-          </Box>
-        </Box>
-      </Container>
-    </Box>
-  )
-}
 
 export default DotNetPillars
