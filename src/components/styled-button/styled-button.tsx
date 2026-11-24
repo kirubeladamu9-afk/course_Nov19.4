@@ -170,14 +170,14 @@ const StyledButtonRoot = styled('button', {
     letterSpacing: 0.48,
     transition: 'background-color 500ms ease',
     ...(variant === 'contained' && {
-      backgroundColor: '#7D52F4',
+      backgroundColor: '#127C71',
       color: '#fff',
       boxShadow: 'none',
       [theme.breakpoints.up('sm')]: { height: 48 },
     }),
     '&:hover': {
       ...(!disableHoverEffect && { transform: 'none' }),
-      ...(variant === 'contained' && { backgroundColor: '#693EE0' }),
+      ...(variant === 'contained' && { backgroundColor: '#0F6B62' }),
     },
     '& .styled-button-end-icon': {
       position: 'relative',
@@ -189,7 +189,7 @@ const StyledButtonRoot = styled('button', {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#fff',
-      color: '#7D52F4',
+      color: '#127C71',
       flexShrink: 0,
       overflow: 'hidden',
     },

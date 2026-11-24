@@ -44,7 +44,7 @@ const DotNetPillars = () => (
     <div className="mx-auto max-w-7xl">
       <div>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] text-slate-600 shadow-sm">
-          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-violet-500" />
+          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#127C71]" />
           Categories
         </span>
         <h2 id="dotnet-pillars-title" className="mt-4 text-[clamp(2rem,calc(1.6087rem+1.7391vw),3rem)] font-semibold leading-[1.25] tracking-[-0.06em] text-slate-950">
@@ -54,9 +54,9 @@ const DotNetPillars = () => (
 
       <div className="mt-11 grid grid-cols-1 gap-4 sm:mt-14 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
         {categories.map(({ name, count, description, icon: Icon }) => (
-          <article key={name} className="group rounded-3xl border-2 border-transparent bg-white px-5 pb-6 pt-5 transition-all duration-500 hover:border-violet-600 sm:px-7 sm:pb-8 sm:pt-7">
+          <article key={name} className="group rounded-3xl border-2 border-transparent bg-white px-5 pb-6 pt-5 transition-all duration-500 hover:border-[#127C71] sm:px-7 sm:pb-8 sm:pt-7">
             <div className="mb-9 flex items-start justify-between sm:mb-11 lg:mb-[60px]">
-              <span className="flex h-[54px] w-[54px] items-center justify-center rounded-full border border-slate-100 bg-white text-violet-600 shadow-lg">
+              <span className="flex h-[54px] w-[54px] items-center justify-center rounded-full border border-slate-100 bg-white text-[#127C71] shadow-lg">
                 <Icon aria-hidden="true" size={28} strokeWidth={1.8} />
               </span>
               <span className="rounded-full bg-[#f5f7fa] px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] text-slate-600">
