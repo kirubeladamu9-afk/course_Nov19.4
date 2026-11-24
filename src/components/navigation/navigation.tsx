@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react'
+import { useRef } from 'react'
 import Box from '@mui/material/Box'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -16,6 +17,7 @@ interface Props {
 
 const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
   const [programsAnchor, setProgramsAnchor] = useState<HTMLElement | null>(null)
+  const programsCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [activeDestination, setActiveDestination] = useState(() => navigations.find(({ path }) => path.startsWith('/') && window.location.pathname.startsWith(path))?.path ?? 'hero')
 
   if (isAdmin) return null
@@ -25,6 +27,16 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
   const primaryDestinations = destinations.filter(({ path }) => !programPaths.has(path))
   const programsOpen = Boolean(programsAnchor)
   const programsActive = programDestinations.some(({ path }) => path === activeDestination)
+  const openPrograms = (anchor: HTMLElement) => {
+    if (programsCloseTimer.current) clearTimeout(programsCloseTimer.current)
+    setProgramsAnchor(anchor)
+  }
+  const scheduleProgramsClose = () => {
+    programsCloseTimer.current = setTimeout(() => setProgramsAnchor(null), 150)
+  }
+  const keepProgramsOpen = () => {
+    if (programsCloseTimer.current) clearTimeout(programsCloseTimer.current)
+  }
 
   const handleDestinationClick = (destination: string, event: React.MouseEvent<HTMLElement>) => {
     setActiveDestination(destination)
@@ -88,13 +100,14 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' } }}>
       {primaryDestinations.filter(({ path }) => path === 'hero').map(renderDestination)}
-      <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', mb: { xs: 3, md: 0 }, px: { xs: 0, md: 3 } }}>
+      <Box onMouseLeave={scheduleProgramsClose} sx={{ position: 'relative', display: 'flex', justifyContent: 'center', mb: { xs: 3, md: 0 }, px: { xs: 0, md: 3 } }}>
         <Box
           component="button"
           type="button"
           aria-haspopup="menu"
           aria-expanded={programsOpen ? 'true' : undefined}
-          onClick={(event: React.MouseEvent<HTMLElement>) => setProgramsAnchor(event.currentTarget)}
+          onMouseEnter={(event: React.MouseEvent<HTMLElement>) => openPrograms(event.currentTarget)}
+          onClick={(event: React.MouseEvent<HTMLElement>) => openPrograms(event.currentTarget)}
           sx={{
             ...linkSx,
             border: 0,
@@ -113,7 +126,11 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
           anchorEl={programsAnchor}
           open={programsOpen}
           onClose={() => setProgramsAnchor(null)}
-          PaperProps={{ className: '!mt-2 !min-w-64 !overflow-hidden !rounded-2xl !shadow-lg' }}
+          PaperProps={{
+            className: '!mt-2 !min-w-64 !overflow-hidden !rounded-2xl !shadow-lg',
+            onMouseEnter: keepProgramsOpen,
+            onMouseLeave: scheduleProgramsClose,
+          }}
           MenuListProps={{ 'aria-label': 'Programs', className: '!flex !flex-col !gap-1 !p-2' }}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           transformOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -125,7 +142,7 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
               key={destination}
               component="a"
               href={destinationHref}
-              className="min-h-11 rounded-xl px-4 py-3 text-sm transition-colors"
+              className="min-h-11 !rounded-xl px-4 py-3 text-sm transition-colors"
               onClick={(event) => {
                 if (isRoute) handleDestinationClick(destination, event)
                 else {
