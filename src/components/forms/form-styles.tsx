@@ -8,7 +8,7 @@ const hairline = '#d9e2df'
 const navy = '#17172B'
 
 export const formFieldSx = {
-  '& .MuiInputLabel-root': { color: muted, fontWeight: 500 },
+  '& .MuiInputLabel-root': { color: muted, fontWeight: 500, border: 0, outline: 'none', bgcolor: 'transparent', boxShadow: 'none', '&:hover, &:focus-visible': { border: 0, outline: 'none', bgcolor: 'transparent', boxShadow: 'none' } },
   '& .MuiInputLabel-root.Mui-focused': { color: primary },
   '& .MuiFormControl-root:has(.MuiInputAdornment-positionStart) .MuiInputLabel-root:not(.MuiInputLabel-shrink)': { transform: 'translate(46px, 16px) scale(1)' },
   '& .MuiOutlinedInput-root': {
