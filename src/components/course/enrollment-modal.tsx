@@ -38,6 +38,9 @@ interface EnrollmentModalProps {
 
 const steps = ['Account', 'Verify Email', 'Payment']
 const maximumProofSize = 6 * 1024 * 1024
+const accent = '#7c5cf6'
+const pillSx = { borderRadius: 999, minHeight: 48, fontWeight: 600, textTransform: 'none', boxShadow: 'none', bgcolor: accent, '&:hover': { bgcolor: '#6d4fe0', boxShadow: 'none' } } as const
+const fieldSx = { '& .MuiOutlinedInput-root': { borderRadius: 999, bgcolor: 'background.paper' } } as const
 
 const readFileAsDataUrl = (file: File) => new Promise<string>((resolve, reject) => {
   const reader = new FileReader()
@@ -238,7 +241,7 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
   }
 
   const renderPersonalInfo = () => <Box component="form" onSubmit={(event) => void handlePersonalSubmit(event)}>
-    <Stack spacing={1.5}>
+    <Stack spacing={1.5} sx={fieldSx}>
       <TextField required fullWidth size="small" label="Full Name" name="fullName" autoComplete="name" value={contact.name} onChange={(event) => setContact({ ...contact, name: event.target.value })} />
       <TextField required fullWidth size="small" label="Email" name="email" type="email" autoComplete="email" value={contact.email} onChange={(event) => setContact({ ...contact, email: event.target.value })} />
       <TextField required fullWidth size="small" label="Phone" name="phone" type="tel" autoComplete="tel" value={contact.phone} onChange={(event) => setContact({ ...contact, phone: event.target.value })} />
@@ -248,20 +251,20 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
         <Typography variant="caption" color="text.secondary">Your account will be created after you submit your payment proof.</Typography>
       </>}
       {accountError && <Alert severity="error">{accountError}</Alert>}
-      <Button type="submit" variant="contained" size="large" disabled={isSendingCode}>
+      <Button type="submit" variant="contained" size="large" disabled={isSendingCode} sx={pillSx}>
         {isSendingCode ? 'Sending code...' : 'Continue'}
       </Button>
     </Stack>
   </Box>
 
   const renderVerifyEmail = () => <Box component="form" onSubmit={(event) => void handleVerifySubmit(event)}>
-    <Stack spacing={1.5}>
+    <Stack spacing={1.5} sx={fieldSx}>
       <Typography variant="body1">We sent a 6-digit code to <strong>{contact.email}</strong>.</Typography>
       <Typography variant="body2" color="text.secondary">Enter the code below to continue. It expires in 10 minutes.</Typography>
       <TextField required fullWidth size="small" label="Verification code" name="verificationCode" autoComplete="one-time-code" value={verificationCode} onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, '').slice(0, 6))} inputProps={{ inputMode: 'numeric', maxLength: 6 }} />
       {verificationError && <Alert severity="error">{verificationError}</Alert>}
       {verificationNotice && <Alert severity="success">{verificationNotice}</Alert>}
-      <Button type="submit" variant="contained" size="large" disabled={isVerifyingCode || verificationCode.length !== 6}>
+      <Button type="submit" variant="contained" size="large" disabled={isVerifyingCode || verificationCode.length !== 6} sx={pillSx}>
         {isVerifyingCode ? 'Verifying...' : 'Verify'}
       </Button>
       <Stack direction="row" spacing={1.5} justifyContent="space-between" alignItems="center">
@@ -357,8 +360,8 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
           {proofFile && <Typography variant="body2" sx={{ color: '#047857', overflowWrap: 'anywhere' }}>Attached: {proofFile.name}</Typography>}
           {paymentError && <Alert severity="error">{paymentError}</Alert>}
           <Stack direction={{ xs: 'column-reverse', sm: 'row' }} spacing={1.5} sx={{ pt: 1, borderTop: 1, borderColor: 'divider' }}>
-            <Button fullWidth variant="outlined" size="large" onClick={() => setActiveStep(0)} disabled={isSubmittingPayment} sx={{ minHeight: 48, borderRadius: 2, color: 'text.secondary', borderColor: 'divider' }}>Back</Button>
-            <Button fullWidth type="submit" variant="contained" size="large" disabled={!paymentInfo.configured || !proofFile || isSubmittingPayment} sx={{ minHeight: 48, borderRadius: 2, fontWeight: 700, bgcolor: '#0f8f78', boxShadow: '0 8px 18px rgba(15, 143, 120, 0.2)', '&:hover': { bgcolor: '#0f766e', boxShadow: '0 10px 22px rgba(15, 143, 120, 0.26)' } }}>
+            <Button fullWidth variant="outlined" size="large" onClick={() => setActiveStep(0)} disabled={isSubmittingPayment} sx={{ minHeight: 48, borderRadius: 999, color: 'text.secondary', borderColor: 'divider' }}>Back</Button>
+            <Button fullWidth type="submit" variant="contained" size="large" disabled={!paymentInfo.configured || !proofFile || isSubmittingPayment} sx={pillSx}>
               {isSubmittingPayment ? 'Submitting...' : 'Submit for Verification'}
             </Button>
           </Stack>
@@ -368,17 +371,19 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
     </>}
   </Stack>
 
-  return <Dialog open={open} onClose={onClose} fullScreen={isMobile} fullWidth maxWidth="md" aria-labelledby="enrollment-dialog-title" PaperProps={{ sx: { borderRadius: { xs: 0, sm: '16px' }, border: { xs: 0, sm: 1 }, borderColor: 'divider', overflow: 'hidden', backgroundImage: 'none', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.14)', maxHeight: { sm: 'min(92vh, 960px)' } } }}>
-    <DialogTitle id="enrollment-dialog-title" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: { xs: 2, sm: 2.5 }, borderBottom: 1, borderColor: 'divider' }}>
-      <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: '12px', color: '#0f766e', bgcolor: 'rgba(13, 148, 136, 0.12)' }}><SchoolOutlinedIcon /></Box>
-      <Box sx={{ minWidth: 0, flexGrow: 1 }}>
-        <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.25 }}>Enroll in {classId === null ? 'this course' : 'this class'}</Typography>
-        <Typography variant="body2" color="text.secondary">Complete your payment to get full access.</Typography>
+  return <Dialog open={open} onClose={onClose} fullScreen={isMobile} fullWidth maxWidth="md" aria-labelledby="enrollment-dialog-title" PaperProps={{ sx: { borderRadius: { xs: 0, sm: '24px' }, overflow: 'hidden', backgroundImage: 'none', boxShadow: '0 24px 60px rgba(15, 23, 42, 0.12)', maxHeight: { sm: 'min(92vh, 960px)' } } }}>
+    <DialogTitle id="enrollment-dialog-title" sx={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 1.25, pt: { xs: 3, sm: 4 }, pb: 1, px: { xs: 2.5, sm: 4 } }}>
+      <IconButton aria-label="Close enrollment" onClick={onClose} sx={{ position: 'absolute', top: 12, right: 12 }}><CloseIcon /></IconButton>
+      <Box sx={{ display: 'grid', placeItems: 'center', p: 1.25, borderRadius: '50%', bgcolor: 'rgba(124, 92, 246, 0.1)' }}>
+        <Box sx={{ display: 'grid', placeItems: 'center', width: 56, height: 56, borderRadius: '16px', color: '#fff', bgcolor: accent, boxShadow: '0 8px 20px rgba(124, 92, 246, 0.35)' }}><SchoolOutlinedIcon /></Box>
       </Box>
-      <IconButton aria-label="Close enrollment" onClick={onClose} sx={{ alignSelf: 'flex-start', mt: -0.25 }}><CloseIcon /></IconButton>
+      <Box>
+        <Typography variant="h5" sx={{ fontWeight: 700, lineHeight: 1.25 }}>Enroll in {classId === null ? 'this course' : 'this class'}</Typography>
+        <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }}>Complete your payment to get full access.</Typography>
+      </Box>
     </DialogTitle>
-    <DialogContent dividers sx={{ p: { xs: 2, sm: 2.5, md: 3 }, overflowY: 'auto' }}>
-      {!submitted && <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: { xs: 2, sm: 2.5 }, '& .MuiStepIcon-root.Mui-active, & .MuiStepIcon-root.Mui-completed': { color: '#0f8f78' }, '& .MuiStepLabel-label.Mui-active': { color: '#0f766e', fontWeight: 700 }, '& .MuiStepConnector-line': { borderColor: 'rgba(15, 143, 120, 0.35)' } }}>
+    <DialogContent sx={{ px: { xs: 2.5, sm: 4 }, pt: 2, pb: { xs: 3, sm: 4 }, overflowY: 'auto' }}>
+      {!submitted && <Stepper activeStep={activeStep} alternativeLabel sx={{ mb: { xs: 2, sm: 2.5 }, '& .MuiStepIcon-root.Mui-active, & .MuiStepIcon-root.Mui-completed': { color: accent }, '& .MuiStepLabel-label.Mui-active': { color: '#6d4fe0', fontWeight: 700 }, '& .MuiStepConnector-line': { borderColor: 'rgba(124, 92, 246, 0.35)' } }}>
         {steps.map((label, index) => <Step key={label} completed={index < activeStep}><StepLabel>{label}</StepLabel></Step>)}
       </Stepper>}
       {submitted ? renderConfirmation() : activeStep === 0 ? renderPersonalInfo() : activeStep === 1 ? renderVerifyEmail() : renderPaymentInfo()}
