@@ -283,9 +283,9 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
     {paymentInfoError && <Alert severity="error">{paymentInfoError}</Alert>}
     {!paymentInfo && !paymentInfoError && <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress aria-label="Loading payment information" /></Box>}
     {paymentInfo && <>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'rgba(13, 148, 136, 0.2)', borderRadius: 3, bgcolor: 'rgba(13, 148, 136, 0.04)' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'rgba(13, 148, 136, 0.2)', borderRadius: '16px', bgcolor: 'rgba(13, 148, 136, 0.04)' }}>
         <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
-          <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: 2, color: '#0f766e', bgcolor: 'rgba(13, 148, 136, 0.12)' }}><SchoolOutlinedIcon /></Box>
+          <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: '12px', color: '#0f766e', bgcolor: 'rgba(13, 148, 136, 0.12)' }}><SchoolOutlinedIcon /></Box>
           <Box sx={{ minWidth: 0 }}>
             <Typography variant="caption" sx={{ color: '#0f766e', fontWeight: 700 }}>{classId === null ? 'COURSE ENROLLMENT' : 'CLASS ENROLLMENT'}</Typography>
             <Typography variant="h6" sx={{ fontWeight: 700, lineHeight: 1.3, overflowWrap: 'anywhere' }}>{paymentInfo.title}</Typography>
@@ -304,7 +304,7 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
         </Stack>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Open your mobile banking or payment app and scan the QR code to complete your payment.</Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 0.9fr) minmax(0, 1.1fr)' }, gap: { xs: 2, md: 2.5 } }}>
-          <Box sx={{ display: 'grid', alignContent: 'start', justifyItems: 'center', gap: 1.5, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'divider', borderRadius: 3, bgcolor: 'background.paper', boxShadow: '0 8px 24px rgba(15, 118, 110, 0.06)' }}>
+          <Box sx={{ display: 'grid', alignContent: 'start', justifyItems: 'center', gap: 1.5, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'divider', borderRadius: '16px', bgcolor: 'background.paper', boxShadow: '0 8px 24px rgba(15, 118, 110, 0.06)' }}>
             <Typography variant="subtitle2" sx={{ alignSelf: 'start', fontWeight: 700 }}>Business payment QR</Typography>
             <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', minHeight: { xs: 240, sm: 280 }, borderRadius: 2, bgcolor: '#f8fafc' }}>
               <Box component="img" src="/images/payment-qr.webp" alt="QR code for business payment" sx={{ display: 'block', width: 'min(100%, 286px)', aspectRatio: '1', objectFit: 'contain', bgcolor: 'white' }} />
@@ -312,7 +312,7 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
             <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>Scan with any supported bank or mobile money app.</Typography>
           </Box>
 
-          <Box sx={{ p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'divider', borderRadius: 3, bgcolor: 'rgba(16, 185, 129, 0.035)', boxShadow: '0 8px 24px rgba(15, 118, 110, 0.06)' }}>
+          <Box sx={{ p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'divider', borderRadius: '16px', bgcolor: 'rgba(16, 185, 129, 0.035)', boxShadow: '0 8px 24px rgba(15, 118, 110, 0.06)' }}>
             <Typography variant="subtitle1" sx={{ mb: 1.25, fontWeight: 750 }}>Payment details</Typography>
             <Stack divider={<Box sx={{ borderBottom: 1, borderColor: 'divider' }} />}>
               {paymentInfo.paymentMethods.map((method) => {
@@ -340,9 +340,9 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
 
       <Box component="form" onSubmit={(event) => void handlePaymentSubmit(event)}>
         <Stack spacing={1.5}>
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.25 }, border: 1, borderStyle: 'dashed', borderColor: 'rgba(99, 102, 241, 0.35)', borderRadius: 3, bgcolor: 'rgba(99, 102, 241, 0.035)' }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.25 }, border: 1, borderStyle: 'dashed', borderColor: 'rgba(99, 102, 241, 0.35)', borderRadius: '16px', bgcolor: 'rgba(99, 102, 241, 0.035)' }}>
             <Stack direction="row" spacing={1.5} alignItems="center">
-              <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: 2, color: '#4f46e5', bgcolor: 'rgba(99, 102, 241, 0.12)' }}><CloudUploadOutlinedIcon /></Box>
+              <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: '12px', color: '#4f46e5', bgcolor: 'rgba(99, 102, 241, 0.12)' }}><CloudUploadOutlinedIcon /></Box>
               <Box>
                 <Typography variant="subtitle1" sx={{ fontWeight: 750 }}>Payment screenshot</Typography>
                 <Typography variant="body2" color="text.secondary">After paying, upload a screenshot as proof.</Typography>
@@ -368,9 +368,9 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
     </>}
   </Stack>
 
-  return <Dialog open={open} onClose={onClose} fullScreen={isMobile} fullWidth maxWidth="md" aria-labelledby="enrollment-dialog-title" PaperProps={{ sx: { borderRadius: { xs: 0, sm: 3 }, maxHeight: { sm: 'min(92vh, 960px)' } } }}>
+  return <Dialog open={open} onClose={onClose} fullScreen={isMobile} fullWidth maxWidth="md" aria-labelledby="enrollment-dialog-title" PaperProps={{ sx: { borderRadius: { xs: 0, sm: '16px' }, border: { xs: 0, sm: 1 }, borderColor: 'divider', overflow: 'hidden', backgroundImage: 'none', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.14)', maxHeight: { sm: 'min(92vh, 960px)' } } }}>
     <DialogTitle id="enrollment-dialog-title" sx={{ display: 'flex', alignItems: 'center', gap: 1.5, p: { xs: 2, sm: 2.5 }, borderBottom: 1, borderColor: 'divider' }}>
-      <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: 2, color: '#0f766e', bgcolor: 'rgba(13, 148, 136, 0.12)' }}><SchoolOutlinedIcon /></Box>
+      <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: '12px', color: '#0f766e', bgcolor: 'rgba(13, 148, 136, 0.12)' }}><SchoolOutlinedIcon /></Box>
       <Box sx={{ minWidth: 0, flexGrow: 1 }}>
         <Typography variant="h6" sx={{ fontWeight: 800, lineHeight: 1.25 }}>Enroll in {classId === null ? 'this course' : 'this class'}</Typography>
         <Typography variant="body2" color="text.secondary">Complete your payment to get full access.</Typography>
