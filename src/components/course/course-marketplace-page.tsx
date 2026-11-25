@@ -119,7 +119,7 @@ const CourseMarketplacePage: FC<CourseMarketplacePageProps> = ({ courses, darkMo
         </Box>
 
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} sx={{ mb: 2.5, justifyContent: { md: 'space-between' } }}>
-          <TextField fullWidth value={search} onChange={(event) => { setSearch(event.target.value); setCurrentPage(1) }} placeholder="Search courses, topics, or skills" aria-label="Search courses" InputProps={{ startAdornment: <InputAdornment position="start"><SearchRoundedIcon color="action" /></InputAdornment> }} sx={{ flex: { xs: '1 1 100%', md: '0 0 280px' }, '& .MuiOutlinedInput-root': { backgroundColor: 'background.paper', borderRadius: 2 } }} />
+          <TextField fullWidth value={search} onChange={(event) => { setSearch(event.target.value); setCurrentPage(1) }} placeholder="Search courses, topics, or skills" aria-label="Search courses" InputProps={{ startAdornment: <InputAdornment position="start"><SearchRoundedIcon color="action" /></InputAdornment> }} sx={{ flex: { xs: '1 1 100%', md: '0 0 400px' }, '& .MuiOutlinedInput-root': { backgroundColor: 'background.paper', borderRadius: 2 } }} />
           <FormControl size="small" sx={{ width: { xs: '100%', md: 210 }, flexShrink: 0 }}>
             <Select value={sortOrder} onChange={(event) => { setSortOrder(event.target.value as SortOrder); setCurrentPage(1) }} inputProps={{ 'aria-label': 'Sort courses' }} sx={{ minHeight: 56, backgroundColor: 'background.paper', borderRadius: 2 }}>
               <MenuItem value="popular">Most popular</MenuItem>
