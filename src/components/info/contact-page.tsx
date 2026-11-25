@@ -1,23 +1,31 @@
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline'
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
 import FaqOutlinedIcon from '@mui/icons-material/QuizOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Container from '@mui/material/Container'
 import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
+import InputAdornment from '@mui/material/InputAdornment'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
+import OutlinedInput from '@mui/material/OutlinedInput'
 import Paper from '@mui/material/Paper'
 import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import { StyledButton } from '../styled-button'
+import { formFieldSx, formPrimaryButtonSx, withLeadingIcon } from '@/components/forms/form-styles'
 import { useState, type FC, type FormEvent } from 'react'
 
 const emailAddress = 'support@coursesharp.com'
@@ -65,23 +73,23 @@ const ContactPage: FC = () => {
     <Container maxWidth="lg" sx={{ pt: { xs: 6, md: 7 }, pb: { xs: 3, md: 4 } }}>
       <Paper elevation={0} sx={{ p: { xs: 3, sm: 4, md: 4.5 }, border: 1, borderColor: 'divider', borderRadius: 3.5, boxShadow: '0 10px 35px rgba(15, 60, 70, .055)' }}>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: '1.65fr .85fr' }, gap: { xs: 4, md: 5 } }}>
-          <Box component="form" onSubmit={handleSubmit} sx={{ p: { xs: .5, md: 1 }, minWidth: 0 }}>
+          <Box component="form" onSubmit={handleSubmit} sx={{ ...formFieldSx, p: { xs: .5, md: 1 }, minWidth: 0 }}>
             <Typography variant="overline" sx={{ color: 'primary.main', fontWeight: 800, letterSpacing: .9 }}>SEND US A MESSAGE</Typography>
             <Typography component="h2" variant="h4" sx={{ mt: .25, fontWeight: 800, letterSpacing: '-.035em' }}>Let’s Talk</Typography>
             <Typography color="text.secondary" variant="body2" sx={{ mt: 1, mb: 4 }}>Fill out the form below and we’ll get back to you as soon as possible.</Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2.5} sx={{ mb: 2.5 }}>
-              <TextField required fullWidth name="fullName" label="Full Name" autoComplete="name" />
-              <TextField required fullWidth name="email" type="email" label="Email Address" autoComplete="email" />
+              <TextField required fullWidth name="fullName" label="Full Name" autoComplete="name" {...withLeadingIcon(<PersonOutlineIcon />)} />
+              <TextField required fullWidth name="email" type="email" label="Email Address" autoComplete="email" {...withLeadingIcon(<MailOutlineIcon />)} />
             </Stack>
             <FormControl fullWidth required sx={{ mb: 2.5 }}>
               <InputLabel id="contact-subject-label">Subject</InputLabel>
-              <Select labelId="contact-subject-label" id="contact-subject" value={subject} label="Subject" onChange={(event) => setSubject(event.target.value)}>
+              <Select labelId="contact-subject-label" id="contact-subject" value={subject} onChange={(event) => setSubject(event.target.value)} input={<OutlinedInput label="Subject" startAdornment={<InputAdornment position="start"><ChatBubbleOutlineIcon /></InputAdornment>} />}>
                 {subjects.map((option) => <MenuItem key={option} value={option}>{option}</MenuItem>)}
               </Select>
             </FormControl>
             <TextField required fullWidth multiline minRows={5} name="message" label="Message" value={message} onChange={(event) => setMessage(event.target.value.slice(0, 1000))} inputProps={{ maxLength: 1000 }} />
             <Stack direction={{ xs: 'column-reverse', sm: 'row' }} alignItems={{ sm: 'center' }} justifyContent="space-between" spacing={1.5} sx={{ mt: 2.25 }}>
-              <StyledButton type="submit" animated>Send Message</StyledButton>
+              <Button type="submit" variant="contained" size="large" endIcon={<ArrowForwardIcon />} sx={{ ...formPrimaryButtonSx, width: { xs: '100%', sm: 'auto' }, px: 4 }}>Send Message</Button>
               <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'right' }}>{message.length}/1000</Typography>
             </Stack>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1.25 }}>Your email app will open with your message ready to send.</Typography>

@@ -29,6 +29,8 @@ import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined'
 import QrCode2OutlinedIcon from '@mui/icons-material/QrCode2Outlined'
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined'
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined'
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined'
 import { type FC, type FormEvent, type ReactNode, useEffect, useState } from 'react'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { useTheme } from '@mui/material/styles'
@@ -47,13 +49,13 @@ interface EnrollmentModalProps {
 const steps = ['Account', 'Verify Email', 'Payment']
 const maximumProofSize = 6 * 1024 * 1024
 
-const primary = '#7652F5'
-const primaryHover = '#6440E8'
-const lavender = '#EEE9FF'
+const primary = '#127C71'
+const primaryHover = '#0D6A69'
+const lavender = '#E6F4F1'
 const navy = '#17172B'
 const muted = '#77788C'
-const hairline = '#E3E0F0'
-const primaryGradient = 'linear-gradient(135deg, #8A6CFF 0%, #6440F0 100%)'
+const hairline = '#d9e2df'
+const primaryGradient = 'linear-gradient(135deg, #1A9A8C 0%, #0D6A69 100%)'
 
 const formContainerSx = { width: '100%', maxWidth: 600, mx: 'auto' } as const
 
@@ -68,8 +70,8 @@ const fieldSx = {
     bgcolor: '#fff',
     transition: 'box-shadow 0.2s ease',
     '& fieldset': { borderColor: hairline },
-    '&:hover fieldset': { borderColor: '#C9C2EE' },
-    '&.Mui-focused': { boxShadow: '0 0 0 4px rgba(118, 82, 245, 0.14)' },
+    '&:hover fieldset': { borderColor: '#A8D9CE' },
+    '&.Mui-focused': { boxShadow: '0 0 0 4px rgba(18, 124, 113, 0.14)' },
     '&.Mui-focused fieldset': { borderColor: primary, borderWidth: 1 },
   },
   '& .MuiOutlinedInput-input': { py: 2, pl: 0, color: navy },
@@ -77,7 +79,13 @@ const fieldSx = {
   '& .MuiInputAdornment-root .MuiSvgIcon-root': { fontSize: 20 },
 } as const
 
-const withIcon = (icon: ReactNode) => ({ InputProps: { startAdornment: <InputAdornment position="start">{icon}</InputAdornment> } })
+const withIcon = (icon: ReactNode, endAdornment?: ReactNode) => ({ InputProps: { startAdornment: <InputAdornment position="start">{icon}</InputAdornment>, endAdornment } })
+
+const passwordVisibilityToggle = (label: string, visible: boolean, onToggle: () => void) => <InputAdornment position="end">
+  <IconButton aria-label={`${visible ? 'Hide' : 'Show'} ${label}`} onClick={onToggle} edge="end" size="small" sx={{ color: muted, '&:hover': { color: primary, bgcolor: lavender } }}>
+    {visible ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
+  </IconButton>
+</InputAdornment>
 
 const primaryButtonSx = {
   height: 56,
@@ -87,11 +95,11 @@ const primaryButtonSx = {
   textTransform: 'none',
   color: '#fff',
   background: primaryGradient,
-  boxShadow: '0 10px 24px rgba(118, 82, 245, 0.28)',
+  boxShadow: '0 10px 24px rgba(18, 124, 113, 0.28)',
   transition: 'transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease',
-  '&:hover': { background: primaryGradient, filter: 'brightness(1.05)', transform: 'translateY(-1px)', boxShadow: '0 14px 28px rgba(118, 82, 245, 0.32)' },
+  '&:hover': { background: primaryGradient, filter: 'brightness(1.05)', transform: 'translateY(-1px)', boxShadow: '0 14px 28px rgba(18, 124, 113, 0.32)' },
   '&:active': { transform: 'translateY(0)' },
-  '&.Mui-disabled': { background: '#D9D2F7', color: '#fff', boxShadow: 'none' },
+  '&.Mui-disabled': { background: '#B5DCD5', color: '#fff', boxShadow: 'none' },
 } as const
 
 const secondaryButtonSx = {
@@ -102,7 +110,7 @@ const secondaryButtonSx = {
   color: muted,
   borderColor: hairline,
   bgcolor: '#fff',
-  '&:hover': { borderColor: '#C9C2EE', bgcolor: '#FAF9FD' },
+  '&:hover': { borderColor: '#A8D9CE', bgcolor: '#F6FBFA' },
 } as const
 
 const stepperSx = {
@@ -117,7 +125,7 @@ const stepperSx = {
 
 const StepBadge: FC<StepIconProps> = ({ active, completed, icon }) => {
   const filled = active || completed
-  return <Box sx={{ display: 'grid', placeItems: 'center', width: 36, height: 36, borderRadius: '50%', fontSize: 15, fontWeight: 700, color: filled ? '#fff' : muted, bgcolor: filled ? primary : '#E8E5F3', boxShadow: active ? '0 0 0 6px rgba(118, 82, 245, 0.16), 0 6px 14px rgba(118, 82, 245, 0.35)' : 'none', transition: 'background-color 0.2s ease, box-shadow 0.2s ease' }}>
+  return <Box sx={{ display: 'grid', placeItems: 'center', width: 36, height: 36, borderRadius: '50%', fontSize: 15, fontWeight: 700, color: filled ? '#fff' : muted, bgcolor: filled ? primary : '#DDEFEA', boxShadow: active ? '0 0 0 6px rgba(18, 124, 113, 0.16), 0 6px 14px rgba(18, 124, 113, 0.35)' : 'none', transition: 'background-color 0.2s ease, box-shadow 0.2s ease' }}>
     {completed ? <CheckOutlinedIcon sx={{ fontSize: 18 }} /> : icon}
   </Box>
 }
@@ -137,6 +145,8 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null)
   const [signupPassword, setSignupPassword] = useState('')
   const [confirmSignupPassword, setConfirmSignupPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [paymentInfo, setPaymentInfo] = useState<ManualPaymentInfo | null>(null)
   const [paymentInfoError, setPaymentInfoError] = useState<string | null>(null)
   const [proofFile, setProofFile] = useState<File | null>(null)
@@ -182,6 +192,8 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
     setProofData(null)
     setSignupPassword('')
     setConfirmSignupPassword('')
+    setShowPassword(false)
+    setShowConfirmPassword(false)
     setSubmitted(false)
     setVerificationCode('')
     setVerificationError(null)
@@ -326,8 +338,8 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
       <TextField {...withIcon(<MailOutlineIcon />)} required fullWidth label="Email" name="email" type="email" autoComplete="email" value={contact.email} onChange={(event) => setContact({ ...contact, email: event.target.value })} />
       <TextField {...withIcon(<PhoneOutlinedIcon />)} required fullWidth label="Phone" name="phone" type="tel" autoComplete="tel" value={contact.phone} onChange={(event) => setContact({ ...contact, phone: event.target.value })} />
       {!isAuthenticated && <>
-        <TextField {...withIcon(<LockOutlinedIcon />)} required fullWidth label="Password" name="password" type="password" autoComplete="new-password" inputProps={{ minLength: 8 }} value={signupPassword} onChange={(event) => setSignupPassword(event.target.value)} />
-        <TextField {...withIcon(<LockOutlinedIcon />)} required fullWidth label="Confirm Password" name="confirmPassword" type="password" autoComplete="new-password" inputProps={{ minLength: 8 }} value={confirmSignupPassword} onChange={(event) => setConfirmSignupPassword(event.target.value)} />
+        <TextField {...withIcon(<LockOutlinedIcon />, passwordVisibilityToggle('password', showPassword, () => setShowPassword((value) => !value)))} required fullWidth label="Password" name="password" type={showPassword ? 'text' : 'password'} autoComplete="new-password" inputProps={{ minLength: 8 }} value={signupPassword} onChange={(event) => setSignupPassword(event.target.value)} />
+        <TextField {...withIcon(<LockOutlinedIcon />, passwordVisibilityToggle('confirm password', showConfirmPassword, () => setShowConfirmPassword((value) => !value)))} required fullWidth label="Confirm Password" name="confirmPassword" type={showConfirmPassword ? 'text' : 'password'} autoComplete="new-password" inputProps={{ minLength: 8 }} value={confirmSignupPassword} onChange={(event) => setConfirmSignupPassword(event.target.value)} />
         <Stack direction="row" spacing={1.5} alignItems="center" sx={{ p: 2, borderRadius: '16px', bgcolor: lavender }}>
           <VerifiedUserOutlinedIcon sx={{ color: primary, flexShrink: 0 }} />
           <Typography variant="body2" sx={{ color: navy, fontWeight: 500 }}>Your account will be created after you submit your payment proof.</Typography>
@@ -369,7 +381,7 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
     {paymentInfoError && <Alert severity="error">{paymentInfoError}</Alert>}
     {!paymentInfo && !paymentInfoError && <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}><CircularProgress aria-label="Loading payment information" /></Box>}
     {paymentInfo && <>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: '#E3DCFB', borderRadius: '16px', bgcolor: '#F7F5FF' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: '#CDE7E1', borderRadius: '16px', bgcolor: '#F2FAF8' }}>
         <Stack direction="row" spacing={1.5} alignItems="center" sx={{ minWidth: 0 }}>
           <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: '12px', color: primary, bgcolor: lavender }}><SchoolOutlinedIcon /></Box>
           <Box sx={{ minWidth: 0 }}>
@@ -390,15 +402,15 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
         </Stack>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>Open your mobile banking or payment app and scan the QR code to complete your payment.</Typography>
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'minmax(0, 0.9fr) minmax(0, 1.1fr)' }, gap: { xs: 2, md: 2.5 } }}>
-          <Box sx={{ display: 'grid', alignContent: 'start', justifyItems: 'center', gap: 1.5, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: hairline, borderRadius: '16px', bgcolor: '#fff', boxShadow: '0 8px 24px rgba(118, 82, 245, 0.06)' }}>
+          <Box sx={{ display: 'grid', alignContent: 'start', justifyItems: 'center', gap: 1.5, p: { xs: 2, sm: 2.5 }, border: 1, borderColor: hairline, borderRadius: '16px', bgcolor: '#fff', boxShadow: '0 8px 24px rgba(18, 124, 113, 0.06)' }}>
             <Typography variant="subtitle2" sx={{ alignSelf: 'start', fontWeight: 700, color: navy }}>Business payment QR</Typography>
-            <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', minHeight: { xs: 240, sm: 280 }, borderRadius: '14px', bgcolor: '#F8F7FC' }}>
+            <Box sx={{ display: 'grid', placeItems: 'center', width: '100%', minHeight: { xs: 240, sm: 280 }, borderRadius: '14px', bgcolor: '#F4FAF8' }}>
               <Box component="img" src="/images/payment-qr.webp" alt="QR code for business payment" sx={{ display: 'block', width: 'min(100%, 286px)', aspectRatio: '1', objectFit: 'contain', bgcolor: 'white' }} />
             </Box>
             <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'center' }}>Scan with any supported bank or mobile money app.</Typography>
           </Box>
 
-          <Box sx={{ p: { xs: 2, sm: 2.5 }, border: 1, borderColor: hairline, borderRadius: '16px', bgcolor: '#fff', boxShadow: '0 8px 24px rgba(118, 82, 245, 0.06)' }}>
+          <Box sx={{ p: { xs: 2, sm: 2.5 }, border: 1, borderColor: hairline, borderRadius: '16px', bgcolor: '#fff', boxShadow: '0 8px 24px rgba(18, 124, 113, 0.06)' }}>
             <Typography variant="subtitle1" sx={{ mb: 1.25, fontWeight: 750, color: navy }}>Payment details</Typography>
             <Stack divider={<Box sx={{ borderBottom: 1, borderColor: hairline }} />}>
               {paymentInfo.paymentMethods.map((method) => {
@@ -426,7 +438,7 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
 
       <Box component="form" onSubmit={(event) => void handlePaymentSubmit(event)}>
         <Stack spacing={1.5}>
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.25 }, border: 1, borderStyle: 'dashed', borderColor: 'rgba(118, 82, 245, 0.35)', borderRadius: '16px', bgcolor: 'rgba(118, 82, 245, 0.04)' }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2, p: { xs: 2, sm: 2.25 }, border: 1, borderStyle: 'dashed', borderColor: 'rgba(18, 124, 113, 0.35)', borderRadius: '16px', bgcolor: 'rgba(18, 124, 113, 0.04)' }}>
             <Stack direction="row" spacing={1.5} alignItems="center">
               <Box sx={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 44, borderRadius: '12px', color: primary, bgcolor: lavender }}><CloudUploadOutlinedIcon /></Box>
               <Box>
@@ -456,9 +468,9 @@ const EnrollmentModal: FC<EnrollmentModalProps> = ({ course, classId = null, ope
 
   return <Dialog open={open} onClose={onClose} fullScreen={isMobile} maxWidth={false} aria-labelledby="enrollment-dialog-title" PaperProps={{ sx: { width: '100%', maxWidth: { sm: 960 }, m: { xs: 0, sm: 2 }, borderRadius: { xs: 0, sm: '24px' }, overflow: 'hidden', backgroundImage: 'none', boxShadow: '0 24px 64px rgba(23, 23, 43, 0.14)', maxHeight: { sm: 'min(92vh, 960px)' } } }}>
     <DialogTitle id="enrollment-dialog-title" component="div" sx={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 1.5, pt: { xs: 4, sm: 4.5 }, pb: 0, px: { xs: 2.5, sm: 4 } }}>
-      <IconButton aria-label="Close enrollment" onClick={onClose} sx={{ position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: '12px', color: muted, bgcolor: '#F4F3F8', '&:hover': { color: primary, bgcolor: lavender } }}><CloseIcon /></IconButton>
-      <Box sx={{ display: 'grid', placeItems: 'center', width: 96, height: 96, borderRadius: '50%', bgcolor: 'rgba(118, 82, 245, 0.10)' }}>
-        <Box sx={{ display: 'grid', placeItems: 'center', width: 72, height: 72, borderRadius: '50%', color: '#fff', background: primaryGradient, boxShadow: '0 10px 28px rgba(118, 82, 245, 0.4)' }}><SchoolOutlinedIcon sx={{ fontSize: 34 }} /></Box>
+      <IconButton aria-label="Close enrollment" onClick={onClose} sx={{ position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: '12px', color: muted, bgcolor: '#F2F6F5', '&:hover': { color: primary, bgcolor: lavender } }}><CloseIcon /></IconButton>
+      <Box sx={{ display: 'grid', placeItems: 'center', width: 96, height: 96, borderRadius: '50%', bgcolor: 'rgba(18, 124, 113, 0.10)' }}>
+        <Box sx={{ display: 'grid', placeItems: 'center', width: 72, height: 72, borderRadius: '50%', color: '#fff', background: primaryGradient, boxShadow: '0 10px 28px rgba(18, 124, 113, 0.4)' }}><SchoolOutlinedIcon sx={{ fontSize: 34 }} /></Box>
       </Box>
       <Box>
         <Typography component="span" variant="h5" sx={{ display: 'block', fontWeight: 800, lineHeight: 1.25, color: navy }}>Enroll in {classId === null ? 'this Course' : 'this Class'}</Typography>

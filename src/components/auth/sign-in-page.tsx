@@ -1,5 +1,6 @@
 import { useEffect, useState, type FC, type FormEvent } from 'react'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
 import IconButton from '@mui/material/IconButton'
@@ -8,9 +9,13 @@ import Link from '@mui/material/Link'
 import Paper from '@mui/material/Paper'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import MailOutlineIcon from '@mui/icons-material/MailOutline'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import { StyledButton } from '@/components/styled-button'
+import { formFieldSx, formPrimaryButtonSx, withLeadingIcon } from '@/components/forms/form-styles'
 import { navigateTo } from '@/lib/navigation'
 import { toast } from '@/components/toast'
 import { AuthFlowError, saveAuthenticatedUser, submitCredentials } from '@/services/api'
@@ -125,8 +130,8 @@ const SignInPage: FC<SignInPageProps> = ({ mode }) => {
               <Box sx={{ maxWidth: 430, width: '100%', mx: 'auto', flex: 1 }}>
                 <Typography component="h1" variant="h2" sx={{ mb: 0.75, fontSize: { xs: '2rem', md: '3rem' }, letterSpacing: '-0.05em' }}>{isSignUp ? 'Sign Up' : 'Sign In'}</Typography>
                 <Typography color="text.secondary" sx={{ mb: { xs: 1.5, md: 2.5 } }}>{isSignUp ? 'Create your Coursesharp account.' : 'Welcome back to Coursesharp.'}</Typography>
-                <Box sx={{ display: 'grid', gap: { xs: 1.25, md: 1.5 } }}>
-                  <TextField required fullWidth label={isSignUp ? 'Email' : 'Email or username'} name="email" type={isSignUp ? 'email' : 'text'} autoComplete={isSignUp ? 'email' : 'username'} variant="outlined" sx={{ '& .MuiOutlinedInput-root': { borderRadius: 999 } }} />
+                <Box sx={{ display: 'grid', gap: { xs: 1.25, md: 1.5 }, ...formFieldSx }}>
+                  <TextField required fullWidth label={isSignUp ? 'Email' : 'Email or username'} name="email" type={isSignUp ? 'email' : 'text'} autoComplete={isSignUp ? 'email' : 'username'} variant="outlined" {...withLeadingIcon(isSignUp ? <MailOutlineIcon /> : <PersonOutlineIcon />)} />
                   <TextField
                     required
                     fullWidth
@@ -136,24 +141,21 @@ const SignInPage: FC<SignInPageProps> = ({ mode }) => {
                     autoComplete={isSignUp ? 'new-password' : 'current-password'}
                     inputProps={isSignUp ? { minLength: 8 } : undefined}
                     variant="outlined"
-                    sx={{ '& .MuiOutlinedInput-root': { borderRadius: 999 } }}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton type="button" onClick={() => setShowPassword((visible) => !visible)} edge="end" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
+                    {...withLeadingIcon(<LockOutlinedIcon />, (
+                      <InputAdornment position="end">
+                        <IconButton type="button" onClick={() => setShowPassword((visible) => !visible)} edge="end" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword}>
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ))}
                   />
                   {!isSignUp && twoFactorRequired && <TextField required label="Authenticator or backup code" value={twoFactorCode} onChange={(event) => setTwoFactorCode(event.target.value)} autoComplete="one-time-code" inputProps={{ inputMode: 'numeric' }} />}
                   {!isSignUp && captchaRequired && (turnstileSiteKey ? <Box id="sign-in-turnstile" sx={{ minHeight: 65, display: 'flex', alignItems: 'center' }} /> : <Typography role="status" variant="caption" color="text.secondary">Human verification is not configured. Please contact support.</Typography>)}
                   {!isSignUp && <Typography variant="body2" sx={{ mt: -0.75, color: 'text.secondary' }}>
                     Forgot your password? <Link href="mailto:support@coursesharp.com" underline="hover">Contact support@coursesharp.com</Link> for help.
                   </Typography>}
-                  <Box sx={{ mt: { xs: 0.25, md: 0.5 }, '& button': { width: '100%', justifyContent: 'center', borderRadius: 999, py: 1.1 } }}>
-                    <StyledButton type="submit" color="primary" disabled={isSubmitting || Boolean(captchaRequired && turnstileSiteKey && !captchaToken) || Boolean(twoFactorRequired && !twoFactorCode)}>{isSignUp ? 'Sign Up' : 'Sign In'}</StyledButton>
+                  <Box sx={{ mt: { xs: 0.25, md: 0.5 } }}>
+                    <Button type="submit" variant="contained" size="large" disabled={isSubmitting || Boolean(captchaRequired && turnstileSiteKey && !captchaToken) || Boolean(twoFactorRequired && !twoFactorCode)} endIcon={<ArrowForwardIcon />} sx={formPrimaryButtonSx}>{isSignUp ? 'Sign Up' : 'Sign In'}</Button>
                   </Box>
                 </Box>
               </Box>
