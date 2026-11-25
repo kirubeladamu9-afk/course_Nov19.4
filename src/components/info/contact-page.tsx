@@ -4,9 +4,7 @@ import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded
 import FaqOutlinedIcon from '@mui/icons-material/QuizOutlined'
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined'
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
-import SendRoundedIcon from '@mui/icons-material/SendRounded'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Container from '@mui/material/Container'
@@ -19,6 +17,7 @@ import Select from '@mui/material/Select'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
+import { StyledButton } from '../styled-button'
 import { useState, type FC, type FormEvent } from 'react'
 
 const emailAddress = 'support@coursesharp.com'
@@ -82,7 +81,7 @@ const ContactPage: FC = () => {
             </FormControl>
             <TextField required fullWidth multiline minRows={5} name="message" label="Message" value={message} onChange={(event) => setMessage(event.target.value.slice(0, 1000))} inputProps={{ maxLength: 1000 }} />
             <Stack direction={{ xs: 'column-reverse', sm: 'row' }} alignItems={{ sm: 'center' }} justifyContent="space-between" spacing={1.5} sx={{ mt: 2.25 }}>
-              <Button type="submit" variant="contained" endIcon={<SendRoundedIcon />} sx={{ alignSelf: { xs: 'stretch', sm: 'flex-start' }, px: 2.75, py: 1.1, borderRadius: 6, fontWeight: 700, boxShadow: 'none' }}>Send Message</Button>
+              <StyledButton type="submit" animated>Send Message</StyledButton>
               <Typography variant="caption" color="text.secondary" sx={{ textAlign: 'right' }}>{message.length}/1000</Typography>
             </Stack>
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1.25 }}>Your email app will open with your message ready to send.</Typography>
@@ -94,7 +93,7 @@ const ContactPage: FC = () => {
                 <Box sx={{ display: 'grid', placeItems: 'center', width: 54, height: 54, mb: 4, border: 1, borderColor: (theme) => theme.palette.mode === 'dark' ? '#31413e' : 'grey.100', borderRadius: '50%', color: '#127C71', backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : 'white', boxShadow: 3 }}><FaqOutlinedIcon sx={{ fontSize: 28 }} /></Box>
                 <Typography variant="h6" sx={{ fontWeight: 600 }}>Need Quick Help?</Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5, mb: 2, lineHeight: 1.6, letterSpacing: '.03em' }}>Check common questions for quick answers to enrollment, payment, and account questions.</Typography>
-                <Button component="a" href="#contact-faq" variant="outlined" endIcon={<ArrowForwardRoundedIcon />} sx={{ borderRadius: 5, fontWeight: 700 }}>View FAQ</Button>
+                <StyledButton animated variant="outlined" onClick={() => { window.location.hash = 'contact-faq' }}>View FAQ</StyledButton>
               </CardContent>
             </Card>
             <Card elevation={0} sx={{ flex: 1, border: 2, borderColor: 'transparent', borderRadius: 3, backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#192321' : '#F5F7FA', transition: 'border-color 0.3s ease', '&:hover': { borderColor: '#127C71' } }}>
@@ -116,7 +115,7 @@ const ContactPage: FC = () => {
           <Typography component="h2" variant="h5" sx={{ mt: .25, fontWeight: 800 }}>Visit Our Office</Typography>
           <Typography color="text.secondary" variant="body2" sx={{ mt: 1, lineHeight: 1.7 }}>We’re located in Bole, Addis Ababa. Feel free to stop by or reach out to us anytime.</Typography>
           <Stack direction="row" spacing={1} alignItems="flex-start" sx={{ mt: 2.5 }}><LocationOnOutlinedIcon color="primary" fontSize="small" sx={{ mt: .15 }} /><Box><Typography variant="body2" sx={{ fontWeight: 700 }}>{officeAddress}</Typography><Typography variant="caption" color="text.secondary">Near Bole International Airport</Typography></Box></Stack>
-          <Button component="a" href="https://www.google.com/maps/search/?api=1&query=Bole%2C%20Addis%20Ababa%2C%20Ethiopia" target="_blank" rel="noreferrer" variant="outlined" endIcon={<ArrowForwardRoundedIcon />} sx={{ mt: 2.5, borderRadius: 5, fontWeight: 700 }}>Get Directions</Button>
+          <StyledButton animated variant="outlined" onClick={() => window.open('https://www.google.com/maps/search/?api=1&query=Bole%2C%20Addis%20Ababa%2C%20Ethiopia', '_blank', 'noopener,noreferrer')}>Get Directions</StyledButton>
         </Box>
         <Box component="iframe" title="Map showing Bole, Addis Ababa" src="https://maps.google.com/maps?q=Bole%2C%20Addis%20Ababa%2C%20Ethiopia&z=14&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" sx={{ display: 'block', width: '100%', height: { xs: 230, sm: 320 }, minHeight: { sm: 320 }, border: 0 }} />
       </Paper>
