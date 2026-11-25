@@ -421,6 +421,7 @@ const getErrorMessage = async (response: Response) => {
 
 const unavailableApiMessage = 'Unable to connect to the CourseSpace API. Please try again when the server is available.'
 const idempotentMethods = new Set(['GET', 'HEAD'])
+const isFetchTypeError = (error: unknown) => Boolean(error && typeof error === 'object' && 'name' in error && error.name === 'TypeError')
 
 const fetchApi = async (url: string, init?: RequestInit) => {
   const retryable = idempotentMethods.has((init?.method ?? 'GET').toUpperCase())
