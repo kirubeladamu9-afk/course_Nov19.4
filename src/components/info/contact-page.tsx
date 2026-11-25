@@ -88,12 +88,21 @@ const ContactPage: FC = () => {
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1.25 }}>Your email app will open with your message ready to send.</Typography>
           </Box>
 
-          <Stack spacing={2.5}>
-            <Card elevation={0} sx={{ flex: 1, borderRadius: 3, background: (theme) => theme.palette.mode === 'dark' ? 'linear-gradient(145deg, #143b3a, #173032)' : 'linear-gradient(145deg, #e9f8f4, #f3fbf8)' }}>
-              <CardContent sx={{ p: { xs: 3, md: 3.5 } }}><Box sx={{ display: 'grid', placeItems: 'center', width: 48, height: 48, mb: 2.5, borderRadius: 2.5, color: 'primary.main', backgroundColor: 'rgba(255,255,255,.65)' }}><FaqOutlinedIcon /></Box><Typography variant="h6" sx={{ fontWeight: 750 }}>Need Quick Help?</Typography><Typography variant="body2" color="text.secondary" sx={{ mt: .75, mb: 2, lineHeight: 1.6 }}>Check common questions for quick answers to enrollment, payment, and account questions.</Typography><Button component="a" href="#contact-faq" variant="outlined" endIcon={<ArrowForwardRoundedIcon />} sx={{ borderRadius: 5, fontWeight: 700 }}>View FAQ</Button></CardContent>
+          <Stack spacing={2.5} sx={{ p: { xs: 1.5, md: 2 }, borderRadius: 3, backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : '#f5f7fa' }}>
+            <Card elevation={0} sx={{ flex: 1, border: 2, borderColor: 'transparent', borderRadius: 3, backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#192321' : '#F5F7FA', transition: 'border-color 0.3s ease', '&:hover': { borderColor: '#127C71' } }}>
+              <CardContent sx={{ p: { xs: 3, md: 3.5 } }}>
+                <Box sx={{ display: 'grid', placeItems: 'center', width: 54, height: 54, mb: 4, border: 1, borderColor: (theme) => theme.palette.mode === 'dark' ? '#31413e' : 'grey.100', borderRadius: '50%', color: '#127C71', backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : 'white', boxShadow: 3 }}><FaqOutlinedIcon sx={{ fontSize: 28 }} /></Box>
+                <Typography variant="h6" sx={{ fontWeight: 600 }}>Need Quick Help?</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5, mb: 2, lineHeight: 1.6, letterSpacing: '.03em' }}>Check common questions for quick answers to enrollment, payment, and account questions.</Typography>
+                <Button component="a" href="#contact-faq" variant="outlined" endIcon={<ArrowForwardRoundedIcon />} sx={{ borderRadius: 5, fontWeight: 700 }}>View FAQ</Button>
+              </CardContent>
             </Card>
-            <Card elevation={0} sx={{ flex: 1, borderRadius: 3, background: (theme) => theme.palette.mode === 'dark' ? 'linear-gradient(145deg, #143b3a, #173032)' : 'linear-gradient(145deg, #e9f8f4, #f3fbf8)' }}>
-              <CardContent sx={{ p: { xs: 3, md: 3.5 } }}><Typography variant="subtitle1" sx={{ mb: 1.25, fontWeight: 750 }}>We’re Here to Help</Typography><Stack spacing={1.15}>{['Course enrollment & payments', 'Technical support', 'Account and profile issues', 'General inquiries'].map((item) => <Stack key={item} direction="row" spacing={1} alignItems="center"><CheckCircleRoundedIcon sx={{ color: 'primary.main', fontSize: 17 }} /><Typography variant="body2" color="text.secondary">{item}</Typography></Stack>)}</Stack></CardContent>
+            <Card elevation={0} sx={{ flex: 1, border: 2, borderColor: 'transparent', borderRadius: 3, backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#192321' : '#F5F7FA', transition: 'border-color 0.3s ease', '&:hover': { borderColor: '#127C71' } }}>
+              <CardContent sx={{ p: { xs: 3, md: 3.5 } }}>
+                <Box sx={{ display: 'grid', placeItems: 'center', width: 54, height: 54, mb: 4, border: 1, borderColor: (theme) => theme.palette.mode === 'dark' ? '#31413e' : 'grey.100', borderRadius: '50%', color: '#127C71', backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : 'white', boxShadow: 3 }}><FavoriteBorderRoundedIcon sx={{ fontSize: 28 }} /></Box>
+                <Typography variant="h6" sx={{ mb: 1.5, fontWeight: 600 }}>We’re Here to Help</Typography>
+                <Stack spacing={1.15}>{['Course enrollment & payments', 'Technical support', 'Account and profile issues', 'General inquiries'].map((item) => <Stack key={item} direction="row" spacing={1} alignItems="center"><CheckCircleRoundedIcon sx={{ color: 'primary.main', fontSize: 17 }} /><Typography variant="body2" color="text.secondary" sx={{ letterSpacing: '.03em' }}>{item}</Typography></Stack>)}</Stack>
+              </CardContent>
             </Card>
           </Stack>
         </Box>
