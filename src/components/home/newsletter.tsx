@@ -11,7 +11,8 @@ const HomeNewsLetter: FC = () => {
       <Container>
         <Box
           sx={{
-            backgroundColor: 'secondary.main',
+            background: (theme) => theme.palette.mode === 'dark' ? 'linear-gradient(120deg, #102b3f 0%, #0b514b 100%)' : 'linear-gradient(120deg, #102b3f 0%, #12685d 68%, #168276 100%)',
+            color: 'common.white',
             borderRadius: 10,
             py: { xs: 4, md: 10 },
             px: { xs: 4, md: 8 },
