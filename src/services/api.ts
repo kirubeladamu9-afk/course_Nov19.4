@@ -430,7 +430,7 @@ const fetchApi = async (url: string, init?: RequestInit) => {
       return await fetch(url, { ...init, credentials: 'same-origin' })
     } catch (error) {
       if (init?.signal?.aborted) throw error
-      if (!(error instanceof TypeError)) throw error
+      if (!isFetchTypeError(error)) throw error
       if (!retryable) throw new Error(unavailableApiMessage)
       if (attempt >= 30) throw new Error(unavailableApiMessage)
       await new Promise((resolve) => window.setTimeout(resolve, Math.min(500 * 2 ** attempt, 2000)))
