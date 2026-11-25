@@ -56,7 +56,7 @@ type DotNetPillarsProps = {
 const DotNetPillars = ({ variant = 'categories' }: DotNetPillarsProps) => {
   const darkMode = useTheme().palette.mode === 'dark'
   const isOffers = variant === 'offers'
-  const cards = isOffers ? offers : categories
+  const cards: { name: string; description: string; icon: typeof Monitor; count?: number }[] = isOffers ? offers : categories
 
   return (
   <section aria-label={isOffers ? 'What We Offer' : undefined} aria-labelledby={isOffers ? undefined : 'dotnet-pillars-title'} className={`${darkMode ? 'bg-[#171717]' : 'bg-[#f5f7fa]'} px-4 ${isOffers ? 'pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-14 lg:pb-28' : 'py-16 sm:px-6 sm:py-20 md:px-8 lg:py-28'}`}>
@@ -79,7 +79,7 @@ const DotNetPillars = ({ variant = 'categories' }: DotNetPillarsProps) => {
               <span className={`flex h-[54px] w-[54px] items-center justify-center rounded-full border text-[#127C71] shadow-lg ${darkMode ? 'border-[#31413e] bg-[#171717]' : 'border-slate-100 bg-white'}`}>
                 <Icon aria-hidden="true" size={28} strokeWidth={1.8} />
               </span>
-              {'count' in card && <span className={`rounded-full px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] ${darkMode ? 'bg-[#24332f] text-[#b3c0bd]' : 'bg-[#f5f7fa] text-slate-600'}`}>
+              {card.count !== undefined && <span className={`rounded-full px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] ${darkMode ? 'bg-[#24332f] text-[#b3c0bd]' : 'bg-[#f5f7fa] text-slate-600'}`}>
                 {card.count} {card.count === 1 ? 'Course' : 'Courses'}
               </span>}
             </div>
