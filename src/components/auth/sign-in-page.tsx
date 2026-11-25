@@ -104,7 +104,7 @@ const SignInPage: FC<SignInPageProps> = ({ mode }) => {
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', justifyContent: 'space-between', p: { xs: 1.5, sm: 3, md: 4 }, pb: { xs: 3, sm: 4, md: 5 }, color: 'common.white', background: 'var(--app-auth-panel)', minHeight: 0 }}>
           <Box>
             <Typography variant="overline" sx={{ letterSpacing: 1.2, color: 'rgba(255,255,255,0.72)' }}>Coursesharp learning platform</Typography>
-            <Typography component="h2" sx={{ mt: { xs: 1, md: 5 }, fontSize: { xs: '1.9rem', md: 'clamp(2.25rem, 4.2vw, 3.5rem)' }, lineHeight: 0.98, letterSpacing: '-0.06em', fontWeight: 700 }}>
+            <Typography component="h2" sx={{ mt: { xs: 1, md: 5 }, fontSize: { xs: '1.9rem', md: 'clamp(2.25rem, 4.2vw, 3.5rem)' }, lineHeight: 0.98, letterSpacing: '-0.06em', fontWeight: 700, '&:hover': { border: 0, borderColor: 'transparent', outline: 'none' } }}>
               Learn with
               <br />
               confidence.
