@@ -35,15 +35,16 @@ const HomeTestimonial: FC = () => {
       <Container>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
+            <Typography component="p" variant="overline" color="primary.main" sx={{ display: 'block', mt: { xs: 0, md: 7 }, fontWeight: 800, letterSpacing: 1.2, lineHeight: 1.4 }}>TESTIMONIALS</Typography>
             <Typography
               component="h2"
               sx={{
                 position: 'relative',
-                fontSize: { xs: 36, md: 46 },
-                mt: { xs: 0, md: 7 },
+                fontSize: { xs: 32, md: 40 },
+                mt: 0.5,
                 mb: 4,
-                lineHeight: 1,
-                fontWeight: 'bold',
+                lineHeight: 1.25,
+                fontWeight: 800,
               }}
             >
               What Our{' '}

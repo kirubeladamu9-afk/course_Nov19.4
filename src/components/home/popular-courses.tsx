@@ -65,7 +65,8 @@ const HomePopularCourse: FC<{ courses: Course[] }> = ({ courses }) => {
       <Container maxWidth="lg">
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={3}>
-            <Typography component="h2" variant="h3" sx={{ maxWidth: 170, fontSize: { xs: '2.25rem', md: '2.5rem' }, lineHeight: 1.2 }}>Most Popular Courses</Typography>
+            <Typography component="p" variant="overline" color="primary.main" sx={{ letterSpacing: 1.2, fontWeight: 800, lineHeight: 1.4 }}>POPULAR COURSES</Typography>
+            <Typography component="h2" variant="h3" sx={{ mt: 0.5, maxWidth: 170, fontSize: { xs: '2rem', md: '2.5rem' }, lineHeight: 1.25, fontWeight: 800 }}>Most Popular Courses</Typography>
           </Grid>
           <Grid item xs={12} md={9} sx={{ minWidth: 0 }}>
             {courses.length > 0 && <Box sx={{ width: '100%', minWidth: 0, maxWidth: { md: courses.length === 1 ? '33.333%' : '100%' } }}>

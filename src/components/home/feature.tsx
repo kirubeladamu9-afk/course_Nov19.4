@@ -146,19 +146,20 @@ const HomeFeature: FC = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={7}>
+            <Typography component="p" variant="overline" color="primary.main" sx={{ ml: { xs: 0, md: 4 }, fontWeight: 800, letterSpacing: 1.2, lineHeight: 1.4 }}>YOUR PROGRESS</Typography>
             <Typography
               component="h2"
               sx={{
                 position: 'relative',
-                fontSize: { xs: 40, md: 50 },
+                fontSize: { xs: 32, md: 40 },
                 ml: { xs: 0, md: 4 },
-                mt: 2,
+                mt: 0.5,
                 mb: 3,
-                lineHeight: 1,
-                fontWeight: 'bold',
+                lineHeight: 1.25,
+                fontWeight: 800,
               }}
             >
-              Make your{' '}
+              Make Your{' '}
               <Typography
                 component="mark"
                 sx={{

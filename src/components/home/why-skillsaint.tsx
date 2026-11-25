@@ -28,11 +28,11 @@ const WhySkillsaint = () => (
   <section aria-labelledby="why-skillsaint-title" className="bg-[#0e121b] px-4 py-16 sm:px-6 sm:py-20 md:px-8 lg:py-28">
     <div className="mx-auto max-w-7xl">
       <div className="mx-auto max-w-2xl text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-[#343744] bg-[#171a24] px-3 py-1.5 text-sm font-medium text-slate-300">
-          <Award aria-hidden="true" size={16} />
-          Why Skillsaint
+        <span className="inline-flex items-center gap-2 text-xs font-bold leading-5 tracking-[0.08em] text-slate-300">
+          <Award aria-hidden="true" size={14} />
+          WHY COURSESHARP
         </span>
-        <h2 id="why-skillsaint-title" className="mt-4 text-[clamp(2rem,calc(1.6087rem+1.7391vw),3rem)] font-semibold leading-[1.25] tracking-[-0.04em] text-white">
+        <h2 id="why-skillsaint-title" className="mt-1 text-[clamp(2rem,calc(1.6rem+1vw),2.5rem)] font-bold leading-[1.25] tracking-[-0.04em] text-white">
           The Smarter Way to Learn Tech
         </h2>
         <p className="mx-auto mt-4 max-w-[478px] text-base leading-6 text-slate-400">

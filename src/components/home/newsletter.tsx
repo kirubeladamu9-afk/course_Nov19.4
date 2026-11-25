@@ -19,8 +19,11 @@ const HomeNewsLetter: FC = () => {
             textAlign: 'center',
           }}
         >
-          <Typography variant="h1" component="h2" sx={{ mb: 1, fontSize: { xs: 32, md: 42 } }}>
-            Subscribe to Our News Letter
+          <Typography component="p" variant="overline" sx={{ mb: 0.5, color: 'rgba(255,255,255,.72)', fontWeight: 800, letterSpacing: 1.2, lineHeight: 1.4 }}>
+            STAY CONNECTED
+          </Typography>
+          <Typography variant="h1" component="h2" sx={{ mt: 0.5, mb: 1, fontSize: { xs: '2rem', md: '2.5rem' }, lineHeight: 1.25, fontWeight: 800 }}>
+            Subscribe to Our Newsletter
           </Typography>
           <Typography sx={{ mb: 6 }}>Get new batch openings and learning tips sent to your inbox.</Typography>
 

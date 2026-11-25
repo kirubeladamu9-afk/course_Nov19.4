@@ -306,8 +306,8 @@ const HomeTrainingPrograms: FC<HomeTrainingProgramsProps> = ({ courses }) => {
       <Container maxWidth="lg">
         <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'flex-start', md: 'flex-end' }} spacing={2} sx={{ mb: 4 }}>
           <Box>
-            <Typography color="primary.main" variant="overline" sx={{ letterSpacing: 1.4, fontWeight: 700 }}>Find your path</Typography>
-            <Typography component="h2" variant="h2" sx={{ mb: 0.5 }}>Our Training Programs</Typography>
+            <Typography color="primary.main" variant="overline" sx={{ letterSpacing: 1.2, fontWeight: 800, lineHeight: 1.4 }}>LEARNING PROGRAMS</Typography>
+            <Typography component="h2" variant="h2" sx={{ mt: 0.5, mb: 0.5, fontSize: { xs: '2rem', md: '2.5rem' }, lineHeight: 1.25, fontWeight: 800 }}>Our Training Programs</Typography>
             <Typography color="text.secondary">Choose the learning experience that fits your goals, schedule, and stage.</Typography>
           </Box>
           <Typography color="text.secondary" variant="body2" sx={{ maxWidth: 180 }}>Small groups. Expert tutors. Real progress.</Typography>

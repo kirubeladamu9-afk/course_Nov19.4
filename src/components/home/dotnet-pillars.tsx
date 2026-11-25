@@ -62,11 +62,10 @@ const DotNetPillars = ({ variant = 'categories' }: DotNetPillarsProps) => {
   <section aria-label={isOffers ? 'What We Offer' : undefined} aria-labelledby={isOffers ? undefined : 'dotnet-pillars-title'} className={`${darkMode ? 'bg-[#171717]' : 'bg-[#f5f7fa]'} px-4 ${isOffers ? 'pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-14 lg:pb-28' : 'py-16 sm:px-6 sm:py-20 md:px-8 lg:py-28'}`}>
     <div className="mx-auto max-w-7xl">
       {!isOffers && <div>
-        <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-sm font-medium leading-5 tracking-[0.035em] shadow-sm ${darkMode ? 'border-[#31413e] bg-[#192321] text-[#b3c0bd]' : 'border-slate-200 bg-white text-slate-600'}`}>
-          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#127C71]" />
-          Categories
+        <span className={`text-xs font-bold leading-5 tracking-[0.08em] ${darkMode ? 'text-slate-300' : 'text-[#127C71]'}`}>
+          CATEGORIES
         </span>
-        <h2 id="dotnet-pillars-title" className={`mt-4 text-[clamp(2rem,calc(1.6087rem+1.7391vw),3rem)] font-semibold leading-[1.25] tracking-[-0.06em] ${darkMode ? 'text-[#f2f7f6]' : 'text-slate-950'}`}>
+        <h2 id="dotnet-pillars-title" className={`mt-1 text-[clamp(2rem,calc(1.6rem+1vw),2.5rem)] font-bold leading-[1.25] tracking-[-0.04em] ${darkMode ? 'text-[#f2f7f6]' : 'text-slate-950'}`}>
           Explore Category
         </h2>
       </div>}
