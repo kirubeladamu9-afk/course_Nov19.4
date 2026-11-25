@@ -1063,6 +1063,12 @@ const courseSummaryColumns = sql.unsafe(`
   category,
   level,
   description,
+  created_at AS "createdAt",
+  (
+    SELECT SUM(CASE WHEN lesson_item.lesson ->> 'duration' ~ '^[0-9]+$' THEN (lesson_item.lesson ->> 'duration')::INTEGER ELSE 0 END)::INTEGER
+    FROM jsonb_array_elements(CASE WHEN jsonb_typeof(courses.modules) = 'array' THEN courses.modules ELSE '[]'::jsonb END) AS module_item(module)
+    CROSS JOIN LATERAL jsonb_array_elements(CASE WHEN jsonb_typeof(module_item.module -> 'lessons') = 'array' THEN module_item.module -> 'lessons' ELSE '[]'::jsonb END) AS lesson_item(lesson)
+  ) AS "durationSeconds",
   COALESCE((
     SELECT jsonb_agg(DISTINCT lesson_item.lesson ->> 'type')
     FROM jsonb_array_elements(CASE WHEN jsonb_typeof(courses.modules) = 'array' THEN courses.modules ELSE '[]'::jsonb END) AS module_item(module)
@@ -4267,6 +4273,7 @@ app.get('/api/classes', async (_request, response) => {
            classes.schedule,
            classes.price::FLOAT AS price,
            classes.status,
+           classes.created_at AS "createdAt",
            classes.course_id::INTEGER AS "courseId",
            courses.title AS "courseTitle",
            classes.cover,

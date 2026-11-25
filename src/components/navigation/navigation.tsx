@@ -120,7 +120,7 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
         >
           {headlineCurve}
           Programs
-          <KeyboardArrowDownIcon sx={{ position: 'absolute', top: '50%', left: '100%', ml: 0.25, fontSize: '1.1rem', color: 'primary.main', transition: 'transform 150ms', transform: programsOpen ? 'translateY(-50%) rotate(180deg)' : 'translateY(-50%)' }} />
+          <KeyboardArrowDownIcon sx={{ ml: 0.25, flexShrink: 0, fontSize: '1.1rem', color: 'primary.main', transition: 'transform 150ms', transform: programsOpen ? 'rotate(180deg)' : 'none' }} />
         </Box>
         <Menu
           anchorEl={programsAnchor}

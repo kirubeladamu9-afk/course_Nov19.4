@@ -6,7 +6,11 @@ import Chip from '@mui/material/Chip'
 import Checkbox from '@mui/material/Checkbox'
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
+import Drawer from '@mui/material/Drawer'
 import FormControl from '@mui/material/FormControl'
+import IconButton from '@mui/material/IconButton'
+import ToggleButton from '@mui/material/ToggleButton'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormGroup from '@mui/material/FormGroup'
 import Grid from '@mui/material/Grid'
@@ -22,7 +26,12 @@ import Slider from '@mui/material/Slider'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import { type FC, useMemo, useState } from 'react'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
+import FilterListRoundedIcon from '@mui/icons-material/FilterListRounded'
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded'
+import ViewListRoundedIcon from '@mui/icons-material/ViewListRounded'
+import { type FC, useEffect, useMemo, useState } from 'react'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import CourseCardItem from './course-card-item'
@@ -35,8 +44,9 @@ interface CourseMarketplacePageProps {
   isLoading: boolean
 }
 
-type SortOrder = 'popular' | 'rating' | 'price-low' | 'price-high' | 'title'
+type SortOrder = 'popular' | 'rating' | 'newest' | 'price-low' | 'price-high'
 type CourseType = 'Self-paced' | 'Live class' | 'Practice'
+type CourseView = 'grid' | 'list'
 
 const getCourseTypes = (course: Course): CourseType[] => {
   const types: CourseType[] = []
@@ -55,6 +65,9 @@ const CourseMarketplacePage: FC<CourseMarketplacePageProps> = ({ courses, darkMo
   const [minRating, setMinRating] = useState(0)
   const [priceRange, setPriceRange] = useState<[number, number] | null>(null)
   const [sortOrder, setSortOrder] = useState<SortOrder>('popular')
+  const [viewMode, setViewMode] = useState<CourseView>(() => localStorage.getItem('coursesharp-catalog-view') === 'list' ? 'list' : 'grid')
+  const [favorites, setFavorites] = useState<string[]>(() => (localStorage.getItem('coursesharp-catalog-favorites') ?? '').split(',').filter(Boolean))
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 6
   const categories = useMemo(() => Array.from(new Set(courses.map((course) => course.category).filter(Boolean))).sort((a, b) => a.localeCompare(b)), [courses])
@@ -73,14 +86,30 @@ const CourseMarketplacePage: FC<CourseMarketplacePageProps> = ({ courses, darkMo
       .filter((course) => !query || `${course.title} ${course.description ?? ''} ${course.category}`.toLocaleLowerCase().includes(query))
       .sort((a, b) => {
         if (sortOrder === 'rating') return b.rating - a.rating || b.ratingCount - a.ratingCount
+        if (sortOrder === 'newest') return (Date.parse(b.createdAt ?? '') || Number(b.id)) - (Date.parse(a.createdAt ?? '') || Number(a.id))
         if (sortOrder === 'price-low') return a.price - b.price
         if (sortOrder === 'price-high') return b.price - a.price
-        if (sortOrder === 'title') return a.title.localeCompare(b.title)
         return b.ratingCount - a.ratingCount || b.rating - a.rating
       })
   }, [activePriceRange, courses, minRating, search, selectedCategories, selectedCourseTypes, selectedLevels, sortOrder])
   const pageCount = Math.max(1, Math.ceil(visibleCourses.length / pageSize))
   const pageCourses = visibleCourses.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
+  const activeFilters = [
+    ...selectedCategories.map((value) => ({ key: 'category', value, label: value, remove: () => setSelectedCategories((current) => current.filter((item) => item !== value)) })),
+    ...selectedLevels.map((value) => ({ key: 'level', value, label: value, remove: () => setSelectedLevels((current) => current.filter((item) => item !== value)) })),
+    ...selectedCourseTypes.map((value) => ({ key: 'type', value, label: value, remove: () => setSelectedCourseTypes((current) => current.filter((item) => item !== value)) })),
+    ...(minRating > 0 ? [{ key: 'rating', value: String(minRating), label: `${minRating.toFixed(1)}+ stars`, remove: () => setMinRating(0) }] : []),
+    ...(activePriceRange[0] > 0 || activePriceRange[1] < priceMaximum ? [{ key: 'price', value: `${activePriceRange[0]}-${activePriceRange[1]}`, label: `$${activePriceRange[0]}–$${activePriceRange[1]}`, remove: () => setPriceRange(null) }] : []),
+    ...(search ? [{ key: 'search', value: search, label: `Search: ${search}`, remove: () => setSearch('') }] : []),
+  ]
+  const handleViewChange = (_event: unknown, nextView: CourseView | null) => {
+    if (!nextView) return
+    setViewMode(nextView)
+    localStorage.setItem('coursesharp-catalog-view', nextView)
+  }
+  const toggleFavorite = (id: Course['id']) => setFavorites((current) => current.includes(String(id)) ? current.filter((item) => item !== String(id)) : [...current, String(id)])
+  useEffect(() => localStorage.setItem('coursesharp-catalog-favorites', favorites.join(',')), [favorites])
 
   const clearFilters = () => {
     setSearch('')
@@ -91,6 +120,41 @@ const CourseMarketplacePage: FC<CourseMarketplacePageProps> = ({ courses, darkMo
     setPriceRange(null)
     setCurrentPage(1)
   }
+  const filterPanel = <Paper elevation={0} component="aside" aria-label="Course filters" sx={{ p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'divider', borderRadius: 3, backgroundColor: 'background.paper', position: { md: 'sticky' }, top: { md: 24 } }}>
+    <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1.5 }}>
+      <Typography variant="h6" sx={{ fontWeight: 750 }}>Filters</Typography>
+      {(hasFilters || search) && <Button size="small" onClick={clearFilters}>Clear all</Button>}
+    </Stack>
+    <Divider />
+    <Box sx={{ py: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Subject</Typography>
+      {categories.length ? <FormGroup>{categories.map((category) => <FormControlLabel key={category} control={<Checkbox size="small" checked={selectedCategories.includes(category)} onChange={(event) => { setSelectedCategories((current) => event.target.checked ? [...current, category] : current.filter((value) => value !== category)); setCurrentPage(1) }} />} label={<Typography variant="body2">{category} <Typography component="span" variant="caption" color="text.secondary">({courses.filter((course) => course.category === category).length})</Typography></Typography>} sx={{ ml: 0, mr: 0, minHeight: 34 }} />)}</FormGroup> : <Typography variant="body2" color="text.secondary">No subjects available</Typography>}
+    </Box>
+    <Divider />
+    <Box sx={{ py: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 700 }}>Price range</Typography>
+      <Typography variant="caption" color="text.secondary">${activePriceRange[0]} – ${activePriceRange[1]}</Typography>
+      <Slider getAriaLabel={(index) => (index === 0 ? 'Minimum course price' : 'Maximum course price')} value={activePriceRange} min={0} max={priceMaximum} step={1} onChange={(_, value) => { if (Array.isArray(value)) { setPriceRange([value[0], value[1]]); setCurrentPage(1) } }} valueLabelDisplay="auto" valueLabelFormat={(value) => `$${value}`} sx={{ mt: 1, mb: 0.5, color: 'primary.main' }} />
+      <Stack direction="row" justifyContent="space-between"><Typography variant="caption" color="text.secondary">Min</Typography><Typography variant="caption" color="text.secondary">Max</Typography></Stack>
+    </Box>
+    <Divider />
+    <Box sx={{ py: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Level</Typography>
+      {levels.length ? <FormGroup>{levels.map((level) => <FormControlLabel key={level} control={<Checkbox size="small" checked={selectedLevels.includes(level)} onChange={(event) => { setSelectedLevels((current) => event.target.checked ? [...current, level] : current.filter((value) => value !== level)); setCurrentPage(1) }} />} label={<Typography variant="body2">{level} <Typography component="span" variant="caption" color="text.secondary">({courses.filter((course) => course.level === level).length})</Typography></Typography>} sx={{ ml: 0, mr: 0, minHeight: 34 }} />)}</FormGroup> : <Typography variant="body2" color="text.secondary">No difficulty levels available</Typography>}
+    </Box>
+    <Divider />
+    <Box sx={{ py: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Course type</Typography>
+      <FormGroup>{(['Self-paced', 'Live class', 'Practice'] as CourseType[]).map((type) => <FormControlLabel key={type} control={<Checkbox size="small" checked={selectedCourseTypes.includes(type)} onChange={(event) => { setSelectedCourseTypes((current) => event.target.checked ? [...current, type] : current.filter((value) => value !== type)); setCurrentPage(1) }} />} label={<Typography variant="body2">{type} <Typography component="span" variant="caption" color="text.secondary">({courses.filter((course) => getCourseTypes(course).includes(type)).length})</Typography></Typography>} sx={{ ml: 0, mr: 0, minHeight: 34 }} />)}</FormGroup>
+    </Box>
+    <Divider />
+    <Box sx={{ pt: 2 }}>
+      <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Ratings</Typography>
+      <RadioGroup aria-label="Filter by minimum course rating" value={String(minRating)} onChange={(event) => { setMinRating(Number(event.target.value)); setCurrentPage(1) }}>
+        {[4.5, 4, 3.5, 3].map((rating) => <FormControlLabel key={rating} value={String(rating)} control={<Radio size="small" />} label={<Stack direction="row" alignItems="center" spacing={0.75}><Rating value={rating} precision={0.5} readOnly size="small" sx={{ color: '#c18120', fontSize: 16 }} /><Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{rating.toFixed(1)} & up</Typography><Typography variant="caption" color="text.secondary">({courses.filter((course) => course.rating >= rating).length.toLocaleString()})</Typography></Stack>} sx={{ ml: 0, mr: 0, minHeight: 42 }} />)}
+      </RadioGroup>
+    </Box>
+  </Paper>
 
   return <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
     <Header darkMode={darkMode} onToggleDarkMode={onToggleDarkMode} />
@@ -120,79 +184,55 @@ const CourseMarketplacePage: FC<CourseMarketplacePageProps> = ({ courses, darkMo
 
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} sx={{ mb: 2.5, justifyContent: { md: 'space-between' } }}>
           <TextField fullWidth value={search} onChange={(event) => { setSearch(event.target.value); setCurrentPage(1) }} placeholder="Search courses, topics, or skills" aria-label="Search courses" InputProps={{ startAdornment: <InputAdornment position="start"><SearchRoundedIcon color="action" /></InputAdornment> }} sx={{ flex: { xs: '1 1 100%', md: '0 0 400px' }, '& .MuiOutlinedInput-root': { backgroundColor: 'background.paper', borderRadius: 2 } }} />
-          <FormControl size="small" sx={{ width: { xs: '100%', md: 210 }, flexShrink: 0 }}>
-            <Select value={sortOrder} onChange={(event) => { setSortOrder(event.target.value as SortOrder); setCurrentPage(1) }} inputProps={{ 'aria-label': 'Sort courses' }} sx={{ minHeight: 56, backgroundColor: 'background.paper', borderRadius: 2 }}>
-              <MenuItem value="popular">Most popular</MenuItem>
-              <MenuItem value="rating">Top rated</MenuItem>
-              <MenuItem value="price-low">Price: low to high</MenuItem>
-              <MenuItem value="price-high">Price: high to low</MenuItem>
-              <MenuItem value="title">Course name</MenuItem>
-            </Select>
-          </FormControl>
+          <Stack direction="row" spacing={1} alignItems="center" justifyContent={{ xs: 'space-between', md: 'flex-end' }}>
+            <FormControl size="small" sx={{ width: { xs: 'auto', md: 220 }, flex: { xs: 1, md: '0 0 220px' }, minWidth: 0 }}>
+              <Select value={sortOrder} onChange={(event) => { setSortOrder(event.target.value as SortOrder); setCurrentPage(1) }} inputProps={{ 'aria-label': 'Sort courses' }} sx={{ minHeight: 56, backgroundColor: 'background.paper', borderRadius: 2 }}>
+                <MenuItem value="popular">Most Popular</MenuItem>
+                <MenuItem value="rating">Highest Rated</MenuItem>
+                <MenuItem value="newest">Newest</MenuItem>
+                <MenuItem value="price-low">Price: Low to High</MenuItem>
+                <MenuItem value="price-high">Price: High to Low</MenuItem>
+              </Select>
+            </FormControl>
+            <ToggleButtonGroup value={viewMode} exclusive onChange={handleViewChange} size="small" aria-label="Course view" sx={{ flexShrink: 0, height: 56, backgroundColor: 'background.paper', '& .MuiToggleButton-root': { px: 1.25, color: 'text.secondary', borderColor: 'divider' }, '& .Mui-selected': { color: 'primary.main', backgroundColor: 'action.selected' } }}>
+              <ToggleButton value="grid" aria-label="Grid view"><GridViewRoundedIcon /></ToggleButton>
+              <ToggleButton value="list" aria-label="List view"><ViewListRoundedIcon /></ToggleButton>
+            </ToggleButtonGroup>
+          </Stack>
         </Stack>
 
         <Grid container spacing={{ xs: 2.5, md: 3 }} alignItems="flex-start">
-          <Grid item xs={12} md={3}>
-            <Paper elevation={0} component="aside" aria-label="Course filters" sx={{ p: { xs: 2, sm: 2.5 }, border: 1, borderColor: 'divider', borderRadius: 3, backgroundColor: 'background.paper', position: { md: 'sticky' }, top: { md: 24 } }}>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1.5 }}>
-                <Typography variant="h6" sx={{ fontWeight: 750 }}>Filters</Typography>
-                {(hasFilters || search) && <Button size="small" onClick={clearFilters}>Clear all</Button>}
-              </Stack>
-              <Divider />
-              <Box sx={{ py: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Subject</Typography>
-                {categories.length ? <FormGroup>
-                  {categories.map((category) => <FormControlLabel key={category} control={<Checkbox size="small" checked={selectedCategories.includes(category)} onChange={(event) => { setSelectedCategories((current) => event.target.checked ? [...current, category] : current.filter((value) => value !== category)); setCurrentPage(1) }} />} label={<Typography variant="body2">{category} <Typography component="span" variant="caption" color="text.secondary">({courses.filter((course) => course.category === category).length})</Typography></Typography>} sx={{ ml: 0, mr: 0, minHeight: 34 }} />)}
-                </FormGroup> : <Typography variant="body2" color="text.secondary">No subjects available</Typography>}
-              </Box>
-              <Divider />
-              <Box sx={{ py: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 0.5, fontWeight: 700 }}>Price range</Typography>
-                <Typography variant="caption" color="text.secondary">${activePriceRange[0]} – ${activePriceRange[1]}</Typography>
-                <Slider getAriaLabel={(index) => (index === 0 ? 'Minimum course price' : 'Maximum course price')} value={activePriceRange} min={0} max={priceMaximum} step={1} onChange={(_, value) => { if (Array.isArray(value)) { setPriceRange([value[0], value[1]]); setCurrentPage(1) } }} valueLabelDisplay="auto" valueLabelFormat={(value) => `$${value}`} sx={{ mt: 1, mb: 0.5, color: 'primary.main' }} />
-                <Stack direction="row" justifyContent="space-between"><Typography variant="caption" color="text.secondary">Min</Typography><Typography variant="caption" color="text.secondary">Max</Typography></Stack>
-              </Box>
-              <Divider />
-              <Box sx={{ py: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Level</Typography>
-                {levels.length ? <FormGroup>{levels.map((level) => <FormControlLabel key={level} control={<Checkbox size="small" checked={selectedLevels.includes(level)} onChange={(event) => { setSelectedLevels((current) => event.target.checked ? [...current, level] : current.filter((value) => value !== level)); setCurrentPage(1) }} />} label={<Typography variant="body2">{level} <Typography component="span" variant="caption" color="text.secondary">({courses.filter((course) => course.level === level).length})</Typography></Typography>} sx={{ ml: 0, mr: 0, minHeight: 34 }} />)}</FormGroup> : <Typography variant="body2" color="text.secondary">No difficulty levels available</Typography>}
-              </Box>
-              <Divider />
-              <Box sx={{ py: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Course type</Typography>
-                <FormGroup>{(['Self-paced', 'Live class', 'Practice'] as CourseType[]).map((type) => <FormControlLabel key={type} control={<Checkbox size="small" checked={selectedCourseTypes.includes(type)} onChange={(event) => { setSelectedCourseTypes((current) => event.target.checked ? [...current, type] : current.filter((value) => value !== type)); setCurrentPage(1) }} />} label={<Typography variant="body2">{type} <Typography component="span" variant="caption" color="text.secondary">({courses.filter((course) => getCourseTypes(course).includes(type)).length})</Typography></Typography>} sx={{ ml: 0, mr: 0, minHeight: 34 }} />)}</FormGroup>
-              </Box>
-              <Divider />
-              <Box sx={{ pt: 2 }}>
-                <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 700 }}>Ratings</Typography>
-                <RadioGroup aria-label="Filter by minimum course rating" value={String(minRating)} onChange={(event) => { setMinRating(Number(event.target.value)); setCurrentPage(1) }}>
-                  {[4.5, 4, 3.5, 3].map((rating) => <FormControlLabel key={rating} value={String(rating)} control={<Radio size="small" />} label={<Stack direction="row" alignItems="center" spacing={0.75}>
-                    <Rating value={rating} precision={0.5} readOnly size="small" sx={{ color: '#c18120', fontSize: 16 }} />
-                    <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{rating.toFixed(1)} & up</Typography>
-                    <Typography variant="caption" color="text.secondary">({courses.filter((course) => course.rating >= rating).length.toLocaleString()})</Typography>
-                  </Stack>} sx={{ ml: 0, mr: 0, minHeight: 42 }} />)}
-                </RadioGroup>
-              </Box>
-            </Paper>
-          </Grid>
+          <Grid item xs={12} md={3} sx={{ display: { xs: 'none', md: 'block' } }}>{filterPanel}</Grid>
           <Grid item xs={12} md={9}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: activeFilters.length ? 1.5 : 1 }}>
+              <Typography variant="body2" color="text.secondary">Showing <Box component="span" sx={{ color: 'text.primary', fontWeight: 700 }}>{pageCourses.length ? `${(currentPage - 1) * pageSize + 1}–${Math.min(currentPage * pageSize, visibleCourses.length)}` : 0}</Box> of <Box component="span" sx={{ color: 'text.primary', fontWeight: 700 }}>{visibleCourses.length}</Box> courses</Typography>
+              <Button size="small" startIcon={<FilterListRoundedIcon />} onClick={() => setMobileFiltersOpen(true)} sx={{ display: { xs: 'inline-flex', md: 'none' } }}>Filters{activeFilters.length ? ` (${activeFilters.length})` : ''}</Button>
+            </Stack>
+            {activeFilters.length > 0 && <Stack direction="row" flexWrap="wrap" spacing={1} useFlexGap sx={{ mb: 2 }}>
+              {activeFilters.map((filter) => <Chip key={`${filter.key}-${filter.value}`} size="small" label={filter.label} onDelete={() => { filter.remove(); setCurrentPage(1) }} color="primary" variant="outlined" />)}
+              <Button size="small" onClick={clearFilters}>Clear all</Button>
+            </Stack>}
             {isLoading ? <Box aria-busy="true" sx={{ py: 8, textAlign: 'center' }}><Typography color="text.secondary">Loading courses…</Typography></Box> : visibleCourses.length ? <>
-              <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 1 }}>
-                <Typography variant="body2" color="text.secondary">Showing <Box component="span" sx={{ color: 'text.primary', fontWeight: 700 }}>{visibleCourses.length}</Box> {visibleCourses.length === 1 ? 'course' : 'courses'}</Typography>
-                {(hasFilters || search) && <Button size="small" onClick={clearFilters}>Clear filters</Button>}
-              </Stack>
-              <Grid container spacing={0}>
-                {pageCourses.map((course) => <Grid item xs={12} sm={6} md={4} key={course.id}><CourseCardItem item={course} /></Grid>)}
-              </Grid>
+              <Box sx={viewMode === 'grid' ? { display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, minmax(0, 1fr))', md: 'repeat(3, minmax(0, 1fr))' }, gap: { xs: 1, md: 2 } } : { display: 'grid', gridTemplateColumns: '1fr', gap: 1 }}>
+                {pageCourses.map((course) => <CourseCardItem key={course.id} item={course} viewMode={viewMode} courseTypes={getCourseTypes(course)} isFavorite={favorites.includes(String(course.id))} onToggleFavorite={toggleFavorite} />)}
+              </Box>
               <Stack alignItems="center" sx={{ mt: 3 }}><Pagination count={pageCount} page={currentPage} onChange={(_, page) => { setCurrentPage(page); document.getElementById('course-catalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }} color="primary" aria-label="Course pages" /></Stack>
             </> : <Paper variant="outlined" sx={{ p: { xs: 4, md: 6 }, textAlign: 'center', borderRadius: 3, backgroundColor: 'background.paper' }}>
               <SearchRoundedIcon color="disabled" sx={{ fontSize: 38 }} />
-              <Typography variant="h6" sx={{ mt: 1, fontWeight: 700 }}>No courses match your filters</Typography>
-              <Typography color="text.secondary" sx={{ mt: 0.5, mb: 2 }}>Try another keyword or adjust your filters to see more courses.</Typography>
-              <Button variant="outlined" onClick={clearFilters}>Show all courses</Button>
+              <Typography variant="h6" sx={{ mt: 1, fontWeight: 700 }}>No courses match your search or filters</Typography>
+              <Typography color="text.secondary" sx={{ mt: 0.5, mb: 2 }}>Try adjusting your filters or using a different search term.</Typography>
+              <Button variant="outlined" onClick={clearFilters}>Reset Filters</Button>
             </Paper>}
           </Grid>
         </Grid>
+        <Drawer anchor="left" open={mobileFiltersOpen} onClose={() => setMobileFiltersOpen(false)} sx={{ display: { md: 'none' }, '& .MuiDrawer-paper': { width: 'min(360px, 90vw)', p: 2 } }}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 750 }}>Filters</Typography>
+            <IconButton aria-label="Close filters" onClick={() => setMobileFiltersOpen(false)}><CloseRoundedIcon /></IconButton>
+          </Stack>
+          {filterPanel}
+          <Button variant="contained" onClick={() => setMobileFiltersOpen(false)} sx={{ mt: 2 }}>Show {visibleCourses.length} courses</Button>
+        </Drawer>
       </Container>
     </Box>
     <Footer />

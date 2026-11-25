@@ -9,4 +9,6 @@ export interface Course {
   description?: string
   level?: string
   lessonTypes?: string[]
+  createdAt?: string
+  durationSeconds?: number | null
 }

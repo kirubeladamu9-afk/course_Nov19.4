@@ -11,20 +11,34 @@ import IconButton, { iconButtonClasses } from '@mui/material/IconButton'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { Theme } from '@mui/material/styles'
 import ArrowForward from '@mui/icons-material/ArrowForward'
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded'
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import { Course } from '@/interfaces/course'
 import { navigateTo } from '@/lib/navigation'
 
 interface Props {
   item: Course
   onOpen?: (item: Course) => void
+  viewMode?: 'grid' | 'list'
+  courseTypes?: string[]
+  isFavorite?: boolean
+  onToggleFavorite?: (id: Course['id']) => void
 }
 
-const CourseCardItem: FC<Props> = ({ item, onOpen }) => {
+const formatDuration = (seconds: number) => {
+  const minutes = Math.round(seconds / 60)
+  const hours = Math.floor(minutes / 60)
+  const remainingMinutes = minutes % 60
+  return hours ? `${hours}h${remainingMinutes ? ` ${remainingMinutes}m` : ''}` : `${minutes}m`
+}
+
+const CourseCardItem: FC<Props> = ({ item, onOpen, viewMode = 'grid', courseTypes = [], isFavorite = false, onToggleFavorite }) => {
   const cardRef = useRef<HTMLDivElement | null>(null)
   const panelRef = useRef<HTMLDivElement | null>(null)
   const closeTimerRef = useRef<number | null>(null)
   const [detailsOpen, setDetailsOpen] = useState(false)
   const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
+  const showMarketplaceMetadata = Boolean(onToggleFavorite)
 
   const openDetails = () => {
     if (closeTimerRef.current !== null) window.clearTimeout(closeTimerRef.current)
@@ -50,8 +64,8 @@ const CourseCardItem: FC<Props> = ({ item, onOpen }) => {
     <Box
       sx={{
         width: '100%',
-        px: 1,
-        py: 4,
+        px: viewMode === 'list' ? 0 : 1,
+        py: viewMode === 'list' ? 1 : 4,
       }}
     >
       <Box
@@ -63,7 +77,12 @@ const CourseCardItem: FC<Props> = ({ item, onOpen }) => {
         onBlur={handleBlur}
         aria-describedby={detailsOpen ? `course-details-${item.id}` : undefined}
         sx={{
-          p: 2,
+          p: viewMode === 'list' ? { xs: 1.5, sm: 2 } : 2,
+          display: viewMode === 'list' ? { xs: 'block', sm: 'flex' } : 'block',
+          gap: viewMode === 'list' ? 2 : 0,
+          alignItems: 'center',
+          border: viewMode === 'list' ? 1 : 0,
+          borderColor: 'divider',
           backgroundColor: 'background.paper',
           borderRadius: 4,
           position: 'relative',
@@ -83,9 +102,11 @@ const CourseCardItem: FC<Props> = ({ item, onOpen }) => {
             position: 'relative',
             lineHeight: 0,
             overflow: 'hidden',
-            aspectRatio: '16 / 9',
+            width: viewMode === 'list' ? { xs: '100%', sm: 240 } : '100%',
+            flexShrink: 0,
+            aspectRatio: viewMode === 'list' ? { xs: '16 / 9', sm: '4 / 3' } : '16 / 9',
             borderRadius: 3,
-            mb: 2,
+            mb: viewMode === 'list' ? { xs: 2, sm: 0 } : 2,
             '& .course-cover-image': {
               display: 'block',
               width: '100%',
@@ -96,33 +117,50 @@ const CourseCardItem: FC<Props> = ({ item, onOpen }) => {
           }}
         >
           <img className="course-cover-image" src={item.cover} width={760} height={760} alt={'Course ' + item.title} loading="lazy" />
-        </Box>
-        <Box sx={{ mb: 2 }}>
-          <Typography component="h2" variant="h5" sx={{ mb: 2, height: 56, overflow: 'hidden', fontSize: '1.2rem' }}>
-            {item.title}
-          </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Rating name="rating-course" value={item.rating} max={5} sx={{ color: '#ffce31', mr: 1 }} readOnly />
-            <Typography component="span" variant="body2" color="text.secondary">
-              {item.ratingCount ? `(${item.ratingCount})` : 'No reviews yet'}
-            </Typography>
-          </Box>
-        </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography variant="h5" color="primary.main">
-              {'$' + item.price}
-            </Typography>
-            <Typography variant="h6">/ course</Typography>
-          </Box>
-          <IconButton
-            color="primary"
-            aria-label={`Open ${item.title} course`}
-            onClick={openCourse}
-            sx={{ '&:hover': { color: 'primary.dark' } }}
+          {onToggleFavorite && <IconButton
+            color={isFavorite ? 'error' : 'default'}
+            aria-label={`${isFavorite ? 'Remove' : 'Add'} ${item.title} ${isFavorite ? 'from' : 'to'} favorites`}
+            aria-pressed={isFavorite}
+            onClick={(event) => { event.stopPropagation(); onToggleFavorite(item.id) }}
+            sx={{ position: 'absolute', top: 8, right: 8, backgroundColor: 'background.paper', '&:hover': { backgroundColor: 'background.paper' } }}
           >
-            <ArrowForward />
-          </IconButton>
+            {isFavorite ? <FavoriteRoundedIcon /> : <FavoriteBorderRoundedIcon />}
+          </IconButton>}
+        </Box>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Box sx={{ mb: 1.5 }}>
+            <Typography component="h2" variant="h5" sx={{ mb: viewMode === 'list' ? 1 : 2, height: viewMode === 'list' ? 'auto' : 56, overflow: 'hidden', fontSize: '1.2rem' }}>
+              {item.title}
+            </Typography>
+            {showMarketplaceMetadata && (item.level && item.level !== 'Not specified' || courseTypes.length > 0 || (item.durationSeconds ?? 0) > 0) && <Stack direction="row" flexWrap="wrap" spacing={0.75} useFlexGap sx={{ mb: 1.25 }}>
+              {item.level && item.level !== 'Not specified' && <Chip size="small" label={item.level} color="primary" variant="outlined" />}
+              {courseTypes.map((type) => <Chip key={type} size="small" label={type} variant="outlined" />)}
+              {(item.durationSeconds ?? 0) > 0 && <Chip size="small" label={formatDuration(item.durationSeconds!)} variant="outlined" />}
+            </Stack>}
+            <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
+              <Rating name={`rating-course-${item.id}`} value={item.rating} max={5} sx={{ color: '#ffce31', mr: 1 }} readOnly />
+              <Typography component="span" variant="body2" color="text.secondary">
+                {item.ratingCount ? `(${item.ratingCount}${showMarketplaceMetadata ? item.ratingCount === 1 ? ' review' : ' reviews' : ''})` : 'No reviews yet'}
+              </Typography>
+            </Box>
+          </Box>
+          {viewMode === 'list' && item.description?.trim() && <Typography variant="body2" color="text.secondary" sx={{ mb: 1.5, display: { xs: 'none', sm: '-webkit-box' }, WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, overflow: 'hidden' }}>{item.description}</Typography>}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="h5" color="primary.main">
+                {'$' + item.price}
+              </Typography>
+              <Typography variant="h6">/ course</Typography>
+            </Box>
+            <IconButton
+              color="primary"
+              aria-label={`Open ${item.title} course`}
+              onClick={openCourse}
+              sx={{ '&:hover': { color: 'primary.dark' } }}
+            >
+              <ArrowForward />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
       <Popper
