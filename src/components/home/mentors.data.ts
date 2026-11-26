@@ -3,8 +3,8 @@ import type { Mentor } from '@/interfaces/mentor'
 export const data: Array<Mentor> = [
   {
     id: 1,
-    photo: '/images/mentors/christian-buehner-DItYlc26zVI-unsplash.jpg',
-    name: 'Jonas Tesema',
+    photo: '/images/mentors/birhanu-motuma.webp',
+    name: 'Birhanu Motuma',
     category: 'Abacus Tutor',
     description:
       'Years of experience teaching young learners with patience, structure, and real results in class',
@@ -15,8 +15,8 @@ export const data: Array<Mentor> = [
   },
   {
     id: 2,
-    photo: '/images/mentors/jonas-kakaroto-KIPqvvTOC1s-unsplash.jpg',
-    name: 'Kaleb Wondimu',
+    photo: '/images/mentors/bitanitya-tesfahun.webp',
+    name: 'Bitanitya Tesfahun',
     category: 'Exam Prep Tutor',
     description:
       'Years of experience teaching young learners with patience, structure, and real results in class',
@@ -27,8 +27,8 @@ export const data: Array<Mentor> = [
   },
   {
     id: 3,
-    photo: '/images/mentors/noah-buscher-8A7fD6Y5VF8-unsplash.jpg',
-    name: 'Selam Alemu',
+    photo: '/images/mentors/elias-nesreddin.webp',
+    name: 'Elias Nesreddin',
     category: 'Coding Tutor',
     description:
       'Years of experience teaching young learners with patience, structure, and real results in class',
@@ -39,8 +39,8 @@ export const data: Array<Mentor> = [
   },
   {
     id: 4,
-    photo: '/images/mentors/philip-martin-5aGUyCW_PJw-unsplash.jpg',
-    name: 'Rizki Known',
+    photo: '/images/mentors/kirubel-abebe.webp',
+    name: 'Kirubel Abebe',
     category: 'Fullstack Development',
     description:
       'Years of experience teaching young learners with patience, structure, and real results in class',
