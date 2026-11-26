@@ -100,7 +100,7 @@ const Navigation: FC<Props> = ({ isAdmin = false, onNavigate }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, alignItems: { md: 'center' } }}>
       {primaryDestinations.filter(({ path }) => path === 'hero').map(renderDestination)}
-      <Box onMouseLeave={scheduleProgramsClose} sx={{ position: 'relative', display: 'flex', justifyContent: 'center', mb: { xs: 3, md: 0 }, px: { xs: 0, md: 3 } }}>
+      <Box onMouseLeave={scheduleProgramsClose} sx={{ position: 'relative', display: 'flex', justifyContent: 'center', mb: { xs: 3, md: 0 } }}>
         <Box
           component="button"
           type="button"
