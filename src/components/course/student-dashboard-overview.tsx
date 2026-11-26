@@ -1,17 +1,11 @@
+import { AcademicCapIcon, ArrowRightIcon, BookOpenIcon, CalendarDaysIcon, CheckCircleIcon, ClipboardDocumentCheckIcon, FireIcon, PlayIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState, type ReactNode } from 'react'
 import type { Theme } from '@mui/material/styles'
 import { Box, Button, Chip, LinearProgress, Paper, Stack, Typography } from '@mui/material'
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
-import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined'
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded'
-import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined'
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
-import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded'
-import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined'
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined'
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 
 interface OverviewCourse {
   id: number
@@ -93,7 +87,7 @@ interface StudentDashboardOverviewProps {
 const heroGradient = (theme: Theme) => theme.palette.mode === 'dark' ? 'linear-gradient(120deg, #103b39 0%, #145d53 58%, #147b68 100%)' : 'linear-gradient(120deg, #123e3a 0%, #17675c 58%, #168773 100%)'
 
 const LearningCompleteBanner = ({ lessonCount, averageQuizScore, learningStreak }: { lessonCount: number; averageQuizScore: number | null; learningStreak: number }) => <Paper elevation={0} sx={{ p: { xs: 2.5, sm: 3.5, md: 4 }, mb: 2.25, borderRadius: { xs: 3.5, md: 4.5 }, color: '#fff', background: heroGradient }}>
-  <Chip size="small" icon={<CheckCircleOutlineRoundedIcon />} label="ALL CAUGHT UP" sx={{ color: '#e6fff8', bgcolor: 'rgba(255,255,255,.13)', '& .MuiChip-icon': { color: 'inherit' }, fontWeight: 700, letterSpacing: '.04em' }} />
+  <Chip size="small" icon={<CheckCircleIcon className="h-6 w-6" />} label="ALL CAUGHT UP" sx={{ color: '#e6fff8', bgcolor: 'rgba(255,255,255,.13)', '& .MuiChip-icon': { color: 'inherit' }, fontWeight: 700, letterSpacing: '.04em' }} />
   <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={3}>
     <Box>
       <Typography variant="h4" sx={{ mt: 2, fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 800, letterSpacing: '-.035em', lineHeight: 1.2 }}>Every course and class is complete</Typography>
@@ -144,7 +138,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
         </Typography>
         <Typography color="text.secondary" sx={{ mt: .8 }}>Small steps add up. Keep building your momentum.</Typography>
       </Box>
-      <Button variant="outlined" startIcon={<CalendarMonthOutlinedIcon />} endIcon={<ArrowForwardRoundedIcon />} onClick={() => onSelectView('calendar')} sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' }, borderRadius: 2.5, px: 2 }}>
+      <Button variant="outlined" startIcon={<CalendarDaysIcon className="h-6 w-6" />} endIcon={<ArrowRightIcon className="h-6 w-6" />} onClick={() => onSelectView('calendar')} sx={{ alignSelf: { xs: 'flex-start', sm: 'auto' }, borderRadius: 2.5, px: 2 }}>
         View schedule
       </Button>
     </Stack>
@@ -154,7 +148,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
       <Stack key={activeSlide?.key} direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', md: 'center' }} spacing={3} sx={{ position: 'relative', p: { xs: 2.5, sm: 3.5, md: 4 }, animation: 'learningSlideIn .5s ease', '@keyframes learningSlideIn': { from: { opacity: 0, transform: 'translateY(6px)' }, to: { opacity: 1, transform: 'none' } } }}>
         <Box sx={{ flex: 1, minWidth: 0, maxWidth: 650 }}>
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 2 }}>
-            <Chip size="small" icon={<SchoolOutlinedIcon />} label={featuredLearning ? featuredClass ? 'PICK UP YOUR CLASS' : 'PICK UP WHERE YOU LEFT OFF' : 'YOUR LEARNING PLAN'} sx={{ color: '#e6fff8', bgcolor: 'rgba(255,255,255,.13)', '& .MuiChip-icon': { color: 'inherit' }, fontWeight: 700, letterSpacing: '.04em' }} />
+            <Chip size="small" icon={<AcademicCapIcon className="h-6 w-6" />} label={featuredLearning ? featuredClass ? 'PICK UP YOUR CLASS' : 'PICK UP WHERE YOU LEFT OFF' : 'YOUR LEARNING PLAN'} sx={{ color: '#e6fff8', bgcolor: 'rgba(255,255,255,.13)', '& .MuiChip-icon': { color: 'inherit' }, fontWeight: 700, letterSpacing: '.04em' }} />
           </Stack>
           <Typography variant="h4" sx={{ fontSize: { xs: '1.55rem', sm: '2rem' }, fontWeight: 800, letterSpacing: '-.035em', lineHeight: 1.2 }}>
             {featuredLearning?.title ?? 'Your next chapter starts here'}
@@ -169,7 +163,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
             </Stack>
             <LinearProgress variant="determinate" value={featuredLearning.progress} sx={{ height: 8, borderRadius: 5, bgcolor: 'rgba(255,255,255,.22)', '& .MuiLinearProgress-bar': { borderRadius: 5, bgcolor: '#b8f0d9' } }} />
           </Box>}
-          <Button variant="contained" endIcon={<PlayArrowRoundedIcon />} onClick={() => featuredCourse ? onOpenCourse(featuredCourse.id) : featuredClass ? onOpenClass(featuredClass.id) : onSelectView('courses')} sx={{ mt: 2.5, borderRadius: 2.5, px: 2.25, color: '#12463e', bgcolor: '#fff', fontWeight: 800, boxShadow: 'none', '&:hover': { bgcolor: '#e8f8f2', boxShadow: 'none' } }}>
+          <Button variant="contained" endIcon={<PlayIcon className="h-6 w-6" />} onClick={() => featuredCourse ? onOpenCourse(featuredCourse.id) : featuredClass ? onOpenClass(featuredClass.id) : onSelectView('courses')} sx={{ mt: 2.5, borderRadius: 2.5, px: 2.25, color: '#12463e', bgcolor: '#fff', fontWeight: 800, boxShadow: 'none', '&:hover': { bgcolor: '#e8f8f2', boxShadow: 'none' } }}>
             {featuredLearning ? featuredClass ? 'Continue class' : 'Continue learning' : 'Browse courses'}
           </Button>
         </Box>
@@ -186,10 +180,10 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
     </Paper>}
 
     <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, minmax(0, 1fr))', lg: 'repeat(4, minmax(0, 1fr))' }, gap: { xs: 1.5, sm: 2.25 }, mb: 2.25 }}>
-      <OverviewMetric label="Active learning" value={String(courses.length + classes.length)} detail={`${courses.length} courses · ${classes.length} classes`} icon={<MenuBookOutlinedIcon fontSize="small" />} tone="teal" />
-      <OverviewMetric label="Lessons completed" value={String(lessonCount)} detail="Keep the streak going" icon={<CheckCircleOutlineRoundedIcon fontSize="small" />} tone="blue" />
-      <OverviewMetric label="Quiz average" value={averageQuizScore === null ? '—' : `${averageQuizScore}%`} detail={quizAverageNeedsAttention ? 'One or more quizzes need review' : quizCount ? `From ${quizCount} completed ${quizCount === 1 ? 'quiz' : 'quizzes'}` : 'No completed quizzes yet'} icon={quizAverageNeedsAttention ? <WarningAmberOutlinedIcon fontSize="small" /> : <QuizOutlinedIcon fontSize="small" />} tone={quizAverageNeedsAttention ? 'amber' : 'violet'} />
-      <OverviewMetric label="Learning streak" value={`${learningStreak} ${learningStreak === 1 ? 'day' : 'days'}`} detail="Your learning habit is growing" icon={<LocalFireDepartmentOutlinedIcon fontSize="small" />} tone="amber" />
+      <OverviewMetric label="Active learning" value={String(courses.length + classes.length)} detail={`${courses.length} courses · ${classes.length} classes`} icon={<BookOpenIcon className="h-5 w-5" />} tone="teal" />
+      <OverviewMetric label="Lessons completed" value={String(lessonCount)} detail="Keep the streak going" icon={<CheckCircleIcon className="h-5 w-5" />} tone="blue" />
+      <OverviewMetric label="Quiz average" value={averageQuizScore === null ? '—' : `${averageQuizScore}%`} detail={quizAverageNeedsAttention ? 'One or more quizzes need review' : quizCount ? `From ${quizCount} completed ${quizCount === 1 ? 'quiz' : 'quizzes'}` : 'No completed quizzes yet'} icon={quizAverageNeedsAttention ? <WarningAmberOutlinedIcon fontSize="small" /> : <ClipboardDocumentCheckIcon className="h-5 w-5" />} tone={quizAverageNeedsAttention ? 'amber' : 'violet'} />
+      <OverviewMetric label="Learning streak" value={`${learningStreak} ${learningStreak === 1 ? 'day' : 'days'}`} detail="Your learning habit is growing" icon={<FireIcon className="h-5 w-5" />} tone="amber" />
     </Box>
 
     {readiness}
@@ -198,11 +192,11 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
       <Paper elevation={0} sx={{ p: { xs: 2, sm: 2.75 }, border: 1, borderColor: 'divider', borderRadius: 3.5 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ mb: 2 }}>
           <Box><Typography component="h2" variant="h6" sx={{ fontWeight: 800 }}>Your courses</Typography><Typography variant="body2" color="text.secondary">A quick look at what you’re learning</Typography></Box>
-          <Button size="small" endIcon={<ArrowForwardRoundedIcon />} onClick={() => onSelectView('courses')} sx={{ flexShrink: 0 }}>See all</Button>
+          <Button size="small" endIcon={<ArrowRightIcon className="h-6 w-6" />} onClick={() => onSelectView('courses')} sx={{ flexShrink: 0 }}>See all</Button>
         </Stack>
         {courses.length ? <Stack spacing={1}>
           {courses.slice(0, 3).map((course) => <Box component="button" type="button" key={course.id} onClick={() => onOpenCourse(course.id)} sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1.5, p: 1.4, border: 1, borderColor: 'divider', borderRadius: 2.5, bgcolor: 'background.paper', cursor: 'pointer', textAlign: 'left', font: 'inherit', transition: 'border-color .18s, transform .18s', '&:hover': { borderColor: 'primary.main', transform: 'translateY(-1px)' } }}>
-            <Box sx={{ display: 'grid', placeItems: 'center', width: 42, height: 42, flexShrink: 0, borderRadius: 2.25, color: 'primary.main', bgcolor: 'action.hover' }}><MenuBookOutlinedIcon /></Box>
+            <Box sx={{ display: 'grid', placeItems: 'center', width: 42, height: 42, flexShrink: 0, borderRadius: 2.25, color: 'primary.main', bgcolor: 'action.hover' }}><BookOpenIcon className="h-6 w-6" /></Box>
             <Box sx={{ flex: 1, minWidth: 0 }}>
               <Typography noWrap sx={{ fontWeight: 750 }}>{course.title}</Typography>
               <Typography noWrap variant="caption" color="text.secondary">{course.category} · {course.level}</Typography>
@@ -211,7 +205,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
             <Typography variant="body2" color="primary.main" sx={{ fontWeight: 800, whiteSpace: 'nowrap' }}>{course.progress}%</Typography>
           </Box>)}
         </Stack> : <Box sx={{ p: 2.5, textAlign: 'center', borderRadius: 2.5, bgcolor: 'action.hover' }}>
-          <MenuBookOutlinedIcon color="primary" />
+          <BookOpenIcon className="h-6 w-6" />
           <Typography sx={{ mt: .75, fontWeight: 700 }}>Your courses will appear here</Typography>
           <Typography variant="body2" color="text.secondary">Browse the catalog when you’re ready to start.</Typography>
         </Box>}
@@ -220,7 +214,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
       <Paper elevation={0} sx={{ p: { xs: 2, sm: 2.75 }, border: 1, borderColor: 'divider', borderRadius: 3.5, minHeight: 240 }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ mb: 2 }}>
           <Box><Typography component="h2" variant="h6" sx={{ fontWeight: 800 }}>Coming up</Typography><Typography variant="body2" color="text.secondary">Your next live learning session</Typography></Box>
-          <Box sx={{ display: 'grid', placeItems: 'center', width: 40, height: 40, borderRadius: 2.25, color: 'primary.main', bgcolor: 'action.hover' }}><CalendarMonthOutlinedIcon /></Box>
+          <Box sx={{ display: 'grid', placeItems: 'center', width: 40, height: 40, borderRadius: 2.25, color: 'primary.main', bgcolor: 'action.hover' }}><CalendarDaysIcon className="h-6 w-6" /></Box>
         </Stack>
         {session ? <>
           <Box sx={{ p: 1.75, borderRadius: 2.75, bgcolor: (theme) => theme.palette.mode === 'dark' ? 'rgba(32, 150, 128, .14)' : 'rgba(18, 135, 115, .07)' }}>
@@ -232,14 +226,14 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
               <Typography variant="caption">{new Date(session.startsAt).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</Typography>
             </Stack>
           </Box>
-          <Button fullWidth variant="outlined" endIcon={<ArrowForwardRoundedIcon />} onClick={() => onSelectView('calendar')} sx={{ mt: 1.5, borderRadius: 2.25 }}>Open calendar</Button>
+          <Button fullWidth variant="outlined" endIcon={<ArrowRightIcon className="h-6 w-6" />} onClick={() => onSelectView('calendar')} sx={{ mt: 1.5, borderRadius: 2.25 }}>Open calendar</Button>
         </> : <>
           <Box sx={{ p: 2.25, borderRadius: 2.75, bgcolor: 'action.hover', textAlign: 'center' }}>
-            <CalendarMonthOutlinedIcon color="primary" />
+            <CalendarDaysIcon className="h-6 w-6" />
             <Typography sx={{ mt: .75, fontWeight: 700 }}>Nothing scheduled yet</Typography>
             <Typography variant="body2" color="text.secondary">New live sessions will show up here.</Typography>
           </Box>
-          <Button fullWidth variant="outlined" endIcon={<ArrowForwardRoundedIcon />} onClick={() => onSelectView('classes')} sx={{ mt: 1.5, borderRadius: 2.25 }}>View my classes</Button>
+          <Button fullWidth variant="outlined" endIcon={<ArrowRightIcon className="h-6 w-6" />} onClick={() => onSelectView('classes')} sx={{ mt: 1.5, borderRadius: 2.25 }}>View my classes</Button>
         </>}
       </Paper>
     </Box>
@@ -247,11 +241,11 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
     <Paper elevation={0} sx={{ mt: 2.25, p: { xs: 2, sm: 2.75 }, border: 1, borderColor: 'divider', borderRadius: 3.5 }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1} sx={{ mb: 2 }}>
         <Box><Typography component="h2" variant="h6" sx={{ fontWeight: 800 }}>Your classes</Typography><Typography variant="body2" color="text.secondary">Continue learning with your enrolled classes</Typography></Box>
-        <Button size="small" endIcon={<ArrowForwardRoundedIcon />} onClick={() => onSelectView('classes')} sx={{ flexShrink: 0 }}>See all</Button>
+        <Button size="small" endIcon={<ArrowRightIcon className="h-6 w-6" />} onClick={() => onSelectView('classes')} sx={{ flexShrink: 0 }}>See all</Button>
       </Stack>
       {classes.length ? <Stack spacing={1}>
         {classes.slice(0, 3).map((classItem) => <Box component="button" type="button" key={classItem.id} onClick={() => onOpenClass(classItem.id)} sx={{ width: '100%', display: 'flex', alignItems: 'center', gap: 1.5, p: 1.4, border: 1, borderColor: 'divider', borderRadius: 2.5, bgcolor: 'background.paper', cursor: 'pointer', textAlign: 'left', font: 'inherit', transition: 'border-color .18s, transform .18s', '&:hover': { borderColor: 'primary.main', transform: 'translateY(-1px)' } }}>
-          <Box sx={{ display: 'grid', placeItems: 'center', width: 42, height: 42, flexShrink: 0, borderRadius: 2.25, color: 'primary.main', bgcolor: 'action.hover' }}><SchoolOutlinedIcon /></Box>
+          <Box sx={{ display: 'grid', placeItems: 'center', width: 42, height: 42, flexShrink: 0, borderRadius: 2.25, color: 'primary.main', bgcolor: 'action.hover' }}><AcademicCapIcon className="h-6 w-6" /></Box>
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography noWrap sx={{ fontWeight: 750 }}>{classItem.title}</Typography>
             <Typography noWrap variant="caption" color="text.secondary">with {classItem.tutor}</Typography>
@@ -260,7 +254,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
           <Typography variant="body2" color="primary.main" sx={{ fontWeight: 800, whiteSpace: 'nowrap' }}>{classItem.progress}%</Typography>
         </Box>)}
       </Stack> : <Box sx={{ p: 2.5, textAlign: 'center', borderRadius: 2.5, bgcolor: 'action.hover' }}>
-        <SchoolOutlinedIcon color="primary" />
+        <AcademicCapIcon className="h-6 w-6" />
         <Typography sx={{ mt: .75, fontWeight: 700 }}>Your classes will appear here</Typography>
         <Typography variant="body2" color="text.secondary">Browse available classes when you’re ready to join.</Typography>
       </Box>}

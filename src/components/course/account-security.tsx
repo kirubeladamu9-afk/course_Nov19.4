@@ -1,3 +1,4 @@
+import { BellIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState, type FC } from 'react'
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
@@ -16,7 +17,6 @@ import TextField from '@mui/material/TextField'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import Badge from '@mui/material/Badge'
-import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined'
 import { toast } from '@/components/toast'
 import SecuritySessionCard from '@/components/security/security-session-card'
 import { navigateTo } from '@/lib/navigation'
@@ -35,7 +35,7 @@ export const SecurityNotifications: FC<{ admin?: boolean }> = ({ admin = false }
   return <>
     <Tooltip title="Security notifications">
       <IconButton aria-label="Security notifications" onClick={(event) => { void showAlerts(event.currentTarget) }}>
-        <Badge color="error" variant="dot" invisible={alerts.length === 0}><NotificationsNoneOutlinedIcon fontSize="small" /></Badge>
+        <Badge color="error" variant="dot" invisible={alerts.length === 0}><BellIcon className="h-5 w-5" /></Badge>
       </IconButton>
     </Tooltip>
     <Menu anchorEl={anchor} open={open} onClose={() => setAnchor(null)} PaperProps={{ sx: { width: 340, maxWidth: 'calc(100vw - 32px)', maxHeight: 420 } }}>
