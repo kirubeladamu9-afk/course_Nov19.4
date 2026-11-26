@@ -42,6 +42,7 @@ import CloseIcon from '@mui/icons-material/Close'
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined'
 import ArticleOutlinedIcon from '@mui/icons-material/ArticleOutlined'
 import BookOutlinedIcon from '@mui/icons-material/BookOutlined'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined'
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
@@ -110,6 +111,7 @@ import ArticleImportPreview from './article-import-preview'
 import { STEM_TOOL_LIBRARY, STEM_TOOL_PICKER_COMING_SOON, type StemToolDefinition } from '@/components/stem-lab/stem-tool-library'
 
 const drawerWidth = 272
+const collapsedDrawerWidth = 80
 
 type Section = 'overview' | 'courses' | 'registrations' | 'classes' | 'tutors' | 'blog' | 'practice-exams' | 'syllabus' | 'payments' | 'access' | 'reports' | 'violations' | 'reviews' | 'users' | 'security'
 
@@ -1779,6 +1781,7 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ darkMode, onToggleDarkMode })
   const [section, setSection] = useState<Section>(() => getSectionFromPath(window.location.pathname))
   const [pathname, setPathname] = useState(() => window.location.pathname)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null)
   const adminUser = getAuthenticatedUser()
 
@@ -1849,14 +1852,16 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ darkMode, onToggleDarkMode })
     }
   }, [adminUser, pathname, section])
 
+  const collapsed = !isMobile && sidebarCollapsed
+
   const sidebar = (
-    <Box sx={{ width: drawerWidth, height: '100%', overflowY: 'auto', backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column', borderRight: 1, borderColor: 'divider' }}>
-      <Box sx={{ px: 3, pt: 2.5, pb: 2.25, borderBottom: 1, borderColor: 'divider' }}><Logo /><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: .2 }}>Your management workspace</Typography></Box>
-      <Box component="nav" aria-label="Admin navigation" sx={{ px: 1.75, py: 2, flex: 1 }}>
-        <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Overview</Typography>
+    <Box sx={{ width: collapsed ? collapsedDrawerWidth : drawerWidth, height: '100%', overflowY: 'auto', backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column', borderRight: 1, borderColor: 'divider', transition: 'width .2s ease' }}>
+      <Box sx={{ px: collapsed ? 1.25 : 3, pt: 2.5, pb: 2.25, borderBottom: 1, borderColor: 'divider' }}>{collapsed ? <Box sx={{ display: 'flex', justifyContent: 'center' }}><Logo compact /></Box> : <><Logo /><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: .2 }}>Your management workspace</Typography></>}</Box>
+      <Box component="nav" aria-label="Admin navigation" sx={{ px: collapsed ? 1 : 1.75, py: 2, flex: 1 }}>
+        {!collapsed && <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Overview</Typography>}
         {navigation.map((item, index) => <Box key={item.key}>
-          {index === 1 && <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Manage</Typography>}
-          {index === 7 && <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Insights & access</Typography>}
+          {index === 1 && (collapsed ? <Divider sx={{ my: 1.5 }} /> : <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Manage</Typography>)}
+          {index === 7 && (collapsed ? <Divider sx={{ my: 1.5 }} /> : <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Insights & access</Typography>)}
           <Box
             component="button"
             title={item.label}
@@ -1864,14 +1869,14 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ darkMode, onToggleDarkMode })
             aria-expanded={item.subviews ? section === item.key : undefined}
             onClick={() => selectSection(item.key)}
             sx={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 1.25, border: 0, borderRadius: 2.5, px: 1.5, py: 1.05, mb: .45,
+              width: '100%', display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : undefined, gap: 1.25, border: 0, borderRadius: 2.5, px: 1.5, py: 1.05, mb: .45,
               backgroundColor: section === item.key ? 'primary.main' : 'transparent', color: section === item.key ? 'primary.contrastText' : 'text.secondary',
               cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', transition: 'all .18s ease', boxShadow: section === item.key ? '0 7px 16px rgba(18,124,113,.18)' : 'none', '&:hover': { backgroundColor: section === item.key ? 'primary.dark' : 'action.hover', transform: section === item.key ? 'none' : 'translateX(2px)' },
             }}
           >
-            {item.icon}<Typography variant="body2" sx={{ flex: 1, fontWeight: section === item.key ? 600 : 400 }}>{item.label}</Typography>{item.subviews && (section === item.key ? <ExpandMoreIcon fontSize="small" /> : <ChevronRightIcon fontSize="small" />)}
+            {item.icon}{!collapsed && <Typography variant="body2" sx={{ flex: 1, fontWeight: section === item.key ? 600 : 400 }}>{item.label}</Typography>}{!collapsed && item.subviews && (section === item.key ? <ExpandMoreIcon fontSize="small" /> : <ChevronRightIcon fontSize="small" />)}
           </Box>
-          {item.subviews && section === item.key && <Box sx={{ ml: 2, mb: 1 }}>
+          {item.subviews && section === item.key && !collapsed && <Box sx={{ ml: 2, mb: 1 }}>
             {item.subviews.map((subview) => {
               const isActiveSubview = pathname === subview.path
               return <Box key={subview.path} component="button" type="button" onClick={() => { navigateTo(subview.path); setSection(item.key); setMobileOpen(false) }} sx={{ width: '100%', border: 0, borderLeft: 2, borderColor: isActiveSubview ? 'primary.main' : 'divider', py: 0.75, pl: 1.5, pr: 1, backgroundColor: 'transparent', color: isActiveSubview ? 'primary.main' : 'text.secondary', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, fontWeight: isActiveSubview ? 600 : 400, textAlign: 'left', '&:hover': { color: 'primary.main', backgroundColor: 'action.hover' } }}>{subview.label}</Box>
@@ -1880,16 +1885,16 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ darkMode, onToggleDarkMode })
         </Box>)}
       </Box>
       <Box sx={{ p: 1.75, pt: 1, borderTop: 1, borderColor: 'divider' }}>
-        <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Account</Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, p: 1.25, mb: 1.25, borderRadius: 3, background: (theme) => `linear-gradient(135deg, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.22 : 0.10)}, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.10 : 0.04)})` }}><Box sx={{ position: 'relative' }}><Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}>{(adminUser?.name || 'Admin').charAt(0)}</Avatar><Box sx={{ position: 'absolute', right: -1, bottom: 0, width: 9, height: 9, borderRadius: '50%', bgcolor: 'success.main', border: (theme) => `2px solid ${theme.palette.background.paper}` }} /></Box><Box sx={{ minWidth: 0 }}><Typography variant="body2" noWrap sx={{ fontWeight: 800 }}>{adminUser?.name || 'Admin user'}</Typography><Typography variant="caption" color="text.secondary">Administrator account</Typography></Box></Box>
-        <Box title="Settings" aria-label="Settings" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, px: 1, py: .7 }}><SettingsOutlinedIcon color="disabled" fontSize="small" /><Typography variant="caption" color="text.secondary">Manage preferences</Typography></Box>
+        {collapsed ? <Divider sx={{ my: 1.5 }} /> : <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Account</Typography>}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : undefined, gap: 1.2, p: 1.25, mb: 1.25, borderRadius: 3, background: (theme) => `linear-gradient(135deg, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.22 : 0.10)}, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.10 : 0.04)})` }}><Box sx={{ position: 'relative' }}><Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}>{(adminUser?.name || 'Admin').charAt(0)}</Avatar><Box sx={{ position: 'absolute', right: -1, bottom: 0, width: 9, height: 9, borderRadius: '50%', bgcolor: 'success.main', border: (theme) => `2px solid ${theme.palette.background.paper}` }} /></Box>{!collapsed && <Box sx={{ minWidth: 0 }}><Typography variant="body2" noWrap sx={{ fontWeight: 800 }}>{adminUser?.name || 'Admin user'}</Typography><Typography variant="caption" color="text.secondary">Administrator account</Typography></Box>}</Box>
+        {!collapsed && <Box title="Settings" aria-label="Settings" sx={{ display: 'flex', alignItems: 'center', gap: 1.25, px: 1, py: .7 }}><SettingsOutlinedIcon color="disabled" fontSize="small" /><Typography variant="caption" color="text.secondary">Manage preferences</Typography></Box>}
       </Box>
     </Box>
   )
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: 'background.default' }}>
-      {isMobile ? <Drawer open={mobileOpen} onClose={() => setMobileOpen(false)}>{sidebar}</Drawer> : <Box sx={{ position: 'sticky', top: 0, height: '100vh', flexShrink: 0, width: drawerWidth, zIndex: 'drawer' }}>{sidebar}</Box>}
+      {isMobile ? <Drawer open={mobileOpen} onClose={() => setMobileOpen(false)}>{sidebar}</Drawer> : <Box sx={{ position: 'sticky', top: 0, height: '100vh', flexShrink: 0, width: collapsed ? collapsedDrawerWidth : drawerWidth, zIndex: 'drawer', transition: 'width .2s ease' }}>{sidebar}<IconButton onClick={() => setSidebarCollapsed((current) => !current)} aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} aria-expanded={!sidebarCollapsed} sx={{ position: 'absolute', top: 28, right: -14, zIndex: 1, width: 28, height: 28, bgcolor: 'background.paper', border: 1, borderColor: 'divider', boxShadow: 1, '&:hover': { bgcolor: 'action.hover' } }}>{sidebarCollapsed ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}</IconButton></Box>}
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Box component="header" sx={{ minHeight: 82, px: { xs: 2, md: 3.5 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, backgroundColor: (theme) => alpha(theme.palette.background.paper, theme.palette.mode === 'dark' ? 0.96 : 0.82), backdropFilter: 'blur(16px)', borderBottom: 1, borderColor: 'divider' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0 }}>

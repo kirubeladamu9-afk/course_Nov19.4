@@ -35,6 +35,8 @@ import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownR
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined'
 import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
 import { type FC, useEffect, useMemo, useRef, useState } from 'react'
@@ -205,11 +207,13 @@ const TutorScheduleView: FC<{ classes: TutorClass[]; now: Date }> = ({ classes, 
 }
 
 const drawerWidth = 272
+const collapsedDrawerWidth = 80
 
 const TutorDashboard = ({ darkMode, onToggleDarkMode }: { darkMode: boolean; onToggleDarkMode: () => void }) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [profileAnchor, setProfileAnchor] = useState<null | HTMLElement>(null)
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [view, setView] = useState<View>(() => getTutorViewFromPath(window.location.pathname))
@@ -481,45 +485,49 @@ const TutorDashboard = ({ darkMode, onToggleDarkMode }: { darkMode: boolean; onT
     if (window.location.pathname !== tutorViewPaths[nextView]) navigateTo(tutorViewPaths[nextView])
   }
 
+  const collapsed = !isMobile && sidebarCollapsed
+
   const navButton = (nextView: View, label: string, icon: React.ReactNode) => <Box
     key={nextView}
     component="button"
     type="button"
     aria-current={view === nextView ? 'page' : undefined}
+    title={collapsed ? label : undefined}
+    aria-label={collapsed ? label : undefined}
     onClick={() => selectView(nextView)}
     sx={{
-      width: '100%', display: 'flex', alignItems: 'center', gap: 1.25, border: 0, borderRadius: 2.5, px: 1.5, py: 1.05, mb: .45,
+      width: '100%', display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : undefined, gap: 1.25, border: 0, borderRadius: 2.5, px: 1.5, py: 1.05, mb: .45,
       backgroundColor: view === nextView ? 'primary.main' : 'transparent', color: view === nextView ? 'primary.contrastText' : 'text.secondary',
       cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', transition: 'all .18s ease',
       boxShadow: view === nextView ? (currentTheme) => `0 7px 16px ${alpha(currentTheme.palette.primary.main, 0.22)}` : 'none',
       '&:hover': { backgroundColor: view === nextView ? 'primary.dark' : 'action.hover', color: view === nextView ? 'primary.contrastText' : 'primary.main', transform: view === nextView ? 'none' : 'translateX(2px)' },
     }}
-  ><Box sx={{ display: 'flex', opacity: view === nextView ? 1 : .82 }}>{icon}</Box><Typography variant="body2" sx={{ flex: 1, fontWeight: view === nextView ? 700 : 500 }}>{label}</Typography></Box>
+  ><Box sx={{ display: 'flex', opacity: view === nextView ? 1 : .82 }}>{icon}</Box>{!collapsed && <Typography variant="body2" sx={{ flex: 1, fontWeight: view === nextView ? 700 : 500 }}>{label}</Typography>}</Box>
 
-  const sidebar = <Box sx={{ width: drawerWidth, height: '100%', overflowY: 'auto', backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column', borderRight: 1, borderColor: 'divider' }}>
-    <Box sx={{ px: 3, pt: 2.5, pb: 2.25, borderBottom: 1, borderColor: 'divider' }}><Logo /><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: .2 }}>Your teaching workspace</Typography></Box>
-    <Box component="nav" aria-label="Tutor dashboard navigation" sx={{ px: 1.75, py: 2, flex: 1 }}>
-      <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Workspace</Typography>
+  const sidebar = <Box sx={{ width: collapsed ? collapsedDrawerWidth : drawerWidth, height: '100%', overflowY: 'auto', backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column', borderRight: 1, borderColor: 'divider', transition: 'width .2s ease' }}>
+    <Box sx={{ px: collapsed ? 1.25 : 3, pt: 2.5, pb: 2.25, borderBottom: 1, borderColor: 'divider' }}>{collapsed ? <Box sx={{ display: 'flex', justifyContent: 'center' }}><Logo compact /></Box> : <><Logo /><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: .2 }}>Your teaching workspace</Typography></>}</Box>
+    <Box component="nav" aria-label="Tutor dashboard navigation" sx={{ px: collapsed ? 1 : 1.75, py: 2, flex: 1 }}>
+      {!collapsed && <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Workspace</Typography>}
       {navButton('overview', 'Dashboard', <DashboardOutlinedIcon fontSize="small" />)}
       {navButton('schedule', 'Schedule', <CalendarTodayOutlinedIcon fontSize="small" />)}
-      <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Teaching</Typography>
+      {collapsed ? <Divider sx={{ my: 1.5 }} /> : <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Teaching</Typography>}
       {navButton('courses', 'My Courses', <SchoolOutlinedIcon fontSize="small" />)}
       {navButton('classes', 'My Classes', <ClassOutlinedIcon fontSize="small" />)}
       {navButton('students', 'Students & Attendance', <GroupsOutlinedIcon fontSize="small" />)}
       {navButton('grading', 'Grading', <AssignmentTurnedInOutlinedIcon fontSize="small" />)}
-      <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Account</Typography>
+      {collapsed ? <Divider sx={{ my: 1.5 }} /> : <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mt: 2.25, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Account</Typography>}
       {navButton('profile', 'Profile', <PersonOutlineIcon fontSize="small" />)}
     </Box>
     <Box sx={{ p: 1.75, pt: 1, borderTop: 1, borderColor: 'divider' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, p: 1.25, mb: 1.25, borderRadius: 3, background: (currentTheme) => `linear-gradient(135deg, ${alpha(currentTheme.palette.primary.main, currentTheme.palette.mode === 'dark' ? 0.22 : 0.10)}, ${alpha(currentTheme.palette.primary.main, currentTheme.palette.mode === 'dark' ? 0.10 : 0.04)})` }}><Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}>{(user?.name || overview?.tutor.name || 'Tutor').charAt(0)}</Avatar><Box sx={{ minWidth: 0 }}><Typography variant="body2" noWrap sx={{ fontWeight: 800 }}>{user?.name || overview?.tutor.name || 'Tutor'}</Typography><Typography variant="caption" color="text.secondary">Tutor account</Typography></Box></Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, px: 1, py: .7 }}><SchoolOutlinedIcon sx={{ color: 'primary.main' }} fontSize="small" /><Typography variant="caption" color="text.secondary">Support every learner&apos;s progress.</Typography></Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : undefined, gap: 1.2, p: 1.25, mb: 1.25, borderRadius: 3, background: (currentTheme) => `linear-gradient(135deg, ${alpha(currentTheme.palette.primary.main, currentTheme.palette.mode === 'dark' ? 0.22 : 0.10)}, ${alpha(currentTheme.palette.primary.main, currentTheme.palette.mode === 'dark' ? 0.10 : 0.04)})` }}><Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}>{(user?.name || overview?.tutor.name || 'Tutor').charAt(0)}</Avatar>{!collapsed && <Box sx={{ minWidth: 0 }}><Typography variant="body2" noWrap sx={{ fontWeight: 800 }}>{user?.name || overview?.tutor.name || 'Tutor'}</Typography><Typography variant="caption" color="text.secondary">Tutor account</Typography></Box>}</Box>
+      {!collapsed && <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, px: 1, py: .7 }}><SchoolOutlinedIcon sx={{ color: 'primary.main' }} fontSize="small" /><Typography variant="caption" color="text.secondary">Support every learner&apos;s progress.</Typography></Box>}
     </Box>
   </Box>
 
   if (loading) return <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress aria-label="Loading tutor portal" /></Box>
 
   return <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: 'background.default' }}>
-    {isMobile ? <Drawer variant="temporary" anchor="left" open={mobileOpen} onClose={() => setMobileOpen(false)} ModalProps={{ keepMounted: true }} PaperProps={{ sx: { width: drawerWidth, maxWidth: 'calc(100vw - 48px)' } }}>{sidebar}</Drawer> : <Box sx={{ position: 'sticky', top: 0, height: '100vh', flexShrink: 0, width: drawerWidth, zIndex: 'drawer' }}>{sidebar}</Box>}
+    {isMobile ? <Drawer variant="temporary" anchor="left" open={mobileOpen} onClose={() => setMobileOpen(false)} ModalProps={{ keepMounted: true }} PaperProps={{ sx: { width: drawerWidth, maxWidth: 'calc(100vw - 48px)' } }}>{sidebar}</Drawer> : <Box sx={{ position: 'sticky', top: 0, height: '100vh', flexShrink: 0, width: collapsed ? collapsedDrawerWidth : drawerWidth, zIndex: 'drawer', transition: 'width .2s ease' }}>{sidebar}<IconButton onClick={() => setSidebarCollapsed((current) => !current)} aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'} aria-expanded={!sidebarCollapsed} sx={{ position: 'absolute', top: 28, right: -14, zIndex: 1, width: 28, height: 28, bgcolor: 'background.paper', border: 1, borderColor: 'divider', boxShadow: 1, '&:hover': { bgcolor: 'action.hover' } }}>{sidebarCollapsed ? <ChevronRightIcon fontSize="small" /> : <ChevronLeftIcon fontSize="small" />}</IconButton></Box>}
     <Box sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
       <Box component="header" sx={{ position: 'sticky', top: 0, zIndex: 'appBar', minHeight: 82, px: { xs: 2, md: 3.5 }, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, backgroundColor: (currentTheme) => alpha(currentTheme.palette.background.paper, currentTheme.palette.mode === 'dark' ? 0.96 : 0.82), backdropFilter: 'blur(16px)', borderBottom: 1, borderColor: 'divider' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, minWidth: 0 }}>
