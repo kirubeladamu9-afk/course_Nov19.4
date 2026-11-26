@@ -60,7 +60,7 @@ const primaryGradient = 'linear-gradient(135deg, #1A9A8C 0%, #0D6A69 100%)'
 const formContainerSx = { width: '100%', maxWidth: 600, mx: 'auto' } as const
 
 const fieldSx = {
-  '& .MuiInputLabel-root': { color: muted, fontWeight: 500, border: 0, outline: 'none', bgcolor: 'transparent', boxShadow: 'none', '&:hover, &:focus-visible': { border: 0, outline: 'none', bgcolor: 'transparent', boxShadow: 'none' } },
+  '& .MuiInputLabel-root': { color: muted, fontWeight: 500, border: 0, outline: 'none', boxShadow: 'none', '&.MuiInputLabel-shrink': { bgcolor: '#fff' } },
   '& .MuiInputLabel-root.Mui-focused': { color: primary },
   '& .MuiInputLabel-root:not(.MuiInputLabel-shrink)': { transform: 'translate(46px, 16px) scale(1)' },
   '& .MuiOutlinedInput-root': {
