@@ -502,7 +502,7 @@ const DashboardHeader: FC<{ title: string; darkMode: boolean; language: string; 
       <Tooltip title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}><IconButton onClick={onToggleDarkMode} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>{darkMode ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}</IconButton></Tooltip>
       <Tooltip title="Open profile menu"><IconButton onClick={(event) => setProfileAnchor(event.currentTarget)} aria-label="Open profile menu" aria-controls={profileAnchor ? 'student-profile-menu' : undefined} aria-haspopup="true" sx={{ p: .25 }}><Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}>{displayName.charAt(0)}</Avatar></IconButton></Tooltip>
       <Menu id="student-profile-menu" anchorEl={profileAnchor} open={Boolean(profileAnchor)} onClose={() => setProfileAnchor(null)} PaperProps={{ sx: { minWidth: 190, borderRadius: 2, p: 0.75 } }}>
-        <MenuItem onClick={() => { setProfileAnchor(null); window.dispatchEvent(new CustomEvent('student-profile-open')) }}><PersonOutlineIcon fontSize="small" sx={{ mr: 1 }} />{displayName}</MenuItem>
+        <MenuItem onClick={() => { setProfileAnchor(null); window.dispatchEvent(new CustomEvent('student-profile-open')) }}><UserIcon className="mr-2 h-5 w-5" />{displayName}</MenuItem>
         <MenuItem onClick={() => { setProfileAnchor(null); void signOut().then(() => { toast.add({ title: 'Signed out', description: 'You have been successfully logged out.', type: 'success' }); navigateTo('/', true) }) }}>Sign out</MenuItem>
       </Menu>
     </Stack>
@@ -562,7 +562,7 @@ const DashboardSidebar: FC<SidebarProps> = ({ activeView, onSelectView, collapse
     </Box>
     <Box sx={{ p: collapsed ? 1 : 1.75, pt: 1, borderTop: 1, borderColor: 'divider' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.2, p: 1.25, mb: 1.25, borderRadius: 3, background: (theme) => `linear-gradient(135deg, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.22 : 0.10)}, ${alpha(theme.palette.primary.main, theme.palette.mode === 'dark' ? 0.10 : 0.04)})` }}><Box sx={{ position: 'relative' }}><Avatar sx={{ width: 34, height: 34, bgcolor: 'primary.main', fontSize: 14 }}>{displayName.charAt(0)}</Avatar><Box sx={{ position: 'absolute', right: -1, bottom: 0, width: 9, height: 9, borderRadius: '50%', bgcolor: 'success.main', border: (theme) => `2px solid ${theme.palette.background.paper}` }} /></Box>{!collapsed && <Box sx={{ minWidth: 0 }}><Typography variant="body2" noWrap sx={{ fontWeight: 800 }}>{displayName}</Typography><Typography variant="caption" color="text.secondary">Student account</Typography></Box>}</Box>
-      {!collapsed && <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, px: 1, py: .7 }}><SchoolOutlinedIcon sx={{ color: 'primary.main' }} fontSize="small" /><Typography variant="caption" color="text.secondary">Keep learning at your own pace.</Typography></Box>}
+      {!collapsed && <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.25, px: 1, py: .7 }}><Box component="span" sx={{ display: 'inline-flex', color: 'primary.main' }}><AcademicCapIcon className="h-5 w-5" /></Box><Typography variant="caption" color="text.secondary">Keep learning at your own pace.</Typography></Box>}
     </Box>
   </Box>
 }

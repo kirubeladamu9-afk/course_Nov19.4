@@ -2,9 +2,7 @@ import { AcademicCapIcon, ArrowRightIcon, BookOpenIcon, CalendarDaysIcon, CheckC
 import { useEffect, useState, type ReactNode } from 'react'
 import type { Theme } from '@mui/material/styles'
 import { Box, Button, Chip, LinearProgress, Paper, Stack, Typography } from '@mui/material'
-import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded'
-import AutoAwesomeOutlinedIcon from '@mui/icons-material/AutoAwesomeOutlined'
-import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded'
+import { ClockIcon, SparklesIcon } from '@heroicons/react/24/outline'
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined'
 
 interface OverviewCourse {
@@ -103,7 +101,7 @@ const LearningCompleteBanner = ({ lessonCount, averageQuizScore, learningStreak 
       </Stack>
     </Box>
     <Box aria-hidden="true" sx={{ display: { xs: 'none', md: 'grid' }, placeItems: 'center', width: 116, height: 116, flexShrink: 0, borderRadius: '50%', bgcolor: 'rgba(255,255,255,.1)', border: '1px solid rgba(255,255,255,.18)' }}>
-      <CheckCircleOutlineRoundedIcon sx={{ fontSize: 64, color: '#b8f0d9' }} />
+      <CheckCircleIcon style={{ width: 64, height: 64, color: '#b8f0d9' }} />
     </Box>
   </Stack>
 </Paper>
@@ -130,7 +128,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
     <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between" alignItems={{ xs: 'stretch', sm: 'flex-end' }} spacing={2.5} sx={{ mb: 3 }}>
       <Box>
         <Stack direction="row" alignItems="center" spacing={.75} sx={{ mb: .75, color: 'primary.main' }}>
-          <AutoAwesomeOutlinedIcon sx={{ fontSize: 17 }} />
+          <SparklesIcon style={{ width: 17, height: 17 }} />
           <Typography variant="overline" sx={{ fontWeight: 800, letterSpacing: 1.5, lineHeight: 1.5 }}>YOUR LEARNING SPACE</Typography>
         </Stack>
         <Typography component="h1" sx={{ fontSize: { xs: '1.9rem', sm: '2.4rem' }, fontWeight: 800, letterSpacing: '-.055em', lineHeight: 1.1 }}>
@@ -170,7 +168,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
         <Box sx={{ display: 'flex', justifyContent: { xs: 'flex-start', md: 'center' }, alignItems: 'center', minWidth: { md: 190 }, pr: { md: 2 } }}>
           <Box sx={{ width: 148, height: 148, borderRadius: '50%', display: 'grid', placeItems: 'center', background: `conic-gradient(#b8f0d9 ${featuredLearning?.progress ?? 0}%, rgba(255,255,255,.17) 0)` }}>
             <Box sx={{ width: 128, height: 128, borderRadius: '50%', display: 'grid', placeItems: 'center', alignContent: 'center', gap: .25, bgcolor: '#17665b', border: '1px solid rgba(255,255,255,.16)' }}>
-              <CheckCircleOutlineRoundedIcon sx={{ color: '#b8f0d9', fontSize: 25 }} />
+              <CheckCircleIcon style={{ width: 25, height: 25, color: '#b8f0d9' }} />
               <Typography variant="h4" sx={{ fontWeight: 800, lineHeight: 1.1 }}>{featuredLearning?.progress ?? 0}%</Typography>
               <Typography variant="caption" sx={{ color: 'rgba(255,255,255,.72)' }}>completed</Typography>
             </Box>
@@ -222,7 +220,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
             <Typography sx={{ fontWeight: 800, lineHeight: 1.35 }}>{session.title}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: .35 }}>{session.courseTitle}</Typography>
             <Stack direction="row" alignItems="center" spacing={.75} sx={{ mt: 1.25, color: 'text.secondary' }}>
-              <AccessTimeRoundedIcon sx={{ fontSize: 16 }} />
+              <ClockIcon style={{ width: 16, height: 16 }} />
               <Typography variant="caption">{new Date(session.startsAt).toLocaleString(undefined, { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}</Typography>
             </Stack>
           </Box>
@@ -261,7 +259,7 @@ const StudentDashboardOverview = ({ displayName, courses, classes, lessonCount, 
     </Paper>
 
     <Box sx={{ mt: 4, mb: 2 }}>
-      <Stack direction="row" alignItems="center" spacing={1} sx={{ color: 'primary.main', mb: .5 }}><AutoAwesomeOutlinedIcon sx={{ fontSize: 18 }} /><Typography variant="overline" sx={{ fontWeight: 800, letterSpacing: 1.3 }}>Keep your momentum</Typography></Stack>
+      <Stack direction="row" alignItems="center" spacing={1} sx={{ color: 'primary.main', mb: .5 }}><SparklesIcon style={{ width: 18, height: 18 }} /><Typography variant="overline" sx={{ fontWeight: 800, letterSpacing: 1.3 }}>Keep your momentum</Typography></Stack>
       <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: '-.03em' }}>Your next wins are waiting</Typography>
       <Typography variant="body2" color="text.secondary">Practice, celebrate progress, and keep moving toward your goals.</Typography>
     </Box>
