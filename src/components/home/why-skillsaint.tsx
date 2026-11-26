@@ -2,17 +2,17 @@ import { Award, GraduationCap, MonitorPlay } from 'lucide-react'
 
 const benefits = [
   {
-    title: 'Expert Instructors',
-    description: 'Learn from experienced professionals who bring real-world expertise to every lesson.',
-    image: '/images/why-skillsaint-instructors.png',
-    alt: 'Instructor leading an online lesson',
+    title: 'Course Program (Self-Paced)',
+    description: 'Learn at your own pace using courses, lessons, and articles, plus quizzes and exams.',
+    image: '/images/course-program-self-paced.webp',
+    alt: 'Self-paced course program',
     icon: GraduationCap,
   },
   {
-    title: 'Interactive Learning Experience',
-    description: 'Engage with video lessons, assignments, and quizzes that make learning practical.',
-    image: '/images/why-skillsaint-interactive.png',
-    alt: 'Interactive online learning interface',
+    title: 'Class Program (Tutor-Led)',
+    description: 'Join live tutor-led classes with timed quizzes, graded work, and progress checks.',
+    image: '/images/class-program-tutor-led.webp',
+    alt: 'Tutor-led class program',
     icon: MonitorPlay,
   },
   {
