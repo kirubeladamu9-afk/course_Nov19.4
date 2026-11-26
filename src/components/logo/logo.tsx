@@ -1,35 +1,36 @@
 import React, { FC } from 'react'
-import { Box, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 
 interface Props {
   onClick?: () => void
-  variant?: 'primary' | 'secondary'
   compact?: boolean
 }
 
-const Logo: FC<Props> = ({ onClick, variant = 'primary', compact = false }) => {
+const Logo: FC<Props> = ({ onClick, compact = false }) => {
   return (
     <Box
       component="a"
       href="/"
-      aria-label="CourseSpace home"
+      aria-label="Coursesharp home"
       onClick={(event) => {
         if (!onClick) return
         event.preventDefault()
         onClick()
       }}
-      sx={{ display: 'inline-block', color: 'text.primary', textDecoration: 'none' }}
+      sx={{ display: 'inline-flex', alignItems: 'center', flexShrink: 0, lineHeight: 0 }}
     >
-      <Typography
-        variant="h4"
-        component="h1"
-        sx={{ fontWeight: 700, '& span': { color: variant === 'primary' ? 'primary.main' : 'unset' } }}
-      >
-        {compact ? <>C<span>s</span></> : <>Course<span>sharp</span></>}
-      </Typography>
+      <Box
+        component="img"
+        src={compact ? '/brand/coursesharp-icon-40x40.png' : '/brand/coursesharp-wordmark-540x120.png'}
+        alt=""
+        sx={
+          compact
+            ? { display: 'block', width: 40, height: 40, objectFit: 'contain' }
+            : { display: 'block', width: 'auto', height: { xs: 32, md: 40 }, objectFit: 'contain' }
+        }
+      />
     </Box>
   )
 }
-
 
 export default Logo

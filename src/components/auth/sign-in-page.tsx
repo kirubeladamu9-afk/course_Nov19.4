@@ -16,6 +16,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { formFieldSx, formPrimaryButtonSx, withLeadingIcon } from '@/components/forms/form-styles'
+import { Logo } from '@/components/logo'
 import { navigateTo } from '@/lib/navigation'
 import { toast } from '@/components/toast'
 import { AuthFlowError, saveAuthenticatedUser, submitCredentials } from '@/services/api'
@@ -124,7 +125,7 @@ const SignInPage: FC<SignInPageProps> = ({ mode }) => {
           ) : (
             <>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'flex-end', md: 'space-between' }, gap: 1, mb: { xs: 1.5, sm: 2, md: 5 } }}>
-                <Typography sx={{ display: { xs: 'none', md: 'block' }, fontSize: '1.25rem', fontWeight: 700, '& span': { color: 'primary.main' } }}>Course<span>sharp</span></Typography>
+                <Box sx={{ display: { xs: 'none', md: 'block' } }}><Logo onClick={() => navigateTo('/')} /></Box>
                 <Typography variant="body2" color="text.secondary">{isSignUp ? 'Already learning with us?' : 'Secure account access'}</Typography>
               </Box>
               <Box sx={{ maxWidth: 430, width: '100%', mx: 'auto', flex: 1 }}>

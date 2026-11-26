@@ -1851,7 +1851,7 @@ const AdminDashboard: FC<AdminDashboardProps> = ({ darkMode, onToggleDarkMode })
 
   const sidebar = (
     <Box sx={{ width: drawerWidth, height: '100%', overflowY: 'auto', backgroundColor: 'background.paper', display: 'flex', flexDirection: 'column', borderRight: 1, borderColor: 'divider' }}>
-      <Box sx={{ px: 3, pt: 2.5, pb: 2.25, borderBottom: 1, borderColor: 'divider' }}><Box sx={{ transform: 'scale(.82)', transformOrigin: 'left center', width: '122%' }}><Logo /></Box><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: .2 }}>Your management workspace</Typography></Box>
+      <Box sx={{ px: 3, pt: 2.5, pb: 2.25, borderBottom: 1, borderColor: 'divider' }}><Logo /><Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: .2 }}>Your management workspace</Typography></Box>
       <Box component="nav" aria-label="Admin navigation" sx={{ px: 1.75, py: 2, flex: 1 }}>
         <Typography variant="overline" color="text.secondary" sx={{ display: 'block', px: 1.5, mb: 1, letterSpacing: 1.2, fontWeight: 700 }}>Overview</Typography>
         {navigation.map((item, index) => <Box key={item.key}>
