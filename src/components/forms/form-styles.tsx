@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import InputAdornment from '@mui/material/InputAdornment'
+import type { Theme } from '@mui/material/styles'
 
 const primary = '#127C71'
 const primaryHover = '#0D6A69'
@@ -8,21 +9,21 @@ const hairline = '#d9e2df'
 const navy = '#17172B'
 
 export const formFieldSx = {
-  '& .MuiInputLabel-root': { color: muted, fontWeight: 500, border: 0, outline: 'none', boxShadow: 'none', '&.MuiInputLabel-shrink': { bgcolor: '#fff' } },
+  '& .MuiInputLabel-root': { color: (theme: Theme) => theme.palette.mode === 'dark' ? '#9AA7A4' : muted, fontWeight: 500, border: 0, outline: 'none', boxShadow: 'none', '&.MuiInputLabel-shrink': { bgcolor: 'background.paper' } },
   '& .MuiInputLabel-root.Mui-focused': { color: primary },
   '& .MuiFormControl-root:has(.MuiInputAdornment-positionStart) .MuiInputLabel-root:not(.MuiInputLabel-shrink)': { transform: 'translate(46px, 16px) scale(1)' },
   '& .MuiOutlinedInput-root': {
     minHeight: 56,
     pl: 2,
     borderRadius: '16px',
-    bgcolor: '#fff',
+    bgcolor: (theme: Theme) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.04)' : '#fff',
     transition: 'box-shadow 0.2s ease',
-    '& fieldset': { borderColor: hairline },
+    '& fieldset': { borderColor: (theme: Theme) => theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.16)' : hairline },
     '&:hover fieldset': { borderColor: '#A8D9CE' },
     '&.Mui-focused': { boxShadow: '0 0 0 4px rgba(18, 124, 113, 0.14)' },
     '&.Mui-focused fieldset': { borderColor: primary, borderWidth: 1 },
   },
-  '& .MuiOutlinedInput-input, & .MuiSelect-select': { py: 2, pl: 0, color: navy },
+  '& .MuiOutlinedInput-input, & .MuiSelect-select': { py: 2, pl: 0, color: (theme: Theme) => theme.palette.mode === 'dark' ? theme.palette.text.primary : navy },
   '& .MuiInputAdornment-root': { mr: 1.25, color: muted },
   '& .MuiInputAdornment-root .MuiSvgIcon-root': { fontSize: 20 },
 } as const

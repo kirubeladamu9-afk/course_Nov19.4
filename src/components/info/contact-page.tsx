@@ -95,7 +95,7 @@ const ContactPage: FC = () => {
             <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1.25 }}>Your email app will open with your message ready to send.</Typography>
           </Box>
 
-          <Stack spacing={2.5} sx={{ p: { xs: 1.5, md: 2 }, borderRadius: 3, backgroundColor: 'white' }}>
+          <Stack spacing={2.5} sx={{ p: { xs: 1.5, md: 2 }, borderRadius: 3, backgroundColor: 'background.paper' }}>
             <Card elevation={0} sx={{ flex: 1, border: 2, borderColor: 'transparent', borderRadius: 3, backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#192321' : '#F5F7FA', transition: 'border-color 0.3s ease', '&:hover': { borderColor: '#127C71' } }}>
               <CardContent sx={{ p: { xs: 3, md: 3.5 } }}>
                 <Box sx={{ display: 'grid', placeItems: 'center', width: 54, height: 54, mb: 4, border: 1, borderColor: (theme) => theme.palette.mode === 'dark' ? '#31413e' : 'grey.100', borderRadius: '50%', color: '#127C71', backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#171717' : 'white', boxShadow: 3 }}><FaqOutlinedIcon sx={{ fontSize: 28 }} /></Box>

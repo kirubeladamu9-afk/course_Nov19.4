@@ -132,7 +132,7 @@ const AboutPage: FC = () => {
       {faqCategories[selectedFaqCategory].map((faq, index) => {
         const faqId = `${selectedFaqCategory}-${index}`
         return (
-          <Accordion key={faq.question} expanded={expandedFaq === faqId} onChange={(_, isExpanded) => setExpandedFaq(isExpanded ? faqId : null)} disableGutters elevation={0} sx={{ border: 1, borderColor: 'transparent', borderRadius: '10px !important', backgroundColor: '#fff', color: '#173a38', '&:before': { display: 'none' }, '&.Mui-expanded': { borderColor: 'primary.main', backgroundColor: '#fff' } }}>
+          <Accordion key={faq.question} expanded={expandedFaq === faqId} onChange={(_, isExpanded) => setExpandedFaq(isExpanded ? faqId : null)} disableGutters elevation={0} sx={{ border: 1, borderColor: 'transparent', borderRadius: '10px !important', backgroundColor: 'background.paper', color: 'text.primary', '&:before': { display: 'none' }, '&.Mui-expanded': { borderColor: 'primary.main', backgroundColor: 'background.paper' } }}>
             <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />} aria-controls={`about-faq-${selectedFaqCategory}-${index}-content`} id={`about-faq-${selectedFaqCategory}-${index}-header`} sx={{ px: { xs: 2, sm: 2.5 }, '& .MuiAccordionSummary-content': { my: 1.75 } }}>
               <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>{faq.question}</Typography>
             </AccordionSummary>
