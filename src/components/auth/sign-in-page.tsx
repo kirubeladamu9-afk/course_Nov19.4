@@ -156,7 +156,17 @@ const SignInPage: FC<SignInPageProps> = ({ mode }) => {
                     Forgot your password? <Link href="mailto:support@coursesharp.com" underline="hover">Contact support@coursesharp.com</Link> for help.
                   </Typography>}
                   <Box sx={{ mt: { xs: 0.25, md: 0.5 } }}>
-                    <Button type="submit" variant="contained" size="large" disabled={isSubmitting || Boolean(captchaRequired && turnstileSiteKey && !captchaToken) || Boolean(twoFactorRequired && !twoFactorCode)} endIcon={<ArrowForwardIcon />} sx={formPrimaryButtonSx}>{isSignUp ? 'Sign Up' : 'Sign In'}</Button>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      size="large"
+                      disabled={isSubmitting || Boolean(captchaRequired && turnstileSiteKey && !captchaToken) || Boolean(twoFactorRequired && !twoFactorCode)}
+                      aria-busy={isSubmitting}
+                      endIcon={isSubmitting ? <CircularProgress size={18} color="inherit" /> : <ArrowForwardIcon />}
+                      sx={formPrimaryButtonSx}
+                    >
+                      {isSubmitting ? (isSignUp ? 'Creating account...' : 'Signing in...') : isSignUp ? 'Sign Up' : 'Sign In'}
+                    </Button>
                   </Box>
                 </Box>
               </Box>
