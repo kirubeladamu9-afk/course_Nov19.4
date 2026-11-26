@@ -4449,7 +4449,8 @@ app.put('/api/tutor/classes/:id', requireTutor, async (request, response) => {
   if (id === null) return response.status(400).json({ message: 'Enter valid class details.' })
   const [existing] = await sql`SELECT schedule, modules FROM classes WHERE id = ${id} AND tutor_id = ${request.tutorId}`
   if (!existing) return response.status(404).json({ message: 'Class not found.' })
-  const classPayload = parseClassPayload(request.body, existing.schedule?.startDate, deserializeJson(existing.modules) ?? [])
+  const existingSchedule = deserializeJson(existing.schedule)
+  const classPayload = parseClassPayload(request.body, existingSchedule?.startDate, deserializeJson(existing.modules) ?? [])
   if (!classPayload) return response.status(400).json({ message: 'Enter valid class details.' })
   const tagError = await getLearningTopicTagError(classPayload.modules, { classId: id, syllabusGrade: classPayload.program_id === 'ministry-exam-prep' ? classPayload.grade_level : null })
   if (tagError) return response.status(400).json({ message: tagError })
@@ -7017,12 +7018,13 @@ app.put('/api/admin/classes/:id', requireAdmin, async (request, response) => {
   const saveResult = await sql.begin(async (transaction) => {
     const [existing] = await transaction`SELECT schedule, modules FROM classes WHERE id = ${id} FOR UPDATE`
     if (!existing) return 'not-found'
-    const classPayload = parseClassPayload(request.body, existing.schedule.startDate, deserializeJson(existing.modules) ?? [])
+    const existingSchedule = deserializeJson(existing.schedule)
+    const classPayload = parseClassPayload(request.body, existingSchedule.startDate, deserializeJson(existing.modules) ?? [])
     if (!classPayload) return 'invalid'
     const tagError = await getLearningTopicTagError(classPayload.modules, { classId: id, syllabusGrade: classPayload.program_id === 'ministry-exam-prep' ? classPayload.grade_level : null })
     if (tagError) return { tagError }
-    if (classPayload.schedule.startDate !== existing.schedule.startDate) return 'start-date-fixed'
-    if (classPayload.schedule.endDate < existing.schedule.endDate) return 'end-date-cannot-shrink'
+    if (classPayload.schedule.startDate !== existingSchedule.startDate) return 'start-date-fixed'
+    if (classPayload.schedule.endDate < existingSchedule.endDate) return 'end-date-cannot-shrink'
     const [updated] = await transaction`UPDATE classes SET ${transaction(classPayload)}, updated_at = NOW() WHERE id = ${id} RETURNING id`
     return updated ? 'saved' : 'not-found'
   })
