@@ -64,9 +64,9 @@ const HomeOurMentors: FC<{ autoplay?: boolean }> = ({ autoplay = false }) => {
       }}
     >
       <Container maxWidth="lg">
-        <Typography component="p" variant="overline" color="primary.main" sx={{ fontWeight: 800, letterSpacing: 1.2, lineHeight: 1.4 }}>OUR INSTRUCTORS</Typography>
+        <Typography component="p" variant="overline" color="primary.main" sx={{ fontWeight: 800, letterSpacing: 1.2, lineHeight: 1.4 }}>OUR TEAM</Typography>
         <Typography variant="h1" sx={{ mt: 0.5, fontSize: { xs: '2rem', md: '2.5rem' }, lineHeight: 1.25, fontWeight: 800 }}>
-          Meet Our Tutors
+          Meet Our Teams
         </Typography>
 
         <Slider ref={sliderRef} {...sliderConfig}>
